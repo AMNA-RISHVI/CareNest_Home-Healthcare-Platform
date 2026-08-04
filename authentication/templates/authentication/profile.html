@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow">
+
+            <div class="card-header bg-primary text-white">
+
+                <h3>My Profile</h3>
+
+            </div>
+
+            <div class="card-body text-center">
+
+                {% if user.profile_picture %}
+
+                    <img src="{{ user.profile_picture.url }}"
+                         class="rounded-circle mb-3"
+                         width="150"
+                         height="150">
+
+                {% else %}
+
+                    <img src="https://via.placeholder.com/150"
+                         class="rounded-circle mb-3">
+
+                {% endif %}
+
+                <h4>{{ user.full_name }}</h4>
+
+                <p class="text-muted">{{ user.role }}</p>
+
+                <hr>
+
+                <table class="table table-bordered">
+
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Phone</th>
+                        <td>{{ user.phone }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>District</th>
+                        <td>{{ user.district }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Gender</th>
+                        <td>{{ user.gender }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Date of Birth</th>
+                        <td>{{ user.dob }}</td>
+                    </tr>
+
+                    <tr>
+                        <th>Address</th>
+                        <td>{{ user.address }}</td>
+                    </tr>
+
+                     <tr>
+                        <th>Email Verified</th>
+                        <td>
+                            {% if user.email_verified %}
+                                ✅ Verified
+                            {% else %}
+                                ❌ Not Verified
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th>Member Since</th>
+                        <td>{{ user.date_joined }}</td>
+                    </tr>
+
+                </table>
+
+                <a href="{% url 'edit_profile' %}"
+                   class="btn btn-primary">
+
+                    Edit Profile
+
+                </a>
+
+                <a href="{% url 'change_password' %}"
+                   class="btn btn-warning">
+
+                    Change Password
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
