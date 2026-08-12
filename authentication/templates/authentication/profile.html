@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+    {% include "landing/partials/navbar.html" %}
+{% endblock %}
+
 {% block title %}
 My Profile
 {% endblock %}
@@ -23,14 +27,15 @@ My Profile
                 {% if user.profile_picture %}
 
                     <img src="{{ user.profile_picture.url }}"
-                         class="rounded-circle mb-3"
-                         width="150"
-                         height="150">
+                        class="rounded-circle mb-3"
+                        width="150"
+                        height="150">
 
                 {% else %}
 
-                    <img src="https://via.placeholder.com/150"
-                         class="rounded-circle mb-3">
+                    <div class="profile-avatar">
+                        {{ user.full_name|first|upper }}
+                    </div>
 
                 {% endif %}
 

@@ -1,234 +1,626 @@
-{% extends "base.html" %}
+{% extends "authentication/base_auth.html" %}
+{% load static %}
+
+{% load widget_tweaks %}
 
 {% block title %}
-Register
+Create Account
 {% endblock %}
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="auth-container">
 
-    <div class="col-lg-8">
+    <!-- LEFT PANEL -->
 
-        <div class="card shadow">
+    <div class="auth-left">
 
-            <div class="card-header bg-primary text-white">
+        <h1>
+            Quality Healthcare,
+            <br>
+            Delivered Home
+        </h1>
 
-                <h3 class="mb-0">
-                    Create CareNest Account
-                </h3>
+        <p>
+            Join Sri Lanka's trusted home healthcare platform and
+            connect with verified healthcare professionals.
+        </p>
+
+        <div class="feature-list">
+
+            <div class="feature-item">
+                <i class="fa-solid fa-user-doctor"></i>
+                Verified Healthcare Professionals
+            </div>
+
+            <div class="feature-item">
+                <i class="fa-solid fa-house-medical"></i>
+                Convenient Home Healthcare
+            </div>
+
+            <div class="feature-item">
+                <i class="fa-solid fa-heart-pulse"></i>
+                Trusted by Sri Lankan Families
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT PANEL -->
+
+    <div class="auth-right">
+
+        <!-- LOGO -->
+
+        <div class="auth-logo">
+            <img
+                src="{% static 'authentication/images/logo-img.png' %}"
+                alt="Logo">
+        </div>
+
+        <!-- HEADING -->
+
+        <div class="auth-heading">
+            <h2> Create Your Account</h2>
+            <p> Start your healthcare journey with CareNest.</p>
+        </div>
+
+
+        <!-- MESSAGES -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="auth-message {{ message.tags }}">
+                    {% if message.tags == "success" %}
+                        <i class="fa-solid fa-circle-check"></i>
+                    {% elif message.tags == "error" %}
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    {% elif message.tags == "warning" %}
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    {% else %}
+                        <i class="fa-solid fa-circle-info"></i>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+
+        <div class="progress-wrapper">
+
+            <div class="progress-step active" id="indicator1">
+                <span>1</span>
+                <small>Personal</small>
+            </div>
+
+            <div class="progress-line">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="progress-step" id="indicator2">
+                <span>2</span>
+                <small>Account</small>
+            </div>
+
+        </div>
+
+        {% if form.errors %}
+            {% for field in form %}
+                {% if field.errors %}
+                    <span class="form-error-field" data-field="{{ field.name }}"></span>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <!-- FORM -->
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="registerForm"
+            novalidate>
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="auth-message error">
+                    {% for error in form.non_field_errors %}
+                        <div>
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+            <!-- STEP 1 -->
+            <div id="step1" class="form-step active">
+
+            <h3 class="step-title">
+                Personal Information
+            </h3>
+
+            <p class="step-subtitle">
+                Tell us about yourself.
+            </p>
+
+                <div class="form-grid">
+
+                    <!-- Full Name -->
+                    <div class="form-group">
+
+                        <label for="{{ form.full_name.id_for_label }}">
+                            Full Name
+                        </label>
+
+                        {% if form.full_name.errors %}
+                            {% render_field form.full_name class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.full_name class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.full_name.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Username -->
+                    <div class="form-group">
+
+                        <label for="{{ form.username.id_for_label }}">
+                            Username
+                        </label>
+
+                        {% if form.username.errors %}
+                            {% render_field form.username class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.username class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.username.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        <label for="{{ form.email.id_for_label }}">
+                            Email Address
+                        </label>
+
+                        {% if form.email.errors %}
+                            {% render_field form.email class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.email class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.email.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <!-- Phone -->
+                    <div class="form-group">
+
+                        <label for="{{ form.phone.id_for_label }}">
+                            Phone Number
+                        </label>
+
+                        {% if form.phone.errors %}
+                            {% render_field form.phone class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.phone class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.phone.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="auth-button"
+                    id="nextBtn">
+
+                    Next
+
+                    <i class="fa-solid fa-arrow-right"></i>
+
+                </button>
 
             </div>
 
-            <div class="card-body">
+            <!-- STEP 2 -->
+            <div id="step2" class="form-step">
 
-                <form method="POST" enctype="multipart/form-data">
+                <h3 class="step-title"> Account Information</h3>
+                <p class="step-subtitle">Complete your registration.</p>
 
-                    {% csrf_token %}
+                <div class="form-grid">
 
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {% for error in form.non_field_errors %}
+                    <div class="form-group full-width">
+                        <label for="{{ form.address.id_for_label }}">
+                            Address
+                        </label>
+
+                        {% if form.address.errors %}
+                            {% render_field form.address class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.address class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.address.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    <div class="mb-3">
-
-                        <label class="form-label">Username</label>
-
-                        {{ form.username }}
-
-                        <div class="invalid-feedback">
-                            {% for error in form.username.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Full Name</label>
+                    <div class="form-group">
 
-                        {{ form.full_name }}
+                        <label for="{{ form.district.id_for_label }}">
+                            District
+                        </label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.full_name.errors %}
+                        {% if form.district.errors %}
+                            {% render_field form.district class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.district class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.district.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Email Address</label>
+                    <div class="form-group">
 
-                        {{ form.email }}
+                        <label for="{{ form.gender.id_for_label }}">
+                            Gender
+                        </label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.email.errors %}
+                        {% if form.gender.errors %}
+                            {% render_field form.gender class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.gender class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.gender.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Phone Number</label>
+                    <div class="form-group">
 
-                        {{ form.phone }}
+                        <label for="{{ form.dob.id_for_label }}">
+                            Date of Birth
+                        </label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.phone.errors %}
+                        {% if form.dob.errors %}
+                            {% render_field form.dob class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.dob class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.dob.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Address</label>
+                    <div class="form-group">
 
-                        {{ form.address }}
+                        <label for="{{ form.role.id_for_label }}">
+                            Role
+                        </label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.address.errors %}
+                        {% if form.role.errors %}
+                            {% render_field form.role class+="auth-input is-invalid" %}
+                        {% else %}
+                            {% render_field form.role class+="auth-input" %}
+                        {% endif %}
+
+                        {% for error in form.role.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
+                            </div>
+                        {% endfor %}
 
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">District</label>
+                    <div class="form-group full-width">
 
-                        {{ form.district }}
+                        <label>Profile Picture</label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.district.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
+                        <div class="profile-upload">
 
-                    </div>
+                            <img
+                                src="{% static 'authentication/images/default-avatar.png' %}"
+                                id="profilePreview"
+                                class="profile-preview">
 
-                    <div class="mb-3">
+                            <label
+                                for="{{ form.profile_picture.id_for_label }}"
+                                class="upload-button">
+                                <i class="fa-solid fa-camera"></i>
+                                Choose Profile Picture
+                            </label>
 
-                        <label class="form-label">Gender</label>
+                            {% if form.profile_picture.errors %}
+                                {% render_field form.profile_picture class+="auth-input is-invalid" %}
+                            {% else %}
+                                {% render_field form.profile_picture class+="auth-input" %}
+                            {% endif %}
 
-                        {{ form.gender }}
-
-                        <div class="invalid-feedback">
-                            {% for error in form.gender.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">Date of Birth</label>
-
-                        {{ form.dob }}
-
-                        <div class="invalid-feedback">
-                            {% for error in form.dob.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-
-                    </div>
-
-                    <div class="mb-3">
-
-                        <label class="form-label">Profile Picture</label>
-
-                        {{ form.profile_picture }}
-
-                        <div class="invalid-feedback">
                             {% for error in form.profile_picture.errors %}
-                                {{ error }}
+                                <div class="field-error">
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    {{ error }}
+                                </div>
                             {% endfor %}
+                            <small>JPG, PNG up to 5 MB</small>
                         </div>
-
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Role</label>
+                    <!-- PASSWORD -->
+                    <div class="form-group password-field-group">
 
-                        {{ form.role }}
+                        <label for="{{ form.password1.id_for_label }}">
+                            Password
+                        </label>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.role.errors %}
-                                {{ error }}
-                            {% endfor %}
+                        <div class="password-wrapper">
+                            {% if form.password1.errors %}
+                                {{ form.password1|add_class:"auth-input is-invalid" }}
+                            {% else %}
+                                {{ form.password1|add_class:"auth-input" }}
+                            {% endif %}
+
+                            <i
+                                class="fa-solid fa-eye toggle-password"
+                                data-target="{{ form.password1.auto_id }}">
+                            </i>
+
                         </div>
 
+
+                        <!-- PASSWORD STRENGTH -->
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div id="strengthFill"></div>
+                            </div>
+
+                            <span id="strengthText">
+                                Enter a password
+                            </span>
+
+                        </div>
+
+
+                        <!-- PASSWORD REQUIREMENTS -->
+
+                        <div class="password-checklist">
+                            <div id="lengthRule">✖ At least 8 characters</div>
+                            <div id="upperRule">✖ One uppercase letter</div>
+                            <div id="lowerRule">✖ One lowercase letter</div>
+                            <div id="numberRule">✖ One number</div>
+                            <div id="specialRule">✖ One special character</div>
+                        </div>
+
+                        {% for error in form.password1.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            </div>
+                        {% endfor %}
                     </div>
 
-                    <div class="mb-3">
 
-                        <label class="form-label">Password</label>
+                    <!-- CONFIRM PASSWORD -->
+                    <div class="form-group confirm-password-group">
 
-                        {{ form.password1 }}
+                        <label for="{{ form.password2.id_for_label }}">
+                            Confirm Password
+                        </label>
 
-                        <div class="form-text">
-                            Password must contain at least 8 characters and should not be too common or entirely numeric.
+                        <div class="password-wrapper">
+                            {% if form.password2.errors %}   
+                                {{ form.password2|add_class:"auth-input is-invalid" }}
+                            {% else %}
+                                {{ form.password2|add_class:"auth-input" }}
+                            {% endif %}
+
+                            <i
+                                class="fa-solid fa-eye toggle-password"
+                                data-target="{{ form.password2.auto_id }}">
+                            </i>
                         </div>
 
-                        <div class="invalid-feedback">
-                            {% for error in form.password1.errors %}
+                        {% for error in form.password2.errors %}
+                            <div class="field-error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
                                 {{ error }}
-                            {% endfor %}
-                        </div>
-
+                            </div>
+                        {% endfor %}
+                
                     </div>
+                </div>
 
-                    <div class="mb-4">
 
-                        <label class="form-label">Confirm Password</label>
+                <div class="step-buttons">
 
-                        {{ form.password2 }}
-
-                        <div class="invalid-feedback">
-                            {% for error in form.password2.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-
-                    </div>
-
-                    <button type="submit" class="btn btn-primary w-100">
-
-                        Register
-
+                    <button
+                        type="button"
+                        class="secondary-button"
+                        id="backBtn">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        Back
                     </button>
 
-                </form>
+                    <button
+                        type="submit"
+                        class="auth-button">
+                        Create Account
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
 
-                <hr>
-
-                <p class="text-center mb-0">
-
-                    Already have an account?
-
-                    <a href="{% url 'login' %}">
-
-                        Login
-
-                    </a>
-
-                </p>
-
+                </div>
             </div>
+        </form>
+
+
+        <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            /* ==========================================
+            GET STEP ELEMENTS
+            ========================================== */
+            const step1 = document.getElementById("step1");
+            const step2 = document.getElementById("step2");
+
+            const indicator1 = document.getElementById("indicator1");
+            const indicator2 = document.getElementById("indicator2");
+
+            const progressFill = document.getElementById("progressFill");
+
+
+            /* ==========================================
+            STEP 1 FIELD IDs
+            ========================================== */
+            const step1Fields = [
+                "id_full_name",
+                "id_username",
+                "id_email",
+                "id_phone"
+            ];
+
+
+            /* ==========================================
+            STEP 2 FIELD IDs
+            ========================================== */
+            const step2Fields = [
+                "id_address",
+                "id_district",
+                "id_gender",
+                "id_dob",
+                "id_role",
+                "id_profile_picture",
+                "id_password1",
+                "id_password2"
+            ];
+
+
+            /* ==========================================
+            CHECK STEP 1 FOR ERRORS
+            ========================================== */
+            const step1HasError = step1Fields.some(function (fieldId) {
+                const field = document.getElementById(fieldId);
+
+                return (
+                    field &&
+                    field.classList.contains("is-invalid")
+                );
+            });
+
+
+            /* ==========================================
+            CHECK STEP 2 FOR ERRORS
+            ========================================== */
+            const step2HasError = step2Fields.some(function (fieldId) {
+                const field = document.getElementById(fieldId);
+
+                return (
+                    field &&
+                    field.classList.contains("is-invalid")
+                );
+            });
+
+
+            /* ==========================================
+            STEP 1 HAS PRIORITY
+            ========================================== */
+            if (step1HasError) {
+                /* Show Step 1 */
+                step1.classList.add("active");
+                step2.classList.remove("active");
+
+                /* Progress indicator */
+                indicator1.classList.add("active");
+                indicator2.classList.remove("active");
+
+                /* Progress line */
+                progressFill.style.width = "0%";
+            }
+
+
+            /* ==========================================
+            ONLY STEP 2 HAS ERRORS
+            ========================================== */
+            else if (step2HasError) {
+                /* Show Step 2 */
+                step1.classList.remove("active");
+                step2.classList.add("active");
+
+                /* Progress indicator */
+                indicator1.classList.add("active");
+                indicator2.classList.add("active");
+
+                /* Progress line */
+                progressFill.style.width = "50%";
+            }
+        });
+        </script>
+
+        
+        <div class="auth-footer">
+            Already have an account?
+            <a href="{% url 'login' %}">
+                Sign In
+            </a>
 
         </div>
 

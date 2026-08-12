@@ -195,7 +195,7 @@ def user_logout(request):
         "You have logged out successfully."
     )
 
-    return redirect("login")
+    return redirect("home")
 
 
 def redirect_user_dashboard(user):

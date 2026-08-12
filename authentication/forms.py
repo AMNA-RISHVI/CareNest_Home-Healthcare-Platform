@@ -9,6 +9,25 @@ from django.contrib.auth.forms import PasswordChangeForm
 
 class UserRegistrationForm(UserCreationForm):
 
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Create a password',
+                "id": "id_password1",
+            }
+        )
+    )
+
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Confirm your password'
+            }
+        )
+    )
+
     class Meta:
         model = User
         fields = [
@@ -26,6 +45,78 @@ class UserRegistrationForm(UserCreationForm):
             'password2',
         ]
 
+    widgets = {
+
+        'full_name': forms.TextInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Enter your full name'
+            }
+        ),
+
+        'username': forms.TextInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Choose a username'
+            }
+        ),
+
+        'email': forms.EmailInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Enter your email'
+            }
+        ),
+
+        'phone': forms.TextInput(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Enter your phone number'
+            }
+        ),
+
+        'address': forms.Textarea(
+            attrs={
+                'class': 'auth-input',
+                'placeholder': 'Enter your address',
+                'rows': 3
+            }
+        ),
+
+        'district': forms.Select(
+            attrs={
+                'class': 'auth-select'
+            }
+        ),
+
+        'gender': forms.Select(
+            attrs={
+                'class': 'auth-select'
+            }
+        ),
+
+        'dob': forms.DateInput(
+            attrs={
+                'class': 'auth-input',
+                'type': 'date'
+            }
+        ),
+
+        'profile_picture': forms.ClearableFileInput(
+            attrs={
+                'class': 'auth-input'
+            }
+        ),
+
+        'role': forms.Select(
+            attrs={
+                'class': 'auth-select'
+            }
+        ),
+    }
+
+    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -37,74 +128,6 @@ class UserRegistrationForm(UserCreationForm):
 
             else:
                 field.widget.attrs["class"] = css_class
-
-    widgets = {
-
-        "username": forms.TextInput(attrs={
-            "class": "form-control",
-            "placeholder": "Enter Username"
-        }),
-
-        "full_name": forms.TextInput(attrs={
-            "class": "form-control",
-            "placeholder": "Enter Full Name"
-        }),
-
-        "email": forms.EmailInput(attrs={
-            "class": "form-control",
-            "placeholder": "Enter Email Address"
-        }),
-
-        "phone": forms.TextInput(attrs={
-            "class": "form-control",
-            "placeholder": "Enter Phone Number"
-        }),
-
-        "address": forms.Textarea(attrs={
-            "class": "form-control",
-            "rows": 3,
-            "placeholder": "Enter Address"
-        }),
-
-        "district": forms.Select(attrs={
-            "class": "form-select"
-        }),
-
-        "gender": forms.Select(attrs={
-            "class": "form-select"
-        }),
-
-        "dob": forms.DateInput(attrs={
-            "class": "form-control",
-            "type": "date"
-        }),
-
-        "profile_picture": forms.ClearableFileInput(attrs={
-            "class": "form-control"
-        }),
-
-        "role": forms.Select(attrs={
-            "class": "form-select"
-        }),
-    }
-
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Enter Password"
-            }
-        )
-    )
-
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "class": "form-control",
-                "placeholder": "Confirm Password"
-            }
-        )
-    )
 
 
 
