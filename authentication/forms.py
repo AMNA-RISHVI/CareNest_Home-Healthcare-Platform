@@ -137,7 +137,7 @@ class LoginForm(AuthenticationForm):
         max_length=150,
         widget=forms.TextInput(
             attrs={
-                "class": "form-control",
+                "class": "auth-input",
                 "placeholder": "Username"
             }
         )
@@ -146,7 +146,7 @@ class LoginForm(AuthenticationForm):
     password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
+                "class": "auth-input",
                 "placeholder": "Password"
             }
         )

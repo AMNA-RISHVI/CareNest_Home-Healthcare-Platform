@@ -732,6 +732,7 @@ input[type=file]{
     color: #0B8F88;
 }
 
+
 /* ==========================================
    FIELD ERROR
 ========================================== */
@@ -797,6 +798,7 @@ input[type=file]{
     gap: 10px;
 }
 
+
 /* ==========================================
    GENERAL FORM ERROR
 ========================================== */
@@ -837,6 +839,143 @@ input[type=file]{
 
 
 
+
+
+/* ==========================================
+   SUCCESS / EMAIL SENT
+========================================== */
+.success-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #D7FFEF;
+    color: #0B8F88;
+    font-size: 32px;
+}
+
+.email-sent-info {
+    background: #F8FFFC;
+    border: 1px solid #0B8F88;
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 24px;
+}
+
+.email-sent-info p {
+    margin: 0 0 8px;
+    color: #52635F;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.email-sent-info p:last-child {
+    margin-bottom: 0;
+}
+
+.email-sent-info strong {
+    color: #163F3B;
+}
+
+
+
+
+
+/* ==========================================
+   AUTH NOTIFICATIONS
+========================================== */
+.auth-notification-container {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    z-index: 9999;
+    width: min(400px, calc(100vw - 40px));
+}
+
+.auth-notification {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 18px;
+    margin-bottom: 10px;
+    border-radius: 12px;
+    background: #FFFFFF;
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+    border-left: 4px solid #0B8F88;
+    color: #163F3B;
+    font-size: 14px;
+    animation: notificationSlideIn 0.3s ease;
+}
+
+.auth-notification.success {
+    border-left-color: #0B8F88;
+}
+
+.auth-notification.error {
+    border-left-color: #DC3545;
+}
+
+.auth-notification.warning {
+    border-left-color: #E6A700;
+}
+
+.auth-notification.info {
+    border-left-color: #0B8F88;
+}
+
+.notification-text {
+    flex: 1;
+}
+
+.notification-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: #7B8C89;
+    font-size: 16px;
+}
+
+.notification-close:hover {
+    color: #163F3B;
+}
+
+
+@keyframes notificationSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes notificationSlideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+}
+
+
+@media (max-width: 600px) {
+    .auth-notification-container {
+        top: 15px;
+        right: 15px;
+        width: calc(100vw - 30px);
+    }
+}
 
 
 

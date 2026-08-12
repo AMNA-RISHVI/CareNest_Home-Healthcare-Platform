@@ -45,12 +45,79 @@
 
 <body>
 
-<div class="auth-page">
 
+{% if messages %}
+
+    <div class="auth-notification-container">
+
+        {% for message in messages %}
+
+            <div
+                class="auth-notification {{ message.tags }}"
+                role="alert">
+
+                <span class="notification-text">
+                    {{ message }}
+                </span>
+
+                <button
+                    type="button"
+                    class="notification-close"
+                    onclick="closeNotification(this)">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+{% endif %}
+
+
+<div class="auth-page">
     {% block content %}
     {% endblock %}
-
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const notifications =
+        document.querySelectorAll(".auth-notification");
+
+    notifications.forEach(function (notification) {
+        setTimeout(function () {
+            notification.style.animation =
+                "notificationSlideOut 0.3s ease forwards";
+
+            setTimeout(function () {
+                notification.remove();
+            }, 300);
+        }, 10000);
+    });
+});
+
+function closeNotification(button) {
+    const notification =
+        button.closest(".auth-notification");
+
+    if (!notification) {
+        return;
+    }
+
+    notification.style.animation =
+        "notificationSlideOut 0.3s ease forwards";
+
+    setTimeout(function () {
+        notification.remove();
+    }, 300);
+}
+</script>
+
 
 <script src="{% static 'authentication/js/auth.js' %}"></script>
 

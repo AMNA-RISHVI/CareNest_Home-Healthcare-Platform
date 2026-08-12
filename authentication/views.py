@@ -187,14 +187,7 @@ def user_login(request):
 
 @login_required
 def user_logout(request):
-
     logout(request)
-
-    messages.success(
-        request,
-        "You have logged out successfully."
-    )
-
     return redirect("home")
 
 
@@ -405,12 +398,7 @@ def reset_password(request, uidb64, token):
 
             form.save()
 
-            messages.success(
-                request,
-                "Password has been reset successfully. Please login."
-            )
-
-            return redirect("login")
+            return redirect("password_reset_complete")
 
     else:
 
@@ -436,6 +424,13 @@ def verify_email_done(request):
     return render(
         request,
         "authentication/verify_email_done.html"
+    )
+
+def password_reset_complete(request):
+
+    return render(
+        request,
+        "authentication/password_reset_complete.html"
     )
 
 

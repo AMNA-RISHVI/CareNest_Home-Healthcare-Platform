@@ -70,6 +70,12 @@ urlpatterns = [
     ),
 
     path(
+        "password-reset/complete/",
+        views.password_reset_complete,
+        name="password_reset_complete",
+    ),
+
+    path(
         "profile/",
         views.profile,
         name="profile"
