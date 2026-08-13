@@ -511,14 +511,11 @@ def change_password(request):
 
             user = form.save()
 
-            update_session_auth_hash(
-                request, 
-                user
-            )
+            login(request, user)
 
             messages.success(
                 request,
-                "Password changed successfully."
+                "Your password has been changed successfully."
             )
 
             return redirect("profile")

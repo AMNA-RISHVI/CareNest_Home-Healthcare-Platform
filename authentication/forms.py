@@ -343,8 +343,9 @@ class ChangePasswordForm(PasswordChangeForm):
     old_password = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Current Password",
+                "class": "auth-input",
+                "placeholder": "Enter your current password",
+                "autocomplete": "current-password",
             }
         )
     )
@@ -352,8 +353,10 @@ class ChangePasswordForm(PasswordChangeForm):
     new_password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "New Password",
+                "class": "auth-input",
+                "placeholder": "Create a new password",
+                "autocomplete": "new-password",
+                "id": "id_new_password1",
             }
         )
     )
@@ -361,8 +364,24 @@ class ChangePasswordForm(PasswordChangeForm):
     new_password2 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
-                "class": "form-control",
-                "placeholder": "Confirm New Password",
+                "class": "auth-input",
+                "placeholder": "Confirm your new password",
+                "autocomplete": "new-password",
+                "id": "id_new_password2",
             }
         )
     )
+
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+
+            css = field.widget.attrs.get("class", "")
+
+            if self.errors.get(field_name):
+
+                field.widget.attrs["class"] = (
+                    css + " is-invalid"
+                )

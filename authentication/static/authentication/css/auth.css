@@ -1397,7 +1397,7 @@ input[type=file]{
 .edit-photo-content h3 {
     margin: 0 0 5px;
     color: #163F3B;
-    font-size: 17px;
+    font-size: 20px;
 }
 
 .edit-photo-content p {
@@ -1645,7 +1645,254 @@ input[type=file]{
 
 
 
+/* =========================================================
+   CHANGE PASSWORD PAGE
+========================================================= */
+.change-password-card {
+    width: 100%;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border: 1px solid #E4EFEB;
+    border-radius: 22px;
+    box-shadow:
+        0 12px 35px rgba(22, 63, 59, 0.08);
+    overflow: hidden;
+}
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+.change-password-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 30px;
+    background:
+        linear-gradient(
+            135deg,
+            #D7FFEF 0%,
+            #FFFFFF 65%,
+            #FFFCE6 100%
+        );
+}
+
+.security-icon {
+    width: 52px;
+    height: 52px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: #0B8F88;
+    color: #FFFFFF;
+    font-size: 20px;
+}
+
+.change-password-header h2 {
+    margin: 0;
+    color: #163F3B;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.change-password-header p {
+    margin: 5px 0 0;
+    color: #7A8C88;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+#changePasswordForm {
+    padding: 30px;
+}
+
+.password-form-group {
+    margin-bottom: 24px;
+}
+
+.password-form-group label {
+    display: block;
+    margin-bottom: 7px;
+    color: #354C49;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PASSWORD INPUT
+========================================================= */
+.password-input-wrapper {
+    position: relative;
+}
+
+.password-input-wrapper .auth-input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 44px 0 13px;
+    border: 1px solid #DCE9E5;
+    border-radius: 9px;
+    outline: none;
+    background: #FFFFFF;
+    color: #263F3C;
+    font-family: inherit;
+    font-size: 15px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.password-input-wrapper .auth-input:focus {
+    border-color: #0B8F88;
+    box-shadow:
+        0 0 0 3px rgba(11, 143, 136, 0.10);
+}
+
+
+/* =========================================================
+   INVALID PASSWORD FIELD
+========================================================= */
+.password-input-wrapper .auth-input.is-invalid {
+    border-color: #D9534F;
+    box-shadow:
+        0 0 0 3px rgba(217, 83, 79, 0.08);
+}
+
+
+/* =========================================================
+   EYE ICON
+========================================================= */
+.password-input-wrapper .toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7C908B;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.password-input-wrapper .toggle-password:hover {
+    color: #0B8F88;
+}
+
+
+/* =========================================================
+   PASSWORD CHECKLIST
+========================================================= */
+.change-password-checklist {
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #F8FCFA;
+    border: 1px solid #E6F0EC;
+}
+
+.change-password-checklist div {
+    margin: 5px 0;
+    color: #84938F;
+    font-size: 12px;
+    transition: 0.2s ease;
+}
+
+.change-password-checklist div.valid {
+    color: #0B8F88;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PASSWORD STRENGTH
+========================================================= */
+.change-password-strength {
+    margin-top: 10px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #E6EEEB;
+}
+
+#strengthFill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    transition: width 0.25s ease;
+}
+
+#strengthText {
+    display: block;
+    margin-top: 6px;
+    color: #84938F;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ERROR
+========================================================= */
+.field-error {
+    margin-top: 6px;
+    color: #C73E3A;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.form-general-error {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    background: #FFF2F1;
+    border: 1px solid #F3C8C5;
+    color: #C73E3A;
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+.change-password-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 8px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 600px) {
+    .change-password-header {
+        padding: 22px;
+    }
+
+    #changePasswordForm {
+        padding: 22px;
+    }
+
+    .change-password-actions {
+        flex-direction: column-reverse;
+    }
+
+    .change-password-actions
+    .edit-cancel-button,
+    .change-password-actions
+    .edit-save-button {
+        width: 100%;
+    }
+}
 
 
 
