@@ -1,8 +1,5 @@
-{% extends "base.html" %}
-
-{% block navbar %}
-    {% include "landing/partials/navbar.html" %}
-{% endblock %}
+{% extends "authentication/base_auth.html" %}
+{% load static %}
 
 {% block title %}
 My Profile
@@ -10,111 +7,232 @@ My Profile
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="profile-page">
 
-    <div class="col-lg-8">
+    <!-- PAGE HEADER -->
+    <div class="profile-page-header">
 
-        <div class="card shadow">
+        <div>
+            <span class="profile-eyebrow">
+                ACCOUNT
+            </span>
+            <h1>My Profile</h1>
+            <p>View and manage your personal information.</p>
+        </div>
 
-            <div class="card-header bg-primary text-white">
+    </div>
 
-                <h3>My Profile</h3>
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
 
-            </div>
-
-            <div class="card-body text-center">
-
-                {% if user.profile_picture %}
-
-                    <img src="{{ user.profile_picture.url }}"
-                        class="rounded-circle mb-3"
-                        width="150"
-                        height="150">
-
+        <!-- PROFILE HEADER -->
+        <div class="profile-card-header">
+            <div class="profile-avatar-section">
+                {% if request.user.profile_picture %}
+                    <img
+                        src="{{ request.user.profile_picture.url }}"
+                        alt="Profile Picture"
+                        class="profile-avatar-large">
                 {% else %}
-
-                    <div class="profile-avatar">
-                        {{ user.full_name|first|upper }}
+                    <div class="profile-avatar-placeholder">
+                        {{ request.user.full_name|first|upper }}
                     </div>
-
                 {% endif %}
+            </div>
 
-                <h4>{{ user.full_name }}</h4>
 
-                <p class="text-muted">{{ user.role }}</p>
+            <div class="profile-identity">
+                <h2>
+                    {{ request.user.full_name }}
+                </h2>
 
-                <hr>
+                <p class="profile-username">
+                    @{{ request.user.username }}
+                </p>
 
-                <table class="table table-bordered">
 
-                    <tr>
-                        <th>Username</th>
-                        <td>{{ user.username }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Email</th>
-                        <td>{{ user.email }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Phone</th>
-                        <td>{{ user.phone }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>District</th>
-                        <td>{{ user.district }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Gender</th>
-                        <td>{{ user.gender }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Date of Birth</th>
-                        <td>{{ user.dob }}</td>
-                    </tr>
-
-                    <tr>
-                        <th>Address</th>
-                        <td>{{ user.address }}</td>
-                    </tr>
-
-                     <tr>
-                        <th>Email Verified</th>
-                        <td>
-                            {% if user.email_verified %}
-                                ✅ Verified
-                            {% else %}
-                                ❌ Not Verified
-                            {% endif %}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th>Member Since</th>
-                        <td>{{ user.date_joined }}</td>
-                    </tr>
-
-                </table>
-
-                <a href="{% url 'edit_profile' %}"
-                   class="btn btn-primary">
-
-                    Edit Profile
-
-                </a>
-
-                <a href="{% url 'change_password' %}"
-                   class="btn btn-warning">
-
-                    Change Password
-
-                </a>
+                <span class="profile-role">
+                    {% if request.user.role == "PATIENT" %}
+                        Patient
+                    {% elif request.user.role == "PROFESSIONAL" %}
+                        Healthcare Professional
+                    {% elif request.user.role == "ADMIN" %}
+                        Administrator
+                    {% else %}
+                        {{ request.user.role }}
+                    {% endif %}
+                </span>
 
             </div>
+
+        </div>
+
+
+        <!-- DIVIDER -->
+
+        <div class="profile-divider"></div>
+
+        <!-- PERSONAL INFORMATION -->
+        <div class="profile-section">
+
+            <div class="profile-section-title">
+
+                <div class="section-icon">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+
+                <div>
+                    <h3>Personal Information</h3>
+                    <p>Your basic personal details</p>
+                </div>
+
+            </div>
+
+
+            <div class="profile-info-grid">
+
+                <!-- FULL NAME -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Full Name
+                    </span>
+
+                    <span class="profile-info-value">
+                        {{ request.user.full_name|default:"Not provided" }}
+                    </span>
+
+                </div>
+
+                <!-- USERNAME -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Username
+                    </span>
+                    <span class="profile-info-value">
+                        {{ request.user.username }}
+                    </span>
+                </div>
+
+                <!-- EMAIL -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Email Address
+                    </span>
+                    <span class="profile-info-value">
+                        {{ request.user.email }}
+                    </span>
+                </div>
+
+                <!-- PHONE -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Phone Number
+                    </span>
+                    <span class="profile-info-value">
+                        {{ request.user.phone|default:"Not provided" }}
+                    </span>
+                </div>
+
+                <!-- DISTRICT -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        District
+                    </span>
+                    <span class="profile-info-value">
+                        {{ request.user.district|default:"Not provided" }}
+                    </span>
+                </div>
+
+                <!-- GENDER -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Gender
+                    </span>
+                    <span class="profile-info-value">
+                        {{ request.user.gender|default:"Not provided" }}
+                    </span>
+                </div>
+
+                <!-- DATE OF BIRTH -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Date of Birth
+                    </span>
+                    <span class="profile-info-value">
+                        {% if request.user.dob %}
+                            {{ request.user.dob|date:"d M Y" }}
+                        {% else %}
+                            Not provided
+                        {% endif %}
+                    </span>
+                </div>
+
+                <!-- EMAIL VERIFICATION -->
+                <div class="profile-info-item">
+                    <span class="profile-info-label">
+                        Email Status
+                    </span>
+                    <span class="profile-info-value">
+                        {% if request.user.email_verified %}
+                            <span class="status-badge verified">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Verified
+                            </span>
+                        {% else %}
+                            <span class="status-badge unverified">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                Not Verified
+                            </span>
+                        {% endif %}
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="profile-divider"></div>
+        <div class="profile-section">
+            <div class="profile-section-title">
+                <div class="section-icon">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div>
+                    <h3>Address</h3>
+                    <p>Your registered residential address</p>
+                </div>
+            </div>
+
+            <div class="profile-address">
+                {% if request.user.address %}
+                    {{ request.user.address }}
+                {% else %}
+                    <span class="empty-value">
+                        No address provided
+                    </span>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="profile-divider"></div>
+        <div class="profile-actions">
+            <a
+                href="{% url 'edit_profile' %}"
+                class="profile-primary-button">
+                <i class="fa-solid fa-pen"></i>
+                Edit Profile
+            </a>
+
+            <a
+                href="{% url 'change_password' %}"
+                class="profile-secondary-button">
+                <i class="fa-solid fa-lock"></i>
+                Change Password
+            </a>
 
         </div>
 
