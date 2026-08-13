@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+{% extends "authentication/base_auth.html" %}
+{% load static %}
 
 {% block title %}
 Edit Profile
@@ -6,76 +7,322 @@ Edit Profile
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="profile-page">
 
-<div class="col-lg-8">
+    <!-- PAGE HEADER -->
+    <div class="profile-page-header">
 
-<div class="card shadow">
+        <div>
+            <span class="profile-eyebrow">
+                ACCOUNT SETTINGS
+            </span>
 
-<div class="card-header bg-success text-white">
+            <h1>Edit Profile</h1>
+            <p>Update your personal information and profile picture.</p>
 
-<h3>Edit Profile</h3>
+        </div>
+
+    </div>
+
+
+    <!-- EDIT PROFILE CARD -->
+    <div class="edit-profile-card">
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="editProfileForm">
+            {% csrf_token %}
+
+            <!-- PROFILE PHOTO -->
+            <div class="edit-profile-photo-section">
+                <div class="edit-photo-wrapper">
+                    {% if request.user.profile_picture %}
+                        <img
+                            src="{{ request.user.profile_picture.url }}"
+                            alt="Profile Picture"
+                            id="profilePreview"
+                            class="edit-profile-avatar">
+                    {% else %}
+
+                        <div
+                            id="profilePlaceholder"
+                            class="edit-profile-avatar-placeholder">
+                            {{ request.user.full_name|first|upper }}
+                        </div>
+
+                        <img
+                            id="profilePreview"
+                            class="edit-profile-avatar hidden"
+                            alt="Profile Picture">
+                    {% endif %}
+                    </div>
+
+                <div class="edit-photo-content">
+                    <h3>Profile Picture</h3>
+                    <p>
+                        Upload a clear photo so healthcare professionals
+                        and patients can easily recognize you.
+                    </p>
+
+                    <label
+                        for="{{ form.profile_picture.id_for_label }}"
+                        class="photo-upload-button">
+
+                        <i class="fa-solid fa-camera"></i>
+                        Choose Photo
+                    </label>
+
+                    {{ form.profile_picture }}
+
+                    <small>
+                        JPG or PNG · Maximum 5 MB
+                    </small>
+
+                    {% if form.profile_picture.errors %}
+                        {% for error in form.profile_picture.errors %}
+                            <div class="field-error">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <div class="profile-divider"></div>
+
+
+            <!-- PERSONAL INFORMATION -->
+            <div class="edit-profile-section">
+                <div class="edit-section-heading">
+
+                    <div class="section-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div>
+                        <h3>Personal Information</h3>
+                        <p>Update your basic personal details.</p>
+                    </div>
+
+                </div>
+
+                <div class="edit-form-grid">
+
+
+                    <!-- FULL NAME -->
+                    <div class="edit-form-group">
+
+                        <label for="{{ form.full_name.id_for_label }}">
+                            Full Name
+                        </label>
+
+                        {{ form.full_name }}
+                        {% if form.full_name.errors %}
+                            {% for error in form.full_name.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+
+                    <!-- PHONE -->
+                    <div class="edit-form-group">
+                        <label for="{{ form.phone.id_for_label }}">
+                            Phone Number
+                        </label>
+
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            {% for error in form.phone.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+
+                    <!-- ADDRESS -->
+                    <div class="edit-form-group full-width">
+                        <label for="{{ form.address.id_for_label }}">
+                            Address
+                        </label>
+
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            {% for error in form.address.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+
+                    <!-- DISTRICT -->
+                    <div class="edit-form-group">
+                        <label for="{{ form.district.id_for_label }}">
+                            District
+                        </label>
+
+                        {{ form.district }}
+                        {% if form.district.errors %}
+                            {% for error in form.district.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+
+                    <!-- GENDER -->
+                    <div class="edit-form-group">
+                        <label for="{{ form.gender.id_for_label }}">
+                            Gender
+                        </label>
+
+                        {{ form.gender }}
+                        {% if form.gender.errors %}
+                            {% for error in form.gender.errors %}
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- DATE OF BIRTH -->
+                    <div class="edit-form-group">
+                        <label for="{{ form.dob.id_for_label }}">
+                            Date of Birth
+                        </label>
+
+                        {{ form.dob }}
+                        {% if form.dob.errors %}
+                            {% for error in form.dob.errors %}
+
+                                <div class="field-error">
+                                    {{ error }}
+                                </div>
+
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="profile-divider"></div>
+
+
+            <!-- FORM ACTIONS -->
+            <div class="edit-profile-actions">
+                <a
+                    href="{% url 'profile' %}"
+                    class="edit-cancel-button">
+
+                    <i class="fa-solid fa-xmark"></i>
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="edit-save-button">
+
+                    <i class="fa-solid fa-check"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
 
-<div class="card-body">
 
-<form method="POST" enctype="multipart/form-data">
+<!-- PROFILE IMAGE PREVIEW -->
+<script>
 
-{% csrf_token %}
+document.addEventListener("DOMContentLoaded", function () {
 
-{% for field in form %}
+    const input =
+        document.getElementById("{{ form.profile_picture.id_for_label }}");
+    const preview =
+        document.getElementById("profilePreview");
+    const placeholder =
+        document.getElementById("profilePlaceholder");
 
-<div class="mb-3">
+    if (!input) {
+        return;
+    }
 
-<label class="form-label">
 
-{{ field.label }}
+    input.addEventListener("change", function () {
+        const file = this.files[0];
 
-</label>
+        if (!file) {
+            return;
+        }
 
-{{ field }}
 
-{% if field.errors %}
+        /*
+        Check file type
+        */
 
-<div class="invalid-feedback d-block">
+        if (!file.type.startsWith("image/")) {
+            alert("Please select a valid image file.");
+            this.value = "";
+            return;
+        }
 
-{% for error in field.errors %}
 
-{{ error }}
+        /*
+        Check file size
+        */
+        const maxSize = 5 * 1024 * 1024;
 
-{% endfor %}
+        if (file.size > maxSize) {
+            alert("Profile picture must be smaller than 5 MB.");
+            this.value = "";
+            return;
+        }
 
-</div>
 
-{% endif %}
+        /*
+        Display preview
+        */
+        const reader = new FileReader();
 
-</div>
+        reader.onload = function (event) {
+            preview.src = event.target.result;
+            preview.classList.remove("hidden");
 
-{% endfor %}
+            if (placeholder) {
+                placeholder.classList.add("hidden");
+            }
+        };
+        reader.readAsDataURL(file);
+    });
 
-<button class="btn btn-success">
+});
 
-Save Changes
-
-</button>
-
-<a href="{% url 'profile' %}"
-
-class="btn btn-secondary">
-
-Cancel
-
-</a>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+</script>
 
 {% endblock %}

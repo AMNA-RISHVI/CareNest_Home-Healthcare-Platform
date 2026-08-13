@@ -1,8 +1,8 @@
 from django import forms
+import re
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
 from django.contrib.auth.forms import AuthenticationForm
-from django import forms
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.forms import PasswordChangeForm
@@ -71,7 +71,10 @@ class UserRegistrationForm(UserCreationForm):
         'phone': forms.TextInput(
             attrs={
                 'class': 'auth-input',
-                'placeholder': 'Enter your phone number'
+                'placeholder': 'Enter your phone number',
+                "maxlength": "12",
+                "inputmode": "tel",
+                "autocomplete": "tel",
             }
         ),
 
@@ -115,8 +118,36 @@ class UserRegistrationForm(UserCreationForm):
         ),
     }
 
-    
 
+    def clean_phone(self):
+
+        phone = self.cleaned_data.get("phone")
+
+        if not phone:
+            raise forms.ValidationError(
+                "Phone number is required."
+            )
+
+        phone = phone.strip().replace(" ", "")
+
+        # Local Sri Lankan format
+        if re.fullmatch(r"07\d{8}", phone):
+            phone = "+94" + phone[1:]
+
+        # International Sri Lankan format
+        elif re.fullmatch(r"\+947\d{8}", phone):
+
+            pass
+
+        else:
+            raise forms.ValidationError(
+                "Enter a valid Sri Lankan mobile number. "
+                "Use 0712345678 or +94712345678."
+            )
+
+        return phone
+
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -212,49 +243,85 @@ class ProfileUpdateForm(forms.ModelForm):
 
             "full_name": forms.TextInput(
                 attrs={
-                    "class":"form-control"
+                    "class": "auth-input",
+                    "placeholder": "Enter your full name"
                 }
             ),
 
             "phone": forms.TextInput(
                 attrs={
-                    "class":"form-control"
+                    "class":"auth-input",
+                    "placeholder": "Enter your phone number",
+                    "maxlength": "12",
+                    "inputmode": "tel",
+                    "autocomplete": "tel",
                 }
             ),
 
             "address": forms.Textarea(
                 attrs={
-                    "class":"form-control",
-                    "rows":3
+                    "class":"auth-input",
+                    "rows": 3,
+                    "placeholder": "Enter your address"
                 }
             ),
 
             "district": forms.Select(
                 attrs={
-                    "class":"form-select"
+                    "class":"auth-select"
                 }
             ),
 
             "gender": forms.Select(
                 attrs={
-                    "class":"form-select"
+                    "class":"auth-select"
                 }
             ),
 
             "dob": forms.DateInput(
                 attrs={
-                    "class":"form-control",
+                    "class":"auth-input",
                     "type":"date"
                 }
             ),
 
             "profile_picture": forms.ClearableFileInput(
                 attrs={
-                    "class":"form-control"
+                    "class": "profile-file-input",
+                    "accept": "image/png,image/jpeg"
                 }
             ),
 
         }  
+
+    def clean_phone(self):
+    
+        phone = self.cleaned_data.get("phone")
+    
+        if not phone:
+            raise forms.ValidationError(
+                "Phone number is required."
+            )
+    
+        phone = phone.strip().replace(" ", "")
+    
+        # Local Sri Lankan format
+        if re.fullmatch(r"07\d{8}", phone):
+            phone = "+94" + phone[1:]
+    
+        # International Sri Lankan format
+        elif re.fullmatch(r"\+947\d{8}", phone):
+    
+            pass
+    
+        else:
+            raise forms.ValidationError(
+                "Enter a valid Sri Lankan mobile number. "
+                "Use 0712345678 or +94712345678."
+            )
+    
+        return phone
+        
 
     def __init__(self,*args,**kwargs):
 

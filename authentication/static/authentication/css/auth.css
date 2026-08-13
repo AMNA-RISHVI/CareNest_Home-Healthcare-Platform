@@ -1342,7 +1342,305 @@ input[type=file]{
 
 
 
+/* =========================================================
+   EDIT PROFILE PAGE
+========================================================= */
+.edit-profile-card {
+    background: #FFFFFF;
+    border: 1px solid #E4EFEB;
+    border-radius: 22px;
+    box-shadow:
+        0 12px 35px rgba(22, 63, 59, 0.08);
+    overflow: hidden;
+}
 
+
+/* =========================================================
+   PROFILE PHOTO
+========================================================= */
+.edit-profile-photo-section {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 30px;
+    background:
+        linear-gradient(
+            135deg,
+            #D7FFEF 0%,
+            #FFFFFF 65%,
+            #FFFCE6 100%
+        );
+}
+
+.edit-photo-wrapper {
+    flex-shrink: 0;
+}
+
+.edit-profile-avatar,
+.edit-profile-avatar-placeholder {
+    width: 105px;
+    height: 105px;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.edit-profile-avatar-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0B8F88;
+    color: #FFFFFF;
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.edit-photo-content h3 {
+    margin: 0 0 5px;
+    color: #163F3B;
+    font-size: 17px;
+}
+
+.edit-photo-content p {
+    max-width: 550px;
+    margin: 0 0 15px;
+    color: #71827F;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.photo-upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border-radius: 9px;
+    background: #0B8F88;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.photo-upload-button:hover {
+    background: #087D76;
+    transform: translateY(-1px);
+}
+
+.profile-file-input {
+    display: none;
+}
+
+.edit-photo-content small {
+    display: block;
+    margin-top: 8px;
+    color: #8B9996;
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   EDIT SECTION
+========================================================= */
+.edit-profile-section {
+    padding: 30px;
+}
+
+.edit-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    margin-bottom: 25px;
+}
+
+.edit-section-heading h3 {
+    margin: 0;
+    color: #163F3B;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.edit-section-heading p {
+    margin: 4px 0 0;
+    color: #84938F;
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   FORM GRID
+========================================================= */
+.edit-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.edit-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.edit-form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.edit-form-group label {
+    margin-bottom: 7px;
+    color: #354C49;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUTS
+========================================================= */
+.edit-form-group .auth-input,
+.edit-form-group .auth-select {
+    width: 100%;
+    min-height: 45px;
+    padding: 0 13px;
+    border: 1px solid #DCE9E5;
+    border-radius: 9px;
+    outline: none;
+    background: #FFFFFF;
+    color: #263F3C;
+    font-family: inherit;
+    font-size: 15px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.edit-form-group textarea.auth-input {
+    min-height: 95px;
+    padding: 12px 13px;
+    resize: vertical;
+}
+
+.edit-form-group .auth-input:focus,
+.edit-form-group .auth-select:focus {
+    border-color: #0B8F88;
+    box-shadow:
+        0 0 0 3px rgba(11, 143, 136, 0.10);
+}
+
+
+/* =========================================================
+   INVALID INPUT
+========================================================= */
+.edit-form-group .auth-input.is-invalid,
+.edit-form-group .auth-select.is-invalid {
+    border-color: #D9534F;
+    box-shadow:
+        0 0 0 3px rgba(217, 83, 79, 0.08);
+}
+
+.field-error {
+    margin-top: 6px;
+    color: #C73E3A;
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+.edit-profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 25px 30px;
+    background: #FCFEFD;
+}
+
+.edit-cancel-button,
+.edit-save-button {
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.edit-cancel-button {
+    background: #FFFFFF;
+    color: #61736F;
+    border: 1px solid #DCE9E5;
+}
+
+.edit-cancel-button:hover {
+    background: #F4F8F6;
+    color: #354C49;
+}
+
+.edit-save-button {
+    border: none;
+    background: #0B8F88;
+    color: #FFFFFF;
+}
+
+.edit-save-button:hover {
+    background: #087D76;
+    transform: translateY(-1px);
+    box-shadow:
+        0 6px 16px rgba(11, 143, 136, 0.22);
+}
+
+
+/* =========================================================
+   HIDDEN
+========================================================= */
+
+.hidden {
+
+    display: none !important;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 700px) {
+    .edit-profile-photo-section {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+    }
+
+    .edit-profile-section {
+        padding: 22px;
+    }
+
+    .edit-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .edit-form-group.full-width {
+        grid-column: auto;
+    }
+
+    .edit-profile-actions {
+        flex-direction: column-reverse;
+        padding: 20px 22px;
+    }
+
+    .edit-cancel-button,
+    .edit-save-button {
+        width: 100%;
+    }
+}
 
 
 
