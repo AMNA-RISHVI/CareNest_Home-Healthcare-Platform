@@ -233,6 +233,7 @@ body{
 .auth-message{
     padding:16px;
     border-radius:12px;
+    align-items: center;
     margin-bottom:20px;
     font-weight:500;
 }
@@ -1667,7 +1668,7 @@ input[type=file]{
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 30px;
+    padding: 40px;
     background:
         linear-gradient(
             135deg,
@@ -1895,7 +1896,16 @@ input[type=file]{
 }
 
 
-
+/* =========================================================
+   AUTH BUTTON LINKS
+========================================================= */
+.auth-button,
+.auth-button:visited,
+.auth-button:hover,
+.auth-button:active,
+.auth-button:focus {
+    text-decoration: none;
+}
 
 
 
