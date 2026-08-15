@@ -1,0 +1,279 @@
+{% extends "landing/base_public.html" %}
+{% load static %}
+
+{% block title %}
+Family Health Management | CareNest
+{% endblock %}
+
+{% block content %}
+
+<section class="families-page">
+
+    <!-- =====================================================
+         LEFT SIDE
+         ===================================================== -->
+
+    <div class="families-left">
+
+        <!-- Section Label -->
+
+        <div class="families-label">
+            For Families
+        </div>
+
+
+        <!-- Main Heading -->
+
+        <h1 class="families-title">
+            Family Health
+            <br>
+            Management
+        </h1>
+
+
+        <!-- Description -->
+
+        <p class="families-description">
+
+            Manage healthcare for your entire family under one account.
+            Each family member gets their own health profile, medical
+            history, and prescriptions while you control everything
+            from a single dashboard.
+
+        </p>
+
+
+        <!-- Features -->
+
+        <div class="families-features">
+
+            <!-- Feature 1 -->
+
+            <div class="families-feature">
+
+                <div class="feature-check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span>
+                    Up to 5 family member profiles under one account
+                </span>
+
+            </div>
+
+
+            <!-- Feature 2 -->
+
+            <div class="families-feature">
+
+                <div class="feature-check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span>
+                    Individual medical history, prescriptions & reports
+                </span>
+
+            </div>
+
+
+            <!-- Feature 3 -->
+
+            <div class="families-feature">
+
+                <div class="feature-check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span>
+                    Book appointments for any family member
+                </span>
+
+            </div>
+
+
+            <!-- Feature 4 -->
+
+            <div class="families-feature">
+
+                <div class="feature-check">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+
+                <span>
+                    Medication reminders and health tracking
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- View Family Plans Button -->
+
+        <a
+            href="#"
+            class="families-plan-button">
+
+            <span>
+                View Family Plans
+            </span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         RIGHT SIDE
+         ===================================================== -->
+
+    <div class="families-right">
+
+        <div class="family-card">
+
+            <!-- Card Header -->
+
+            <div class="family-card-header">
+
+                <div class="family-icon">
+
+                    <i class="fa-solid fa-people-group"></i>
+
+                </div>
+
+                <h2>
+                    Perera Family
+                </h2>
+
+                <div class="family-plan-badge">
+                    Family Plan
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FAMILY MEMBER 1
+                 ================================================= -->
+
+            <div class="family-member">
+
+                <div class="member-avatar">
+                    A
+                </div>
+
+                <div class="member-info">
+
+                    <h3>
+                        Amara Perera
+                    </h3>
+
+                    <p>
+                        Self
+                    </p>
+
+                </div>
+
+                <div class="member-status status-active">
+                    Active
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FAMILY MEMBER 2
+                 ================================================= -->
+
+            <div class="family-member">
+
+                <div class="member-avatar">
+                    S
+                </div>
+
+                <div class="member-info">
+
+                    <h3>
+                        Sunil Perera
+                    </h3>
+
+                    <p>
+                        Father
+                    </p>
+
+                </div>
+
+                <div class="member-status status-appointment">
+                    Appointment Tomorrow
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FAMILY MEMBER 3
+                 ================================================= -->
+
+            <div class="family-member">
+
+                <div class="member-avatar">
+                    K
+                </div>
+
+                <div class="member-info">
+
+                    <h3>
+                        Kumari Perera
+                    </h3>
+
+                    <p>
+                        Mother
+                    </p>
+
+                </div>
+
+                <div class="member-status status-physio">
+                    Physio Scheduled
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FAMILY MEMBER 4
+                 ================================================= -->
+
+            <div class="family-member">
+
+                <div class="member-avatar">
+                    Y
+                </div>
+
+                <div class="member-info">
+
+                    <h3>
+                        Yohani Perera
+                    </h3>
+
+                    <p>
+                        Daughter
+                    </p>
+
+                </div>
+
+                <div class="member-status status-updated">
+                    Up to Date
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

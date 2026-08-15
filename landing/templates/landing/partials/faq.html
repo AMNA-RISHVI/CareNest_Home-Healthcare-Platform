@@ -1,0 +1,424 @@
+{% extends "landing/base_public.html" %}
+{% load static %}
+
+{% block title %}
+FAQ | CareNest
+{% endblock %}
+
+
+{% block content %}
+
+<div class="faq-page">
+
+    <!-- =========================================================
+         FAQ HEADER
+    ========================================================== -->
+
+    <section class="faq-header">
+
+        <div class="faq-label">
+            FAQ
+        </div>
+
+        <h1>
+            Common Questions
+        </h1>
+
+        <p>
+            Everything you need to know about using CareNest
+        </p>
+
+    </section>
+
+
+    <!-- =========================================================
+         FAQ QUESTIONS
+    ========================================================== -->
+
+    <section class="faq-list">
+
+
+        <!-- FAQ 1 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    How do I book a home healthcare visit?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    Simply search for a healthcare professional by
+                    specialization, location, or availability.
+                    Browse profiles, select a time slot that works
+                    for you, and confirm your booking. You'll receive
+                    a confirmation notification with all the details.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 2 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    Are all healthcare professionals verified?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    Yes! Every professional on CareNest goes through
+                    a rigorous verification process that includes
+                    license verification, background checks, and
+                    credential validation. We only onboard
+                    professionals who meet our strict quality
+                    standards.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 3 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    Can I manage my family's health on one account?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    Absolutely! Our Family Plan allows you to create
+                    up to 5 patient profiles under one account.
+                    Each family member gets their own health records,
+                    prescriptions, and appointment history while you
+                    manage everything from a single dashboard.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 4 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    How does overseas parent monitoring work?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    If you live abroad and want to monitor your
+                    parents' health in Sri Lanka, our Overseas Parent
+                    Care plan sends you real-time notifications
+                    whenever a family member completes a consultation,
+                    test, or treatment. You can view updated health
+                    records remotely and receive monthly health
+                    summaries.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 5 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    What is a Digital Health Passport?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    Your Digital Health Passport is a secure,
+                    comprehensive record of your medical history
+                    including prescriptions, lab reports, diagnoses,
+                    and vaccinations. It's accessible anytime from
+                    the app and can be shared with healthcare
+                    professionals during visits.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FAQ 6 -->
+
+        <div class="faq-item">
+
+            <button
+                type="button"
+                class="faq-question"
+                aria-expanded="false">
+
+                <span>
+                    What payment methods are accepted?
+                </span>
+
+                <i class="fa-solid fa-chevron-down faq-arrow"></i>
+
+            </button>
+
+
+            <div class="faq-answer">
+
+                <p>
+                    We accept all major credit/debit cards, bank
+                    transfers, and popular mobile payment platforms
+                    in Sri Lanka including Dialog Genie, Mobitel mCash,
+                    and major bank apps.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- =========================================================
+         PRICING BUTTON
+    ========================================================== -->
+
+    <section class="faq-pricing">
+
+        <p>
+            Still have questions?
+        </p>
+
+        <a
+            href="#"
+            class="faq-pricing-button">
+
+            View Pricing Details
+
+            <i class="fa-solid fa-arrow-right"></i>
+
+        </a>
+
+    </section>
+
+
+    <!-- =========================================================
+         BOTTOM CTA
+    ========================================================== -->
+
+    <section class="faq-cta">
+
+        <h2>
+            Ready to Experience Healthcare at
+            <br>
+            Home?
+        </h2>
+
+        <p>
+            Join 50,000+ families who trust CareNest for convenient,
+            <br>
+            accessible, and affordable home healthcare.
+        </p>
+
+
+        <div class="faq-cta-buttons">
+
+            <a
+                href="{% url 'register' %}"
+                class="faq-create-button">
+
+                Create Free Account
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+
+            <a
+                href="tel:"
+                class="faq-call-button">
+
+                <i class="fa-solid fa-phone"></i>
+
+                Call Us Now
+
+            </a>
+
+        </div>
+
+
+        <div class="faq-trust-items">
+
+            <div class="faq-trust-item">
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                <span>
+                    Licensed Platform
+                </span>
+
+            </div>
+
+
+            <div class="faq-trust-item">
+
+                <i class="fa-solid fa-bolt"></i>
+
+                <span>
+                    Instant Booking
+                </span>
+
+            </div>
+
+
+            <div class="faq-trust-item">
+
+                <i class="fa-solid fa-lock"></i>
+
+                <span>
+                    Secure &amp; Private
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const faqQuestions =
+        document.querySelectorAll(".faq-question");
+
+
+    faqQuestions.forEach(function (question) {
+
+        question.addEventListener("click", function () {
+
+            const faqItem =
+                this.closest(".faq-item");
+
+            const answer =
+                faqItem.querySelector(".faq-answer");
+
+            const isOpen =
+                faqItem.classList.contains("open");
+
+
+            /*
+             * CLOSE
+             */
+
+            if (isOpen) {
+
+                faqItem.classList.remove("open");
+
+                this.setAttribute(
+                    "aria-expanded",
+                    "false"
+                );
+
+                answer.style.maxHeight = null;
+
+            }
+
+
+            /*
+             * OPEN
+             */
+
+            else {
+
+                faqItem.classList.add("open");
+
+                this.setAttribute(
+                    "aria-expanded",
+                    "true"
+                );
+
+                answer.style.maxHeight =
+                    answer.scrollHeight + "px";
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

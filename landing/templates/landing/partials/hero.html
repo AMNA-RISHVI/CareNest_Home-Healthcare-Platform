@@ -1,0 +1,138 @@
+{% extends "landing/base_public.html" %}
+
+{% load static %}
+
+
+{% block title %}
+Home | CareNest
+{% endblock %}
+
+
+{% block content %}
+
+<section id="hero" class="hero-section">
+
+    <div class="container hero-wrapper">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT SIDE -->
+
+            <div class="col-lg-6 hero-left">
+
+                <span class="hero-badge">
+                    Sri Lanka's #1 Home Healthcare Platform
+                </span>
+
+                <h1 class="hero-title">
+                    Quality Healthcare,
+                    <span class="text-highlight1">Delivered</span>
+                    <span class="text-highlight2">Home</span>
+                </h1>
+
+                <p class="hero-description">
+                    Connect with verified doctors, nurses,
+                    physiotherapists and caregivers across Sri Lanka.
+                    Book trusted home healthcare services in minutes.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="#"
+                       class="hero-btn">
+                        Find a Professional
+                        <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+
+                    <a href="#services"
+                       class="hero-btn-outline">
+                        Explore Services
+                    </a>
+
+                </div>
+
+                <div class="hero-features">
+
+                    <div>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Verified Professionals
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-clock"></i>
+                        Same Day Booking
+                    </div>
+
+                    <div>
+                        <i class="fa-solid fa-star"></i>
+                        Trusted Reviews
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="col-lg-6 text-center hero-right">
+
+                <img
+                    src="{% static 'landing/images/hero.png' %}"
+                    class="hero-image"
+                    alt="Healthcare Professional">
+
+            </div>
+
+            <!-- Statistics -->
+             
+            <div class="hero-stats">
+
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-user-doctor"></i>
+                    </div>
+                    <div>
+                        <h3>0+</h3>
+                        <p>Healthcare Professionals</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-house-medical"></i>
+                    </div>
+                    <div>
+                        <h3>0+</h3>
+                        <p>Appointments Completed</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div>
+                        <h3>2/25</h3>
+                        <p>Districts Covered</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <h3>5.0 ★</h3>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+            
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}
