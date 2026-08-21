@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Prescriptions - CareNest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #fbfbf6; padding: 2rem; }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <div class="mb-6">
+        <button onclick="location.href='/professionalpanel/dashboard/'" class="text-teal-700 text-xl"><i class="fas fa-arrow-left"></i></button>
+        <h1 class="text-3xl font-bold text-teal-800 ml-4 inline-block">My Prescriptions</h1>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-sm card-shadow">
+        {% if prescriptions %}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left">
+                <thead class="text-xs text-gray-500 uppercase border-b">
+                    <tr>
+                        <th class="pb-3 pr-6">Patient</th>
+                        <th class="pb-3 pr-6">Document Name</th>
+                        <th class="pb-3 pr-6">Special Note</th>
+                        <th class="pb-3 pr-6">Uploaded</th>
+                        <th class="pb-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in prescriptions %}
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="py-4 pr-6 font-medium">{{ p.patient.patient_name }}</td>
+                        <td class="py-4 pr-6">{{ p.document_name|default:p.file_upload.name|slice:":30" }}</td>
+                        <td class="py-4 pr-6 text-gray-500 truncate max-w-xs">{{ p.notes|default:"-" }}</td>
+                        <td class="py-4 pr-6 text-gray-400 text-xs">{{ p.uploaded_at|date:"M d, Y" }}</td>
+                        <td class="py-4">
+                            <a href="{% url 'view_prescription' p.id %}" target="_blank" class="text-teal-600 hover:text-teal-800 font-medium text-xs flex items-center gap-1">
+                                <i class="fas fa-eye"></i> View (Read-only)
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-400">
+            <i class="fas fa-file-prescription text-4xl mb-2"></i>
+            <p>You haven't uploaded any prescriptions yet.</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
