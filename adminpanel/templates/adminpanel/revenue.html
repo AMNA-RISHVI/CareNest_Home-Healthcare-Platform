@@ -1,0 +1,89 @@
+{% extends 'adminpanel/base.html' %}
+{% block content %}
+<!-- TOP 3 CARDS -->
+<div class="grid grid-cols-3 gap-6 mb-8">
+    <!-- Monthly Revenue -->
+    <div class="bg-[#0f766e] text-white rounded-xl p-6 shadow-lg">
+        <div class="text-sm opacity-80">Monthly Revenue</div>
+        <div class="text-3xl font-bold mt-1">Rs. {{ total_revenue|floatformat:0 }}</div>
+        <div class="text-xs mt-2 opacity-80">12.3% from last month</div>
+    </div>
+    <!-- Platform Commission -->
+    <div class="bg-[#16a34a] text-white rounded-xl p-6 shadow-lg">
+        <div class="text-sm opacity-80">Platform Commission (15%)</div>
+        <div class="text-3xl font-bold mt-1">Rs. {{ platform_commission|floatformat:0 }}</div>
+        <div class="text-xs mt-2 opacity-80">~ +22.1% growth</div>
+    </div>
+    <!-- Avg. Appointment Value -->
+    <div class="bg-[#ea580c] text-white rounded-xl p-6 shadow-lg">
+        <div class="text-sm opacity-80">Avg. Appointment Value</div>
+        <div class="text-3xl font-bold mt-1">Rs. {{ avg_value|floatformat:0 }}</div>
+        <div class="text-xs mt-2 opacity-80">~ +5.2% increase</div>
+    </div>
+</div>
+
+<!-- MONTHLY REVENUE BREAKDOWN (Mockup Revenue 2) -->
+<div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="font-semibold text-lg text-gray-800">Monthly Revenue Breakdown</h3>
+        <div class="flex gap-4 text-xs text-gray-600">
+            <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#2dd4bf]"></span> Revenue</span>
+            <span class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-[#fb923c]"></span> Appointments</span>
+        </div>
+    </div>
+    
+    <div class="space-y-4">
+        {% for month_data in monthly_data %}
+        <div class="flex items-center gap-4">
+            <!-- Month Name -->
+            <div class="w-10 text-sm font-medium text-gray-600">{{ month_data.month|date:"M" }}</div>
+            
+            <!-- Teal Bar -->
+            <div class="flex-1 h-8 bg-gray-100 rounded-lg relative">
+                <div class="absolute top-0 left-0 h-8 bg-[#2dd4bf] rounded-lg" 
+                     style="width: {% widthratio month_data.total max_month_total 100 %}%;">
+                </div>
+            </div>
+            
+            <!-- Revenue Amount -->
+            <div class="w-24 text-right font-semibold text-teal-800 text-sm">Rs. {{ month_data.total|floatformat:0 }}</div>
+            
+            <!-- Booking Count -->
+            <div class="w-24 text-right text-gray-400 text-xs">{{ month_data.count }} bookings</div>
+        </div>
+        {% empty %}
+        <div class="text-center text-gray-400 text-sm py-8">No revenue data available yet.</div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- REVENUE BY DISTRICT (Mockup Revenue 1) -->
+<div class="bg-white rounded-xl p-6 shadow-sm">
+    <h3 class="font-semibold text-lg mb-6 text-gray-800">Revenue by District</h3>
+    <div class="grid grid-cols-4 gap-4">
+        {% for dist in district_data %}
+        <div class="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
+            <!-- Colored Icon Square -->
+            <div class="w-12 h-12 
+                {% if forloop.first %}bg-[#14b8a6] text-white{% elif forloop.counter == 2 %}bg-[#22c55e] text-white{% elif forloop.counter == 3 %}bg-[#f97316] text-white{% else %}bg-[#a855f7] text-white{% endif %} 
+                rounded-xl flex items-center justify-center mb-2">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            
+            <!-- District Name -->
+            <div class="font-medium text-gray-800">{{ dist.user_subscription__user__district|default:"Other" }}</div>
+            
+            <!-- Revenue -->
+            <div class="text-teal-700 font-bold mt-1">Rs. {{ dist.total|floatformat:0 }}</div>
+            
+            <!-- Percentage -->
+            <div class="text-xs text-gray-400">
+                {% widthratio dist.total total_district_sum 100 %}% of total
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-4 text-center text-gray-400 text-sm py-8">No district data available yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

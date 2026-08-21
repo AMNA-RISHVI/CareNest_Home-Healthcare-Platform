@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareNest Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Exact Color from Mockup */
+        .sidebar-bg { background-color: #0b5e5c; }
+        .sidebar-hover:hover { background-color: #0a4a48; }
+        .active-menu { background-color: #0a4a48; border-left: 4px solid white; }
+        .stat-card { border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="bg-gray-50 flex h-screen overflow-hidden">
+    <aside id="sidebar" class="sidebar-bg text-white w-64 flex-shrink-0 flex flex-col transition-all duration-300 relative">
+    
+    <!-- Top Logo/Header -->
+    <div id="sidebarHeader" class="p-6 flex items-center border-b border-teal-700">
+        <!-- <i class="fas fa-heartbeat text-2xl text-orange-400 mr-2"></i> -->
+        <span id="logoText" class="text-2xl font-bold tracking-wide"></span>
+    </div>
+
+    <!-- Toggle Button (Floating on the edge exactly like the mockup) -->
+    <button id="toggleSidebar" class="absolute -right-4 top-8 bg-white text-teal-700 rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:bg-gray-100 focus:outline-none z-20 transition-transform duration-300">
+        <i id="toggleIcon" class="fas fa-chevron-left text-sm"></i>
+    </button>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 px-4 py-6 space-y-2">
+        <a href="{% url 'dashboard' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if request.path == '/adminpanel/dashboard/' %}active-menu{% endif %}">
+            <i class="fas fa-th-large w-6"></i> <span class="menu-text">Overview</span>
+        </a>
+        <a href="{% url 'professionals' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if '/professionals' in request.path %}active-menu{% endif %}">
+            <i class="fas fa-user-md w-6"></i> <span class="menu-text">Professionals</span>
+        </a>
+        <a href="{% url 'patients' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if '/patients' in request.path %}active-menu{% endif %}">
+            <i class="fas fa-users w-6"></i> <span class="menu-text">Patients</span>
+        </a>
+        <a href="{% url 'appointments' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if '/appointments' in request.path %}active-menu{% endif %}">
+            <i class="fas fa-calendar-check w-6"></i> <span class="menu-text">Appointments</span>
+        </a>
+        <a href="{% url 'revenue' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if '/revenue' in request.path %}active-menu{% endif %}">
+            <i class="fas fa-chart-line w-6"></i> <span class="menu-text">Revenue</span>
+        </a>
+        <a href="{% url 'settings' %}" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover {% if '/settings' in request.path %}active-menu{% endif %}">
+            <i class="fas fa-cog w-6"></i> <span class="menu-text">Settings</span>
+        </a>
+    </nav>
+    
+    <!-- Logout at bottom -->
+    <div class="p-6">
+        <a href="/logout" class="flex items-center gap-4 px-4 py-3 rounded-lg sidebar-hover text-red-300 hover:text-white">
+            <i class="fas fa-sign-out-alt w-6"></i> <span class="menu-text">Logout</span>
+        </a>
+    </div>
+</aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-8 w-full">
+        {% block content %}{% endblock %}
+    </main>
+
+    <script>
+    // Sidebar Toggle Logic
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const toggleIcon = document.getElementById('toggleIcon');
+    const logoText = document.getElementById('logoText');
+    const menuTexts = document.querySelectorAll('.menu-text');
+    let isOpen = true;
+
+    toggleBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        
+        if (isOpen) {
+            // Expand
+            sidebar.style.width = '16rem';
+            toggleIcon.className = 'fas fa-chevron-left text-sm';
+            // Show text
+            logoText.style.display = 'inline';
+            menuTexts.forEach(span => span.style.display = 'inline');
+        } else {
+            // Collapse
+            sidebar.style.width = '4rem';
+            toggleIcon.className = 'fas fa-chevron-right text-sm';
+            // Hide text
+            logoText.style.display = 'none';
+            menuTexts.forEach(span => span.style.display = 'none');
+        }
+    });
+
+    // Export Function (Triggers the backend URL)
+    function exportData(url) {
+        window.location.href = url + '?export=true';
+    }
+    </script>
+</body>
+</html>
