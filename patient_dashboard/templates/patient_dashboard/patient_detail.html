@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ patient.patient_name }}</title>
+</head>
+
+<body>
+
+    <h1>{{ patient.patient_name }}</h1>
+
+    {% if patient.profile_picture %}
+        <img
+            src="{{ patient.profile_picture.url }}"
+            alt="{{ patient.patient_name }}"
+            width="150"
+            height="150"
+        >
+    {% endif %}
+
+    <hr>
+
+    <p>
+        <strong>Patient Code:</strong>
+        {{ patient.patient_code }}
+    </p>
+
+    <p>
+        <strong>Relationship:</strong>
+        {{ patient.relationship }}
+    </p>
+
+    <p>
+        <strong>Date of Birth:</strong>
+        {{ patient.dob|default:"Not provided" }}
+    </p>
+
+    <p>
+        <strong>Gender:</strong>
+        {{ patient.gender|default:"Not provided" }}
+    </p>
+
+    <p>
+        <strong>Blood Group:</strong>
+        {{ patient.blood_group|default:"Not provided" }}
+    </p>
+
+    <p>
+        <strong>Emergency Contact:</strong>
+        {{ patient.emergency_contact|default:"Not provided" }}
+    </p>
+
+
+
+    <a
+        href="{% url 'patient_dashboard:edit_patient' patient.patient_id %}"
+    >
+        Edit Profile
+    </a>
+
+
+    <a
+        href="{% url 'patient_dashboard:delete_patient' patient.patient_id %}"
+    >
+        Delete Profile
+    </a>
+
+
+    <br><br>
+
+
+    <a href="{% url 'patient_dashboard:dashboard' %}">
+        Back to Dashboard
+    </a>
+
+    
+</body>
+</html>
