@@ -128,79 +128,6 @@ section{
     right:4px;
 }
 
-/* =========================================================
-   EXPLORE DROPDOWN
-   ========================================================= */
-
-.custom-navbar .dropdown {
-    position: relative;
-}
-
-.custom-navbar #exploreMenu {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-
-    min-width: 190px;
-
-    margin-top: 8px;
-
-    background: #ffffff;
-
-    border: 1px solid #dddddd;
-
-    border-radius: 10px;
-
-    padding: 8px 0;
-
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
-
-    z-index: 9999;
-}
-
-.custom-navbar #exploreMenu.show {
-    display: block;
-}
-
-
-/* Dropdown items */
-
-.custom-navbar #exploreMenu .dropdown-item {
-
-    display: block;
-
-    padding: 9px 18px;
-
-    color: #333333;
-
-    text-decoration: none;
-
-    font-size: 14px;
-
-    transition: background 0.2s ease;
-
-}
-
-
-/* Hover */
-
-.custom-navbar #exploreMenu .dropdown-item:hover {
-
-    background: #D7FFEF;
-
-    color: #146B68;
-
-}
-
-#exploreMenu {
-    display: none !important;
-}
-
-#exploreMenu.show {
-    display: block !important;
-}
-
 
 /* ===========================
    HERO SECTION
@@ -1490,7 +1417,7 @@ section{
     font-family: Georgia, "Times New Roman", serif;
     font-size: 20;
     line-height: 1.35;
-    font-weight: 600;
+    font-weight: 550;
 }
 
 
@@ -1517,7 +1444,7 @@ section{
    FAMILY PLAN BUTTON
    --------------------------------------------------------- */
 .families-plan-button {
-    width: 250px;
+    width: 280px;
     min-height: 60px;
     margin-top: 48px;
     padding: 0 30px;
@@ -1530,7 +1457,7 @@ section{
     border-radius: 7px;
     text-decoration: none;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     transition: 0.2s ease;
 }
@@ -1674,7 +1601,7 @@ section{
     margin: 0;
     color: #090909;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.2;
     font-weight: 700;
 }
@@ -1683,7 +1610,7 @@ section{
     margin: 5px 0 0 0;
     color: #777777;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 18px;
+    font-size: 14px;
     line-height: 1.2;
 }
 
@@ -1700,7 +1627,7 @@ section{
     border-radius: 22px;
     font-family: Georgia, "Times New Roman", serif;
     font-size: 12px;
-    font-weight: 550;
+    font-weight: 500;
     white-space: nowrap;
 }
 
@@ -1871,9 +1798,9 @@ section{
         );
     border: 1px solid #D7D7D7;
     border-radius: 22px;
-    padding: 38px 48px 30px;
+    padding: 28px 48px 15px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
-    min-height: 570px;
+    min-height: 70px;
     box-sizing: border-box;
 }
 
@@ -1895,14 +1822,15 @@ section{
     align-items: center;
     justify-content: center;
     color: #008F91;
-    font-size: 31px;
+    font-size: 34px;
 }
 
 .expat-update-heading h2 {
     margin: 0;
     color: #101010;
-    font-size: 29px;
+    font-size: 20px;
     font-weight: 700;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
 
@@ -1912,7 +1840,7 @@ section{
 .expat-update-item {
     background: #FFFFFF;
     border-radius: 19px;
-    min-height: 92px;
+    min-height: 19px;
     padding: 17px 28px;
     margin-bottom: 28px;
     display: flex;
@@ -1965,22 +1893,23 @@ section{
 ========================================================= */
 .expat-update-text h3 {
     margin: 0 0 5px;
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 550;
+    font-family: Georgia, "Times New Roman", serif;
     color: #111111;
 }
 
 .expat-update-text p {
     margin: 0;
     color: #6A6A6A;
-    font-size: 17px;
+    font-size: 12px;
     line-height: 1.4;
 }
 
 .expat-update-time {
     white-space: nowrap;
     color: #6D6D6D;
-    font-size: 17px;
+    font-size: 14px;
 }
 
 
@@ -2003,9 +1932,11 @@ section{
     border-radius: 30px;
     background: #EFD9FF;
     color: #64136E;
-    border: 1px solid #E7C8FA;
-    font-size: 22px;
+    border: 1px solid #3d0a60;
+    font-size: 16px;
     line-height: 1.1;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
 }
 
 
@@ -2029,9 +1960,9 @@ section{
     margin: 0;
     color: #164D4B;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 600;
-    line-height: 1.9;
+    line-height: 1.7;
     max-width: 760px;
 }
 
@@ -2050,23 +1981,23 @@ section{
     display: flex;
     font-family: Georgia, "Times New Roman", serif;
     align-items: center;
-    gap: 20px;
+    gap: 2px;
 }
 
 .expat-feature-icon {
-    width: 34px;
-    min-width: 34px;
-    height: 34px;
+    width: 24px;
+    min-width: 44px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #9D00FF;
-    font-size: 29px;
+    font-size: 20px;
 }
 
 .expat-feature span {
     color: #164D4B;
-    font-size: 22px;
+    font-size: 17px;
     font-weight: 600;
 }
 
@@ -2087,7 +2018,7 @@ section{
     background: #17958E;
     color: #FFFFFF;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 700;
     text-decoration: none;
     transition:
@@ -2187,7 +2118,7 @@ section{
     width: 100%;
     min-height: calc(100vh - 60px);
     background: #fffef0;
-    padding: 28px 24px 55px;
+    padding: 75px 24px 85px;
     box-sizing: border-box;
 }
 
@@ -2205,14 +2136,15 @@ section{
     align-items: center;
     justify-content: center;
     min-width: 138px;
-    height: 28px;
-    padding: 0 22px;
+    height: 30px;
+    padding: 0 22px ;
     border-radius: 20px;
     border: 1px solid #25cfc2;
     background: #9cf2e5;
     color: #075e5a;
-    font-size: 17px;
-    font-weight: 700;
+    font-size: 16px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
     box-sizing: border-box;
 }
 
@@ -2220,7 +2152,7 @@ section{
     margin: 9px 0 3px;
     color: #185e5b;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 800;
     line-height: 1.1;
 }
@@ -2229,8 +2161,8 @@ section{
     margin: 0;
     color: #666666;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
 }
 
 
@@ -2272,8 +2204,8 @@ section{
 ============================================================ */
 .faq-question {
     width: 100%;
-    min-height: 64px;
-    padding: 15px 20px;
+    min-height: 60px;
+    padding: 20px 20px 20px 25px;
     border: none;
     outline: none;
     background: transparent;
@@ -2285,12 +2217,12 @@ section{
     text-align: left;
     color: #125c59;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 15px;
-    font-weight: 800;
+    font-size: 17px;
+    font-weight: 550;
 }
 
 .faq-question:hover {
-    background: #fffef8;
+    background: #e9fffa;
 }
 
 .faq-question span {
@@ -2300,7 +2232,7 @@ section{
 .faq-arrow {
     flex-shrink: 0;
     color: #999999;
-    font-size: 14px;
+    font-size: 15px;
     transition:
         transform 0.3s ease,
         color 0.3s ease;
@@ -2326,7 +2258,7 @@ section{
 .faq-answer {
     max-height: 0;
     overflow: hidden;
-    padding: 0 20px;
+    padding: 0px 20px;
     transition:
         max-height 0.35s ease,
         padding 0.35s ease;
@@ -2334,11 +2266,11 @@ section{
 
 .faq-answer p {
     margin: 0;
-    padding: 0 0 17px;
+    padding: 0 0 25px 10px;
     color: #315c5a;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
     line-height: 1.65;
 }
 
@@ -2355,8 +2287,8 @@ section{
     margin: 0 0 12px;
     color: #777777;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 550;
 }
 
 .faq-pricing-button {
@@ -2365,15 +2297,15 @@ section{
     justify-content: center;
     gap: 18px;
     min-width: 205px;
-    height: 43px;
+    height: 50px;
     padding: 0 20px;
     border: 2px solid #147e79;
     border-radius: 5px;
     background: transparent;
     color: #147e79;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    font-weight: 800;
+    font-size: 16px;
+    font-weight: 600;
     text-decoration: none;
     box-sizing: border-box;
     transition:
@@ -2387,7 +2319,7 @@ section{
 }
 
 .faq-pricing-button i {
-    font-size: 13px;
+    font-size: 16px;
 }
 
 
@@ -2397,7 +2329,7 @@ section{
 .faq-cta {
     width: min(100%, 900px);
     margin: 68px auto 0;
-    padding: 40px 25px 32px;
+    padding: 50px 25px 32px;
     box-sizing: border-box;
     border-radius: 15px;
     background:
@@ -2414,7 +2346,7 @@ section{
     margin: 0;
     color: #ffffff;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: 800;
     line-height: 1.15;
 }
@@ -2423,8 +2355,8 @@ section{
     margin: 18px 0 24px;
     color: #e8fffb;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 550;
     line-height: 1.6;
 }
 
@@ -2443,7 +2375,7 @@ section{
 .faq-create-button,
 .faq-call-button {
     min-width: 180px;
-    height: 43px;
+    height: 48px;
     padding: 0 18px;
     display: inline-flex;
     align-items: center;
@@ -2451,8 +2383,8 @@ section{
     gap: 17px;
     border-radius: 5px;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 13px;
-    font-weight: 800;
+    font-size: 15px;
+    font-weight: 700;
     text-decoration: none;
     box-sizing: border-box;
     transition:
@@ -2467,18 +2399,21 @@ section{
 }
 
 .faq-create-button:hover {
-    background: #dffff9;
-    color: #096d68;
+    background: #dffff900;
+    color: #ffffff;
+    border: 2px solid #ffffff;
 }
 
 .faq-call-button {
     background: transparent;
     color: #ffffff;
-    border: 2px solid #a8eee7;
+    border: 2px solid #affdf5;
 }
 
 .faq-call-button:hover {
-    background: rgba(255, 255, 255, 0.12);
+    background: #ffffff;
+    color: #147e79;
+    border: 2px solid #ffffff;
 }
 
 
@@ -2498,13 +2433,13 @@ section{
     gap: 7px;
     color: #d5f6f2;
     font-family: Georgia, "Times New Roman", serif;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 550;
 }
 
 .faq-trust-item i {
-    color: #79d9d1;
-    font-size: 11px;
+    color: #a6faf3;
+    font-size: 14px;
 }
 
 
@@ -2572,7 +2507,7 @@ section{
 .contact-page {
     min-height: calc(100vh - 70px);
     background: #EFFFF9;
-    padding: 75px 6% 34px;
+    padding: 75px 6% 85px;
     box-sizing: border-box;
 }
 
@@ -2596,16 +2531,18 @@ section{
     border: 1px solid #16CFC0;
     background: #A8F5E8;
     color: #175E5A;
-    font-size: 23px;
+    font-size: 16px;
     font-weight: 600;
     line-height: 1;
+    font-family: Georgia, "Times New Roman", serif;
     box-sizing: border-box;
 }
 
 .contact-header h1 {
-    margin: 17px 0 8px;
+    margin: 25px 0 8px;
     color: #185E59;
-    font-size: 54px;
+    font-size: 34px;
+    font-family: Georgia, "Times New Roman", serif;
     line-height: 1.05;
     font-weight: 700;
 }
@@ -2613,9 +2550,10 @@ section{
 .contact-header p {
     margin: 0;
     color: #666666;
-    font-size: 25px;
+    font-size: 16px;
     line-height: 1.45;
     font-weight: 500;
+    font-family: Georgia, "Times New Roman", serif;
 }
 
 
@@ -2625,13 +2563,13 @@ section{
 .contact-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 38px;
-    max-width: 1200px;
+    gap: 45px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
 .contact-card {
-    min-height: 365px;
+    min-height: 350px;
     background: #FFFFFF;
     border: 1px solid #DADADA;
     border-radius: 22px;
@@ -2656,7 +2594,7 @@ section{
 }
 
 .contact-icon i {
-    font-size: 42px;
+    font-size: 38px;
     color: #FFFFFF;
 }
 
@@ -2689,29 +2627,31 @@ section{
 .contact-card h2 {
     margin: 0 0 22px;
     color: #155D58;
-    font-size: 29px;
+    font-size: 25px;
     font-weight: 700;
+    font-family: Georgia, "Times New Roman", serif;
     line-height: 1.2;
 }
 
 .contact-main-text {
     margin: 0 0 13px;
     color: #069F9C;
-    font-size: 27px;
+    font-size: 22px;
     line-height: 1.25;
     font-weight: 700;
+    font-family: Georgia, "Times New Roman", serif;
     text-decoration: none;
 }
 
 .contact-main-text:hover {
     text-decoration: none;
-    color: #069F9C;
+    color: #069f9c;
 }
 
 .contact-card p {
     margin: 0;
     color: #707070;
-    font-size: 21px;
+    font-size: 16px;
     line-height: 1.45;
     font-weight: 500;
 }
@@ -2721,9 +2661,9 @@ section{
    EMERGENCY BOX
 ========================================================= */
 .emergency-box {
-    max-width: 1270px;
+    max-width: 1000px;
     margin: 55px auto 0;
-    padding: 24px 55px 25px;
+    padding: 25px 35px 25px 35px;
     background: #F8EDEA;
     border: 1.5px solid #FF4D4D;
     border-radius: 28px;
@@ -2733,16 +2673,18 @@ section{
 .emergency-box h2 {
     margin: 0 0 16px;
     color: #7D1717;
-    font-size: 27px;
-    font-weight: 700;
+    font-size: 25px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-weight: 600;
 }
 
 .emergency-box p {
     margin: 0;
     color: #FF1E1E;
-    font-size: 23px;
+    font-size: 18px;
+    font-family: Georgia, "Times New Roman", serif;
     line-height: 1.55;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 

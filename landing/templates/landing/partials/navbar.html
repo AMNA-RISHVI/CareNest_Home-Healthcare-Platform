@@ -53,89 +53,15 @@
 
                 <!-- Home -->
 
-                <li class="nav-item dropdown">
-
+                 <li class="nav-item">
                     <a
-                        href="#"
-                        class="nav-link dropdown-toggle active-nav"
-                        id="exploreDropdown"
-                        role="button">
-
-                        Explore
-
-                    </a>
-
-
-                    <ul class="dropdown-menu" id="exploreMenu">
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'home' %}">
-                                Home
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'about_us' %}">
-                                About Us
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'services' %}">
-                                Services
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'process' %}">
-                                Process
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'families' %}">
-                                Families Plan
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'expats' %}">
-                                Expats Plan
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'faq' %}">
-                                FAQ
-                            </a>
-                        </li>
-
-                        <li>
-                            <a
-                                class="dropdown-item"
-                                href="{% url 'contact' %}">
-                                Contact
-                            </a>
-                        </li>
-
-                    </ul>
-
+                        class="nav-link {% if request.resolver_match.url_name == 'home' %}active-nav{% endif %}"
+                        href="{% url 'home' %}">
+                        Home
+                 </a>
                 </li>
 
+                
                 <!-- Find Professionals -->
 
                 <li class="nav-item">

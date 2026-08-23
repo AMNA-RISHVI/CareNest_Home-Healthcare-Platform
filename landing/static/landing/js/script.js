@@ -1,37 +1,106 @@
 console.log("CARENEST SCRIPT LOADED");
 
+
 document.addEventListener("DOMContentLoaded", function () {
 
     console.log("DOM LOADED");
 
-    const exploreButton = document.getElementById("exploreDropdown");
-    const exploreMenu = document.getElementById("exploreMenu");
 
-    console.log("Explore button:", exploreButton);
-    console.log("Explore menu:", exploreMenu);
+    const homeButton =
+        document.getElementById("homeDropdownButton");
 
-    if (!exploreButton) {
-        console.error("EXPLORE BUTTON NOT FOUND");
+    const homeMenu =
+        document.getElementById("homeDropdownMenu");
+
+
+    console.log("Home button:", homeButton);
+    console.log("Home menu:", homeMenu);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CHECK ELEMENTS
+    |--------------------------------------------------------------------------
+    */
+
+    if (!homeButton || !homeMenu) {
+
+        console.error(
+            "CareNest: Home dropdown elements NOT FOUND."
+        );
+
         return;
     }
 
-    if (!exploreMenu) {
-        console.error("EXPLORE MENU NOT FOUND");
-        return;
-    }
 
-    exploreButton.addEventListener("click", function (event) {
+    /*
+    |--------------------------------------------------------------------------
+    | OPEN / CLOSE HOME DROPDOWN
+    |--------------------------------------------------------------------------
+    */
+
+    homeButton.addEventListener("click", function (event) {
+
+        console.log("HOME BUTTON CLICKED");
 
         event.preventDefault();
+        event.stopPropagation();
 
-        console.log("EXPLORE CLICKED");
 
-        exploreMenu.classList.toggle("show");
+        homeMenu.classList.toggle("show");
+
+        homeButton.classList.toggle("active");
+
 
         console.log(
-            "Menu classes:",
-            exploreMenu.className
+            "Dropdown open:",
+            homeMenu.classList.contains("show")
         );
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE WHEN CLICKING OUTSIDE
+    |--------------------------------------------------------------------------
+    */
+
+    document.addEventListener("click", function (event) {
+
+        if (
+            !homeButton.contains(event.target) &&
+            !homeMenu.contains(event.target)
+        ) {
+
+            homeMenu.classList.remove("show");
+
+            homeButton.classList.remove("active");
+
+        }
+
+    });
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CLOSE AFTER SELECTING A LINK
+    |--------------------------------------------------------------------------
+    */
+
+    const links =
+        homeMenu.querySelectorAll("a");
+
+
+    links.forEach(function (link) {
+
+        link.addEventListener("click", function () {
+
+            homeMenu.classList.remove("show");
+
+            homeButton.classList.remove("active");
+
+        });
 
     });
 
