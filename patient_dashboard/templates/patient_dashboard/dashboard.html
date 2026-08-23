@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareNest Dashboard</title>
+</head>
+
+<body>
+
+    <h1>Welcome, {{ request.user.full_name }}</h1>
+
+    <h2>Family Members</h2>
+
+    <p>
+        {{ family_count }} /
+        {{ family_limit }}
+        profiles used
+    </p>
+
+    <a href="{% url 'patient_dashboard:add_family_member' %}">
+        + Add Family Member
+    </a>
+
+    <hr>
+
+    {% if patients %}
+
+        {% for patient in patients %}
+
+            <a href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}">
+
+                <div>
+
+                    {% if patient.profile_picture %}
+                        <img
+                            src="{{ patient.profile_picture.url }}"
+                            alt="{{ patient.patient_name }}"
+                            width="100"
+                            height="100"
+                        >
+                    {% else %}
+                        <div>
+                            No Photo
+                        </div>
+                    {% endif %}
+
+                    <h3>
+                        {{ patient.patient_name }}
+                    </h3>
+
+                    <p>
+                        Relationship:
+                        {{ patient.relationship }}
+                    </p>
+
+                    <p>
+                        Blood Group:
+                        {{ patient.blood_group|default:"Not provided" }}
+                    </p>
+
+                </div>
+
+            </a>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>
+            No family members added yet.
+        </p>
+
+    {% endif %}
+
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <p>{{ message }}</p>
+
+        {% endfor %}
+
+    {% endif %}
+
+</body>
+</html>
