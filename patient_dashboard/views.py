@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-
+from .models import Patient, UserSubscription
 from .forms import PatientForm
 from .models import Patient
 from .services import (
@@ -14,27 +14,31 @@ from .services import (
 
 @login_required
 def dashboard(request):
-    """
-    Main patient dashboard.
-    """
 
     patients = Patient.objects.filter(
         user=request.user
-    ).order_by('patient_id')
+    )
 
     subscription = get_active_subscription(
         request.user
     )
 
+    max_profiles = get_family_member_limit(
+        request.user
+    )
+
+    current_count = patients.count()
+
+    can_add_family_member = (
+        current_count < max_profiles
+    )
+
     context = {
         'patients': patients,
         'subscription': subscription,
-        'family_count': patients.count(),
-        'family_limit': (
-            subscription.plan.max_profile
-            if subscription
-            else 0
-        ),
+        'max_profiles': max_profiles,
+        'current_count': current_count,
+        'can_add_family_member': can_add_family_member,
     }
 
     return render(
@@ -44,20 +48,41 @@ def dashboard(request):
     )
 
 
+
 @login_required
 def add_family_member(request):
-    """
-    Add a new family member/patient profile.
-    """
 
-    if not can_add_family_member(request.user):
-        messages.error(
+    patients = Patient.objects.filter(
+        user=request.user
+    )
+
+    current_count = patients.count()
+
+    max_profiles = get_family_member_limit(
+        request.user
+    )
+
+
+    # ================================================
+    # CHECK SUBSCRIPTION LIMIT
+    # ================================================
+
+    if current_count >= max_profiles:
+
+        messages.warning(
             request,
-            'You have reached the maximum number '
-            'of family profiles allowed by your subscription.'
+            "You have reached the maximum number of "
+            "patient profiles allowed by your subscription."
         )
 
-        return redirect('patient_dashboard:dashboard')
+        return redirect(
+            'patient_dashboard:dashboard'
+        )
+
+
+    # ================================================
+    # FORM SUBMISSION
+    # ================================================
 
     if request.method == 'POST':
 
@@ -94,6 +119,7 @@ def add_family_member(request):
             return redirect(
                 'patient_dashboard:dashboard'
             )
+        pass
 
     else:
         form = PatientForm()
@@ -101,16 +127,15 @@ def add_family_member(request):
     subscription = get_active_subscription(
         request.user
     )
+        
 
+    # ================================================
+    # DISPLAY FORM
+    # ================================================
     context = {
         'form': form,
-        'subscription': subscription,
-        'family_count': get_family_member_count(
-            request.user
-        ),
-        'family_limit': get_family_member_limit(
-            request.user
-        ),
+        'max_profiles': max_profiles,
+        'current_count': current_count,
     }
 
     return render(
@@ -118,6 +143,7 @@ def add_family_member(request):
         'patient_dashboard/add_family_member.html',
         context
     )
+
 
 
 
@@ -233,3 +259,22 @@ def delete_patient(request, patient_id):
             'patient': patient
         }
     )
+
+
+def get_active_subscription(user):
+
+    return UserSubscription.objects.filter(
+        user=user,
+        status='activated'
+    ).select_related(
+        'plan'
+    ).first()
+
+def get_family_member_limit(user):
+
+    subscription = get_active_subscription(user)
+
+    if not subscription:
+        return 1
+
+    return subscription.plan.max_profile

@@ -1,0 +1,952 @@
+/* =========================================================
+   CARENEST PATIENT DASHBOARD
+========================================================= */
+
+
+/* =========================================================
+   DASHBOARD PAGE
+========================================================= */
+
+.dashboard-page {
+    min-height: calc(100vh - 80px);
+    background: #faf9f3;
+    padding: 115px 50px 50px;
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DASHBOARD HEADER
+========================================================= */
+
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 30px;
+}
+
+.dashboard-heading h1 {
+    margin: 0;
+
+    font-size: 32px;
+    font-weight: 700;
+
+    color: #173f3b;
+}
+
+.dashboard-heading p {
+    margin: 7px 0 0;
+
+    font-size: 15px;
+    color: #71807d;
+}
+
+
+/* =========================================================
+   BOOK APPOINTMENT BUTTON
+========================================================= */
+
+.book-appointment-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px 20px;
+
+    background: #1f6f68;
+    color: #ffffff;
+
+    border-radius: 10px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.book-appointment-button:hover {
+    background: #195c56;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.book-appointment-button span {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.book-appointment-button.small {
+    padding: 10px 16px;
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD GRID
+========================================================= */
+
+.dashboard-layout {
+    display: grid;
+
+    grid-template-columns: 250px minmax(0, 1fr);
+
+    gap: 24px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   LEFT COLUMN
+========================================================= */
+
+.dashboard-left-column {
+    display: flex;
+    flex-direction: column;
+
+    gap: 18px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   COMMON LEFT CARDS
+========================================================= */
+
+.patient-card,
+.feature-card {
+    background: #ffffff;
+
+    border: 1px solid #e6ece9;
+
+    border-radius: 16px;
+
+    box-shadow: 0 5px 20px rgba(31, 78, 72, 0.06);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PATIENT CARD
+========================================================= */
+
+.patient-card {
+    padding: 20px;
+}
+
+.card-title {
+    margin-bottom: 15px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    color: #82908d;
+}
+
+
+/* =========================================================
+   PATIENT LIST
+========================================================= */
+
+.patient-list {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.patient-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 10px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background: transparent;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.patient-item:hover {
+    background: #f2f8f6;
+}
+
+.patient-item.selected {
+    background: #e8f4f0;
+}
+
+
+/* =========================================================
+   PATIENT AVATAR
+========================================================= */
+
+.patient-avatar {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    flex-shrink: 0;
+
+    background: #d9eee8;
+    color: #1f6f68;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.patient-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   PATIENT INFORMATION
+========================================================= */
+
+.patient-item-details {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+.patient-item-details strong {
+    overflow: hidden;
+
+    color: #27413d;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.patient-item-details small {
+    margin-top: 2px;
+
+    color: #8a9693;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   ADD FAMILY MEMBER
+========================================================= */
+
+.add-family-button {
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    margin-top: 12px;
+
+    padding-top: 14px;
+
+    border-top: 1px solid #edf1ef;
+
+    color: #1f6f68;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.add-family-button:hover {
+    color: #174f4a;
+}
+
+.add-family-icon {
+    width: 27px;
+    height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    background: #e8f4f0;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   FEATURE CARD
+========================================================= */
+
+.feature-card {
+    padding: 9px;
+}
+
+.feature-item {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 11px 12px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: transparent;
+
+    color: #667572;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.feature-item:hover {
+    background: #f3f8f6;
+    color: #1f6f68;
+}
+
+.feature-item.active {
+    background: #e7f3ef;
+    color: #1f6f68;
+
+    font-weight: 600;
+}
+
+.feature-icon {
+    width: 20px;
+
+    display: inline-flex;
+    justify-content: center;
+
+    font-size: 15px;
+}
+
+
+/* =========================================================
+   RIGHT CONTENT CONTAINER
+========================================================= */
+
+.dashboard-content {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   CONTENT PANELS
+========================================================= */
+
+.content-panel {
+    display: none;
+}
+
+.content-panel.active {
+    display: block;
+}
+
+
+/* =========================================================
+   OVERVIEW HEADER
+========================================================= */
+
+.overview-header {
+    margin-bottom: 22px;
+}
+
+.overview-header h2 {
+    margin: 0;
+
+    color: #173f3b;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.overview-header p {
+    margin: 6px 0 0;
+
+    color: #7b8986;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   OVERVIEW STAT GRID
+========================================================= */
+
+.overview-stat-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   STAT CARD
+========================================================= */
+
+.overview-stat-card {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    min-height: 95px;
+
+    padding: 18px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6ece9;
+
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(31, 78, 72, 0.05);
+}
+
+.stat-icon {
+    width: 43px;
+    height: 43px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    font-size: 19px;
+}
+
+.appointment-icon {
+    background: #eaf4f1;
+    color: #1f6f68;
+}
+
+.record-icon {
+    background: #f1f3f8;
+    color: #65728a;
+}
+
+.health-icon {
+    background: #f5efed;
+    color: #9a6c62;
+}
+
+.overview-stat-card span {
+    display: block;
+
+    color: #87938f;
+
+    font-size: 11px;
+}
+
+.overview-stat-card strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #23423e;
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.overview-stat-card small {
+    display: block;
+
+    margin-top: 1px;
+
+    color: #899591;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   COMMON CONTENT CARD
+========================================================= */
+
+.dashboard-content-card {
+    margin-bottom: 18px;
+
+    padding: 22px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6ece9;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(31, 78, 72, 0.05);
+}
+
+
+/* =========================================================
+   CONTENT CARD HEADER
+========================================================= */
+
+.content-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.content-card-header h3 {
+    margin: 0;
+
+    color: #23413d;
+
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.content-card-header a {
+    color: #1f6f68;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.content-card-header a:hover {
+    color: #174f4a;
+}
+
+
+/* =========================================================
+   HEALTH PROFILE
+========================================================= */
+
+.health-profile-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+.health-profile-item {
+    padding: 14px;
+
+    background: #f8faf9;
+
+    border-radius: 10px;
+}
+
+.health-profile-item span {
+    display: block;
+
+    color: #899592;
+
+    font-size: 11px;
+}
+
+.health-profile-item strong {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #304742;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   INTEGRATION PLACEHOLDER
+========================================================= */
+
+.integration-placeholder {
+    min-height: 130px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    border: 1px dashed #d5e2de;
+
+    border-radius: 11px;
+
+    background: #fafcfb;
+
+    text-align: center;
+}
+
+.integration-placeholder.large {
+    min-height: 300px;
+}
+
+.placeholder-icon {
+    margin-bottom: 8px;
+
+    color: #8aa39d;
+
+    font-size: 25px;
+}
+
+.integration-placeholder h3 {
+    margin: 3px 0 5px;
+
+    color: #405853;
+
+    font-size: 16px;
+}
+
+.integration-placeholder p {
+    max-width: 430px;
+
+    margin: 0;
+
+    color: #8a9794;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CONTENT PANEL HEADER
+========================================================= */
+
+.content-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.content-panel-header h2 {
+    margin: 0;
+
+    color: #173f3b;
+
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.content-panel-header p {
+    margin: 6px 0 0;
+
+    color: #7b8986;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   FAMILY MEMBERS
+========================================================= */
+
+.family-members-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+.family-member-card {
+    padding: 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6ece9;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(31, 78, 72, 0.05);
+}
+
+.family-member-header {
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    margin-bottom: 18px;
+}
+
+.family-member-avatar {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #d9eee8;
+    color: #1f6f68;
+
+    font-weight: 700;
+}
+
+.family-member-avatar {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    background: #d9eee8;
+    color: #1f6f68;
+
+    font-weight: 700;
+}
+
+
+.family-member-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.family-member-header h3 {
+    margin: 0;
+
+    color: #29433f;
+
+    font-size: 15px;
+}
+
+.family-member-header p {
+    margin: 3px 0 0;
+
+    color: #8a9693;
+
+    font-size: 11px;
+}
+
+.family-member-details {
+    display: flex;
+    flex-direction: column;
+
+    gap: 9px;
+}
+
+.family-detail-row {
+    display: flex;
+    justify-content: space-between;
+
+    padding-bottom: 9px;
+
+    border-bottom: 1px solid #edf1ef;
+}
+
+.family-detail-row:last-child {
+    border-bottom: 0;
+}
+
+.family-detail-row span {
+    color: #8a9693;
+
+    font-size: 11px;
+}
+
+.family-detail-row strong {
+    color: #405550;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   EMPTY FAMILY STATE
+========================================================= */
+
+.empty-family-state {
+    padding: 60px 20px;
+
+    background: #ffffff;
+
+    border: 1px solid #e6ece9;
+
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.empty-family-state h3 {
+    margin: 0 0 7px;
+
+    color: #29433f;
+
+    font-size: 18px;
+}
+
+.empty-family-state p {
+    margin: 0 0 20px;
+
+    color: #87938f;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   NO PATIENTS
+========================================================= */
+
+.no-patients {
+    padding: 15px 5px;
+
+    color: #8a9693;
+
+    font-size: 12px;
+}
+
+
+.add-family-button.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .dashboard-page {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+
+    .dashboard-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+    }
+
+    .health-profile-grid {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .dashboard-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-left-column {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        align-items: start;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .dashboard-page {
+        padding: 105px 18px 30px;
+    }
+
+    .dashboard-heading {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 27px;
+    }
+
+    .dashboard-layout {
+        display: block;
+    }
+
+    .dashboard-left-column {
+        display: flex;
+    }
+
+    .overview-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .health-profile-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .family-members-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-panel-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+}

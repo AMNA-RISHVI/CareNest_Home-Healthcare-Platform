@@ -1,85 +1,961 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>CareNest Dashboard</title>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        My Dashboard | CareNest
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+     <!-- Landing / Navbar CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'landing/css/style.css' %}"
+    >
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+
+    <link
+        rel="stylesheet"
+        href="{% static 'patient_dashboard/css/dashboard.css' %}"
+    >
+
 </head>
+
 
 <body>
 
-    <h1>Welcome, {{ request.user.full_name }}</h1>
+{% include 'landing/partials/navbar.html' %}
 
-    <h2>Family Members</h2>
 
-    <p>
-        {{ family_count }} /
-        {{ family_limit }}
-        profiles used
-    </p>
+<!-- =====================================================
+     MAIN DASHBOARD
+====================================================== -->
 
-    <a href="{% url 'patient_dashboard:add_family_member' %}">
-        + Add Family Member
-    </a>
+<main class="dashboard-page">
 
-    <hr>
 
-    {% if patients %}
+    <!-- =================================================
+         DASHBOARD HEADER
+    ================================================== -->
 
-        {% for patient in patients %}
+    <section class="dashboard-heading">
 
-            <a href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}">
+        <div>
 
-                <div>
+            <h1>
+                My Dashboard
+            </h1>
 
-                    {% if patient.profile_picture %}
-                        <img
-                            src="{{ patient.profile_picture.url }}"
-                            alt="{{ patient.patient_name }}"
-                            width="100"
-                            height="100"
-                        >
-                    {% else %}
-                        <div>
-                            No Photo
+            <p>
+                Manage your family's health from one place
+            </p>
+
+        </div>
+
+
+        <a
+            href="#"
+            class="book-appointment-button"
+        >
+
+            <span>
+                +
+            </span>
+
+            Book Appointment
+
+        </a>
+
+    </section>
+
+
+
+    <!-- =================================================
+         DASHBOARD LAYOUT
+    ================================================== -->
+
+    <section class="dashboard-layout">
+
+
+        <!-- =============================================
+             LEFT COLUMN
+        ============================================== -->
+
+        <aside class="dashboard-left-column">
+
+
+            <!-- =========================================
+                 PATIENT CARD
+            ========================================== -->
+
+            <div class="patient-card">
+
+
+                <div class="card-title">
+
+                    PATIENT
+
+                </div>
+
+
+                <div class="patient-list">
+
+
+                    {% for patient in patients %}
+
+
+                    <button
+                        type="button"
+                        class="patient-item {% if forloop.first %}selected{% endif %}"
+                        data-patient-id="{{ patient.patient_id }}"
+                        data-patient-name="{{ patient.patient_name }}"
+                        data-patient-relationship="{{ patient.relationship }}"
+                        data-patient-blood-group="{{ patient.blood_group|default:'—' }}"
+                        data-patient-dob="{{ patient.dob|default:'—' }}"
+                        data-patient-gender="{{ patient.gender|default:'—' }}"
+                    >
+
+
+                        <span class="patient-avatar">
+
+                            {% if patient.profile_picture %}
+
+                            <img
+                                src="{{ patient.profile_picture.url }}"
+                                alt="{{ patient.patient_name }}"
+                            >
+
+                            {% else %}
+
+                                {{ patient.patient_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+
+                        <span class="patient-item-details">
+
+                            <strong>
+                                {{ patient.patient_name }}
+                            </strong>
+
+                            <small>
+                                {{ patient.relationship }}
+                            </small>
+
+                        </span>
+
+
+                    </button>
+
+
+                    {% empty %}
+
+
+                    <div class="no-patients">
+
+                        <p>
+                            No family members yet.
+                        </p>
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+
+                <!-- ADD FAMILY MEMBER -->
+
+                {% if can_add_family_member %}
+
+                <a
+                    href="{% url 'patient_dashboard:add_family_member' %}"
+                    class="add-family-button"
+                >
+
+                    <span class="add-family-icon">
+                        +
+                    </span>
+
+                    <span>
+                        Add Family Member
+                    </span>
+
+                </a>
+
+                {% else %}
+
+                <div class="add-family-button disabled">
+
+                    <span class="add-family-icon">
+                        !
+                    </span>
+                        
+                    <span>
+                        Profile Limit Reached
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =========================================
+                 FEATURE NAVIGATION CARD
+            ========================================== -->
+
+            <div class="feature-card">
+
+
+                <button
+                    type="button"
+                    class="feature-item active"
+                    data-feature="overview"
+                >
+
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </span>
+
+                    <span>
+                        Overview
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="feature-item"
+                    data-feature="family"
+                >
+
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </span>
+
+                    <span>
+                        Family Members
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="feature-item"
+                    data-feature="appointments"
+                >
+
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </span>
+
+                    <span>
+                        Appointments
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="feature-item"
+                    data-feature="records"
+                >
+
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-file-medical"></i>
+                    </span>
+
+                    <span>
+                        Health Records
+                    </span>
+
+                </button>
+
+
+
+                <button
+                    type="button"
+                    class="feature-item"
+                    data-feature="notifications"
+                >
+
+                    <span class="feature-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </span>
+
+                    <span>
+                        Notifications
+                    </span>
+
+                </button>
+
+
+            </div>
+
+
+        </aside>
+
+
+
+        <!-- =============================================
+             RIGHT DYNAMIC CONTAINER
+        ============================================== -->
+
+        <section class="dashboard-content">
+
+
+            <!-- =================================================
+                 OVERVIEW
+            ================================================== -->
+
+            <div
+                class="content-panel active"
+                id="overview-panel"
+                data-panel="overview"
+            >
+
+
+                <div class="overview-header">
+
+                    <div>
+
+                        <h2>
+                            My Dashboard
+                        </h2>
+
+                        <p>
+                            Manage your family's health from one place
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- OVERVIEW STAT CARDS -->
+
+                <div class="overview-stat-grid">
+
+
+                    <!-- UPCOMING APPOINTMENTS -->
+
+                    <div class="overview-stat-card">
+
+                        <div class="stat-icon appointment-icon">
+                            <i class="fa-solid fa-calendar-check"></i>
                         </div>
-                    {% endif %}
+
+                        <div>
+
+                            <span>
+                                Upcoming
+                            </span>
+
+                            <strong>
+                                —
+                            </strong>
+
+                            <small>
+                                Appointments
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HEALTH RECORDS -->
+
+                    <div class="overview-stat-card">
+
+                        <div class="stat-icon record-icon">
+                            <i class="fa-solid fa-file-medical"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                —
+                            </strong>
+
+                            <small>
+                                Health Records
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HEALTH STATUS -->
+
+                    <div class="overview-stat-card">
+
+                        <div class="stat-icon health-icon">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Health
+                            </span>
+
+                            <strong>
+                                —
+                            </strong>
+
+                            <small>
+                                Overall Status
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- HEALTH PROFILE -->
+
+                <div class="dashboard-content-card health-profile-card">
+
+
+                    <div class="content-card-header">
+
+                        <div>
+
+                            <h3>
+                                Health Profile
+                            </h3>
+
+                        </div>
+
+
+                        <a href="#">
+
+                            View Full Passport
+
+                            <span>
+                                →
+                            </span>
+
+                        </a>
+
+                    </div>
+
+
+
+                    <div class="health-profile-grid">
+
+
+                        <div class="health-profile-item">
+
+                            <span>
+                                Blood Group
+                            </span>
+
+                            <strong
+                                id="overview-blood-group"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="health-profile-item">
+
+                            <span>
+                                Date of Birth
+                            </span>
+
+                            <strong
+                                id="overview-dob"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="health-profile-item">
+
+                            <span>
+                                Gender
+                            </span>
+
+                            <strong
+                                id="overview-gender"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="health-profile-item">
+
+                            <span>
+                                Allergies
+                            </span>
+
+                            <strong>
+                                —
+                            </strong>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- UPCOMING APPOINTMENTS -->
+
+                <div class="dashboard-content-card upcoming-card">
+
+
+                    <div class="content-card-header">
+
+                        <h3>
+                            Upcoming Appointments
+                        </h3>
+
+                        <a href="#">
+                            View All
+                        </a>
+
+                    </div>
+
+
+                    <div class="integration-placeholder">
+
+                        <div class="placeholder-icon">
+                            □
+                        </div>
+
+                        <p>
+                            Appointment information will appear
+                            after integration.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FAMILY MEMBERS
+            ================================================== -->
+
+            <div
+                class="content-panel"
+                id="family-panel"
+                data-panel="family"
+            >
+
+
+                <div class="content-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Family Members
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FAMILY MEMBER GRID -->
+
+                <div class="family-members-grid">
+
+
+                    {% for patient in patients %}
+
+
+                    <article
+                        class="family-member-card"
+                        data-family-patient-id="{{ patient.patient_id }}"
+                    >
+
+
+                        <!-- PATIENT HEADER -->
+
+                        <div class="family-member-header">
+
+
+                            <div class="family-member-avatar">
+
+                                {% if patient.profile_picture %}
+
+                                    <img
+                                        src="{{ patient.profile_picture.url }}"
+                                        alt="{{ patient.patient_name }}"
+                                    >
+
+                                {% else %}
+
+                                    {{ patient.patient_name|first|upper }}
+
+                                {% endif %}
+
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ patient.patient_name }}
+                                </h3>
+
+                                <p>
+                                    {{ patient.relationship }}
+                                </p>
+
+                            </div>
+
+
+                        </div>
+
+
+
+                        <!-- PATIENT DETAILS -->
+
+                        <div class="family-member-details">
+
+
+                            <div class="family-detail-row">
+
+                                <span>
+                                    Blood Group
+                                </span>
+
+                                <strong>
+                                    {{ patient.blood_group|default:"—" }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="family-detail-row">
+
+                                <span>
+                                    Allergies
+                                </span>
+
+                                <strong>
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                            <div class="family-detail-row">
+
+                                <span>
+                                    Conditions
+                                </span>
+
+                                <strong>
+                                    —
+                                </strong>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                    {% empty %}
+
+
+                    <div class="empty-family-state">
+
+                        <h3>
+                            No Family Members
+                        </h3>
+
+                        <p>
+                            Add a family member to manage
+                            their healthcare.
+                        </p>
+
+
+                        <a
+                            href="{% url 'patient_dashboard:add_family_member' %}"
+                            class="add-family-button"
+                        >
+
+                            + Add Family Member
+
+                        </a>
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 APPOINTMENTS
+            ================================================== -->
+
+            <div
+                class="content-panel"
+                id="appointments-panel"
+                data-panel="appointments"
+            >
+
+
+                <div class="content-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Appointments
+                        </h2>
+
+                        <p>
+                            Appointments for the selected patient
+                        </p>
+
+                    </div>
+
+
+                    <a
+                        href="#"
+                        class="book-appointment-button small"
+                    >
+
+                        + Book Appointment
+
+                    </a>
+
+                </div>
+
+
+
+                <div class="integration-placeholder large">
+
+                    <div class="placeholder-icon">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
 
                     <h3>
-                        {{ patient.patient_name }}
+                        Appointments
                     </h3>
 
                     <p>
-                        Relationship:
-                        {{ patient.relationship }}
-                    </p>
-
-                    <p>
-                        Blood Group:
-                        {{ patient.blood_group|default:"Not provided" }}
+                        Appointment information will be
+                        connected after integration.
                     </p>
 
                 </div>
 
-            </a>
 
-        {% endfor %}
+            </div>
 
-    {% else %}
 
-        <p>
-            No family members added yet.
-        </p>
 
-    {% endif %}
+            <!-- =================================================
+                 HEALTH RECORDS
+            ================================================== -->
 
-    {% if messages %}
+            <div
+                class="content-panel"
+                id="records-panel"
+                data-panel="records"
+            >
 
-        {% for message in messages %}
 
-            <p>{{ message }}</p>
+                <div class="content-panel-header">
 
-        {% endfor %}
+                    <div>
 
-    {% endif %}
+                        <h2>
+                            Health Records
+                        </h2>
+
+                        <p>
+                            Health records for the selected patient
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="integration-placeholder large">
+
+                    <div class="placeholder-icon">
+                        <i class="fa-solid fa-file-medical"></i>
+                    </div>
+
+                    <h3>
+                        Health Records
+                    </h3>
+
+                    <p>
+                        Health records will be connected
+                        after integration.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 NOTIFICATIONS
+            ================================================== -->
+
+            <div
+                class="content-panel"
+                id="notifications-panel"
+                data-panel="notifications"
+            >
+
+
+                <div class="content-panel-header">
+
+                    <div>
+
+                        <h2>
+                            Notifications
+                        </h2>
+
+                        <p>
+                            Your latest CareNest notifications
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="integration-placeholder large">
+
+                    <div class="placeholder-icon">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+
+                    <h3>
+                        Notifications
+                    </h3>
+
+                    <p>
+                        Notification information will be
+                        connected after integration.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     DASHBOARD JAVASCRIPT
+====================================================== -->
+
+<script src="{% static 'patient_dashboard/js/dashboard.js' %}"></script>
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
 
 </body>
+
 </html>
