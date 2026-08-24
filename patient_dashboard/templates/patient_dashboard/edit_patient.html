@@ -1,35 +1,449 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Edit {{ patient.patient_name }}</title>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Add Family Member | CareNest
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <!-- Bootstrap CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{% static 'landing/css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'patient_dashboard/css/dashboard.css' %}"
+    >
+
 </head>
 
 <body>
 
-    <h1>
-        Edit {{ patient.patient_name }}
-    </h1>
+{% include 'landing/partials/navbar.html' %}
 
-    <form
-        method="POST"
-        enctype="multipart/form-data"
-    >
 
-        {% csrf_token %}
+<main class="dashboard-page">
 
-        {{ form.as_p }}
+    <section class="form-page">
 
-        <button type="submit">
-            Save Changes
-        </button>
 
-        <a
-            href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
-        >
-            Cancel
-        </a>
+        <!-- PAGE HEADER -->
 
-    </form>
+        <div class="form-page-header">
+
+            <a
+                href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
+                class="back-button"
+            >
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Profile
+
+            </a>
+
+
+            <h1>
+                Edit Family Member
+            </h1>
+
+            <p>
+                Update {{ patient.patient_name }}'s healthcare profile.
+            </p>
+
+        </div>
+
+        
+
+
+
+        <!-- FORM CARD -->
+
+        <div class="patient-form-card">
+
+
+            <div class="form-card-header">
+
+                <div class="form-card-icon">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Personal Information
+                    </h2>
+
+                    <p>
+                        Edit {{ patient.patient_name }}'s details below.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <form
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                {% csrf_token %}
+
+                <div class="profile-upload-text">
+
+                    <strong>
+                        Profile Picture
+                    </strong>
+
+                </div>
+
+
+                <!-- PROFILE IMAGE -->
+
+                <div class="profile-upload-section">
+
+                    <div class="profile-upload">
+
+                        <div
+                            class="profile-upload-preview"
+                            id="profilePreview"
+                        >
+
+                            {% if patient.profile_picture %}
+
+                                <img
+                                    src="{{ patient.profile_picture.url }}"
+                                    alt="{{ patient.patient_name }}"
+                                >
+
+                            {% else %}
+
+                                <i class="fa-solid fa-user"></i>
+
+                            {% endif %}
+
+                        </div> 
+
+                        <label
+                            for="{{ form.profile_picture.id_for_label }}"
+                            class="profile-upload-button"
+                        >
+
+                            <i class="fa-solid fa-camera"></i>
+
+                            Upload Photo
+
+                        </label>
+
+                        {{ form.profile_picture }}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- FORM ERRORS -->
+
+                {% if form.non_field_errors %}
+
+                    <div class="form-error-box">
+
+                        {{ form.non_field_errors }}
+
+                    </div>
+
+                {% endif %}
+
+
+
+                <!-- NAME -->
+
+                <div class="form-field full-width">
+
+                    <label for="{{ form.patient_name.id_for_label }}">
+
+                        <i class="fa-solid fa-user"></i>
+
+                        Full Name
+
+                    </label>
+
+                    {{ form.patient_name }}
+
+                    {% for error in form.patient_name.errors %}
+
+                        <small class="field-error">
+                            {{ error }}
+                        </small>
+
+                    {% endfor %}
+
+                </div>
+
+
+
+                <!-- TWO COLUMN ROW -->
+
+                <div class="form-row">
+
+
+                    <div class="form-field">
+
+                        <label for="{{ form.relationship.id_for_label }}">
+
+                            <i class="fa-solid fa-people-roof"></i>
+
+                            Relationship
+
+                        </label>
+
+                        {{ form.relationship }}
+
+                        {% for error in form.relationship.errors %}
+
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+
+                        {% endfor %}
+
+                    </div>
+
+
+
+                    <div class="form-field">
+
+                        <label for="{{ form.gender.id_for_label }}">
+
+                            <i class="fa-solid fa-venus-mars"></i>
+
+                            Gender
+
+                        </label>
+
+                        {{ form.gender }}
+
+                        {% for error in form.gender.errors %}
+
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- TWO COLUMN ROW -->
+
+                <div class="form-row">
+
+
+                    <div class="form-field">
+
+                        <label for="{{ form.dob.id_for_label }}">
+
+                            <i class="fa-solid fa-calendar"></i>
+
+                            Date of Birth
+
+                        </label>
+
+                        {{ form.dob }}
+
+                        {% for error in form.dob.errors %}
+
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+
+                        {% endfor %}
+
+                    </div>
+
+
+
+                    <div class="form-field">
+
+                        <label for="{{ form.blood_group.id_for_label }}">
+
+                            <i class="fa-solid fa-droplet"></i>
+
+                            Blood Group
+
+                        </label>
+
+                        {{ form.blood_group }}
+
+                        {% for error in form.blood_group.errors %}
+
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- EMERGENCY CONTACT -->
+
+                <div class="form-field full-width">
+
+                    <label
+                        for="{{ form.emergency_contact.id_for_label }}"
+                    >
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        Emergency Contact
+
+                    </label>
+
+                    {{ form.emergency_contact }}
+
+                    {% for error in form.emergency_contact.errors %}
+
+                        <small class="field-error">
+                            {{ error }}
+                        </small>
+
+                    {% endfor %}
+
+                </div>
+
+
+
+                <!-- ACTIONS -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
+                        class="form-cancel-button"
+                    >
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="form-save-button"
+                    >
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<script>
+
+const profileInput =
+    document.getElementById(
+        "{{ form.profile_picture.id_for_label }}"
+    );
+
+const profilePreview =
+    document.getElementById("profilePreview");
+
+
+if (profileInput) {
+
+    profileInput.addEventListener(
+        "change",
+        function () {
+
+            const file = this.files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const reader =
+                new FileReader();
+
+            reader.onload = function (event) {
+
+                profilePreview.innerHTML =
+                    `<img src="${event.target.result}" alt="Profile Preview">`;
+
+            };
+
+            reader.readAsDataURL(file);
+
+        }
+    );
+
+}
+
+</script>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
+
 </html>

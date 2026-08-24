@@ -1,39 +1,146 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Delete {{ patient.patient_name }}</title>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Remove Family Member | CareNest
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'patient_dashboard/css/dashboard.css' %}"
+    >
+
 </head>
 
 <body>
 
-    <h1>
-        Delete Family Member
-    </h1>
+<main class="dashboard-page">
 
-    <p>
-        Are you sure you want to delete
-        <strong>{{ patient.patient_name }}</strong>?
-    </p>
 
-    <p>
-        This action cannot be undone.
-    </p>
+    <section class="delete-page">
 
-    <form method="POST">
 
-        {% csrf_token %}
+        <div class="delete-card">
 
-        <button type="submit">
-            Yes, Delete
-        </button>
 
-        <a
-            href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
-        >
-            Cancel
-        </a>
+            <div class="delete-icon">
 
-    </form>
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+            </div>
+
+
+            <h1>
+                Remove Family Member?
+            </h1>
+
+
+            <p>
+                Are you sure you want to remove
+                <strong>{{ patient.patient_name }}</strong>
+                from your family members?
+            </p>
+
+
+            <span class="delete-warning">
+
+                This action cannot be undone.
+
+            </span>
+
+
+            <div class="delete-patient-preview">
+
+                <div class="delete-avatar">
+
+                    {% if patient.profile_picture %}
+
+                        <img
+                            src="{{ patient.profile_picture.url }}"
+                            alt="{{ patient.patient_name }}"
+                        >
+
+                    {% else %}
+
+                        {{ patient.patient_name|first|upper }}
+
+                    {% endif %}
+
+                </div>
+
+
+                <div>
+
+                    <strong>
+                        {{ patient.patient_name }}
+                    </strong>
+
+                    <span>
+                        {{ patient.relationship }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+
+                <div class="delete-actions">
+
+
+                    <a
+                        href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
+                        class="form-cancel-button"
+                    >
+
+                        Cancel
+
+                    </a>
+
+
+                    <button
+                        type="submit"
+                        class="delete-confirm-button"
+                    >
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Remove Member
+
+                    </button>
+
+
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </section>
+
+</main>
 
 </body>
+
 </html>

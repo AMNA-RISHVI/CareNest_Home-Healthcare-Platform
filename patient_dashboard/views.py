@@ -3,21 +3,50 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Patient, UserSubscription
 from .forms import PatientForm
-from .models import Patient
 from .services import (
     can_add_family_member,
     get_active_subscription,
     get_family_member_count,
     get_family_member_limit,
 )
+from functools import wraps
 
 
-@login_required
+
+def patient_required(view_func):
+
+    @wraps(view_func)
+    @login_required
+    def wrapper(request, *args, **kwargs):
+
+        if request.user.role != "PATIENT":
+
+            messages.error(
+                request,
+                "You do not have permission to access the patient dashboard."
+            )
+
+            # Send them back to an appropriate dashboard.
+            if request.user.role == "ADMIN":
+                return redirect("admin_dashboard")
+
+            elif request.user.role == "PROFESSIONAL":
+                return redirect("professional_dashboard")
+
+            return redirect("home")
+
+        return view_func(request, *args, **kwargs)
+
+    return wrapper
+
+
+
+@patient_required
 def dashboard(request):
 
     patients = Patient.objects.filter(
         user=request.user
-    )
+    ).order_by('patient_id')
 
     subscription = get_active_subscription(
         request.user
@@ -33,8 +62,31 @@ def dashboard(request):
         current_count < max_profiles
     )
 
+    # ================================================
+    # SELECTED PATIENT
+    # ================================================
+
+    selected_patient = patients.first()
+
+    selected_patient_id = request.GET.get(
+        'patient'
+    )
+
+    if selected_patient_id:
+
+        try:
+
+            selected_patient = patients.get(
+                patient_id=selected_patient_id
+            )
+
+        except Patient.DoesNotExist:
+
+            selected_patient = patients.first()
+
     context = {
         'patients': patients,
+        'selected_patient': selected_patient,
         'subscription': subscription,
         'max_profiles': max_profiles,
         'current_count': current_count,
@@ -49,7 +101,7 @@ def dashboard(request):
 
 
 
-@login_required
+@patient_required
 def add_family_member(request):
 
     patients = Patient.objects.filter(
@@ -124,9 +176,6 @@ def add_family_member(request):
     else:
         form = PatientForm()
 
-    subscription = get_active_subscription(
-        request.user
-    )
         
 
     # ================================================
@@ -146,8 +195,7 @@ def add_family_member(request):
 
 
 
-
-@login_required
+@patient_required
 def patient_detail(request, patient_id):
     """
     Display a patient's profile.
@@ -173,7 +221,7 @@ def patient_detail(request, patient_id):
 
 
 
-@login_required
+@patient_required
 def edit_patient(request, patient_id):
     """
     Edit an existing family member.
@@ -225,7 +273,7 @@ def edit_patient(request, patient_id):
 
 
 
-@login_required
+@patient_required
 def delete_patient(request, patient_id):
     """
     Delete a family member.

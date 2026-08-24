@@ -148,6 +148,7 @@
                         data-patient-dob="{{ patient.dob|default:'—' }}"
                         data-patient-gender="{{ patient.gender|default:'—' }}"
                     >
+                        
 
 
                         <span class="patient-avatar">
@@ -157,6 +158,7 @@
                             <img
                                 src="{{ patient.profile_picture.url }}"
                                 alt="{{ patient.patient_name }}"
+                                class="patient-avatar-image"
                             >
 
                             {% else %}
@@ -213,7 +215,7 @@
                 >
 
                     <span class="add-family-icon">
-                        +
+                        <i class="fa-solid fa-plus"></i>
                     </span>
 
                     <span>
@@ -227,7 +229,7 @@
                 <div class="add-family-button disabled">
 
                     <span class="add-family-icon">
-                        !
+                        <i class="fa-solid fa-lock"></i>
                     </span>
                         
                     <span>
@@ -361,25 +363,6 @@
                 data-panel="overview"
             >
 
-
-                <div class="overview-header">
-
-                    <div>
-
-                        <h2>
-                            My Dashboard
-                        </h2>
-
-                        <p>
-                            Manage your family's health from one place
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-
                 <!-- OVERVIEW STAT CARDS -->
 
                 <div class="overview-stat-grid">
@@ -493,7 +476,7 @@
                             View Full Passport
 
                             <span>
-                                →
+                                <i class="fa-solid fa-arrow-right ms-2"></i>
                             </span>
 
                         </a>
@@ -590,7 +573,7 @@
                     <div class="integration-placeholder">
 
                         <div class="placeholder-icon">
-                            □
+                            <i class="fa-solid fa-calendar-days"></i>
                         </div>
 
                         <p>
@@ -641,11 +624,10 @@
                     {% for patient in patients %}
 
 
-                    <article
+                    <a
+                        href="{% url 'patient_dashboard:patient_detail' patient.patient_id %}"
                         class="family-member-card"
-                        data-family-patient-id="{{ patient.patient_id }}"
                     >
-
 
                         <!-- PATIENT HEADER -->
 
@@ -733,7 +715,7 @@
                         </div>
 
 
-                    </article>
+                    </a>
 
 
                     {% empty %}
@@ -797,16 +779,6 @@
                         </p>
 
                     </div>
-
-
-                    <a
-                        href="#"
-                        class="book-appointment-button small"
-                    >
-
-                        + Book Appointment
-
-                    </a>
 
                 </div>
 
