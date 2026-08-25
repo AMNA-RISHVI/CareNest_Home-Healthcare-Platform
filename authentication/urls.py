@@ -22,12 +22,6 @@ urlpatterns = [
     ),
 
     path(
-        "patient-dashboard/",
-        views.patient_dashboard,
-        name="patient_dashboard"
-    ),
-
-    path(
         "professional-dashboard/",
         views.professional_dashboard,
         name="professional_dashboard"

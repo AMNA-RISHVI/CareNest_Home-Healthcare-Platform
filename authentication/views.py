@@ -200,19 +200,10 @@ def redirect_user_dashboard(user):
         return redirect("/professional-dashboard/")
 
     else:
-        return redirect("/patient-dashboard/")
+        return redirect("patient_dashboard:dashboard")
 
     
 
-
-@login_required
-@role_required("PATIENT")
-def patient_dashboard(request):
-
-    return render(
-        request,
-        "patient_dashboard/dashboard.html"
-    )
 
 
 @login_required
