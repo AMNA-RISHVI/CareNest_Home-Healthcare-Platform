@@ -1,0 +1,242 @@
+/* =====================================================
+   DJANGO MESSAGE CONTAINER
+===================================================== */
+
+.messages-container {
+
+    position: fixed;
+
+    top: 95px;
+    right: 30px;
+
+    width: 380px;
+
+    z-index: 9999;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.alert-message {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 15px 18px;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.10);
+
+    border-left: 4px solid;
+
+    animation:
+        messageSlideIn 0.35s ease;
+
+}
+
+
+/* =====================================================
+   MESSAGE CONTENT
+===================================================== */
+
+.alert-message-content {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #333;
+
+}
+
+
+.alert-message-content i {
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+
+}
+
+
+/* =====================================================
+   SUCCESS
+===================================================== */
+
+.alert-success {
+
+    border-left-color: #2e8b57;
+
+}
+
+
+.alert-success
+.alert-message-content i {
+
+    color: #2e8b57;
+
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.alert-error {
+
+    border-left-color: #dc3545;
+
+}
+
+
+.alert-error
+.alert-message-content i {
+
+    color: #dc3545;
+
+}
+
+
+/* =====================================================
+   WARNING
+===================================================== */
+
+.alert-warning {
+
+    border-left-color: #f0ad4e;
+
+}
+
+
+.alert-warning
+.alert-message-content i {
+
+    color: #f0ad4e;
+
+}
+
+
+/* =====================================================
+   INFO
+===================================================== */
+
+.alert-info {
+
+    border-left-color: #0d6efd;
+
+}
+
+
+.alert-info
+.alert-message-content i {
+
+    color: #0d6efd;
+
+}
+
+
+/* =====================================================
+   CLOSE BUTTON
+===================================================== */
+
+.alert-close {
+
+    border: none;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    padding: 5px;
+
+    color: #999;
+
+    font-size: 15px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+
+}
+
+
+.alert-close:hover {
+
+    color: #333;
+
+    transform: scale(1.1);
+
+}
+
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes messageSlideIn {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateX(40px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+
+    }
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 576px) {
+
+    .messages-container {
+
+        top: 85px;
+
+        left: 15px;
+        right: 15px;
+
+        width: auto;
+
+    }
+
+}

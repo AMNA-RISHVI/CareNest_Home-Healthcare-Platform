@@ -34,6 +34,13 @@
         href="{% static 'landing/css/style.css' %}"
     >
 
+    <!-- Messages CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'patient_dashboard/css/messages.css' %}"
+    >
+
     <!-- Google Fonts -->
 
     <link rel="preconnect"
@@ -60,6 +67,7 @@
 
 {% include 'landing/partials/navbar.html' %}
 
+{% include 'patient_dashboard/partials/messages.html' %}
 
 <!-- =====================================================
      MAIN DASHBOARD
@@ -927,6 +935,9 @@
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
 </script>
 
+<script
+    src="{% static 'patient_dashboard/js/messages.js' %}">
+</script>
 
 </body>
 

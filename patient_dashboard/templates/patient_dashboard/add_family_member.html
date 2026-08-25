@@ -50,11 +50,20 @@
         href="{% static 'patient_dashboard/css/dashboard.css' %}"
     >
 
+    <!-- Messages CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'patient_dashboard/css/messages.css' %}"
+    >
+
 </head>
 
 <body>
 
 {% include 'landing/partials/navbar.html' %}
+
+{% include 'patient_dashboard/partials/messages.html' %}
 
 
 <main class="dashboard-page">
@@ -67,7 +76,7 @@
         <div class="form-page-header">
 
             <a
-                href="{% url 'patient_dashboard:dashboard' %}"
+                href="{% url 'patient_dashboard' %}"
                 class="back-button"
             >
 
@@ -437,6 +446,10 @@ if (profileInput) {
 
 <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<script
+    src="{% static 'patient_dashboard/js/messages.js' %}">
 </script>
 
 </body>
