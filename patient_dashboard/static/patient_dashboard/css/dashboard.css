@@ -774,6 +774,8 @@
 
     .overview-stat-grid {
         grid-template-columns: 1fr;
+        padding-top:50px ;
+        gap: 10px;
     }
 
     .health-profile-grid {
@@ -786,9 +788,8 @@
 
     .content-panel-header {
         align-items: flex-start;
-
+        padding-top: 50px;
         flex-direction: column;
-
         gap: 12px;
     }
 
@@ -804,14 +805,12 @@
 .patient-detail-page {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 10px 130px 60px 130px;
+    padding: 10px 30px 60px;
 }
-
 
 .patient-detail-header {
     margin-bottom: 25px;
 }
-
 
 .back-button {
     display: inline-flex;
@@ -819,14 +818,14 @@
     gap: 8px;
     text-decoration: none;
     font-weight: 600;
+    font-size: 20px;
     color: #000000;
 }
-
 
 .patient-detail-card {
     background: #ffffff;
     border-radius: 20px;
-    padding: 35px;
+    padding: 35px 50px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
@@ -841,7 +840,6 @@
     border-bottom: 1px solid #eeeeee;
 }
 
-
 .patient-detail-avatar {
     width: 90px;
     height: 90px;
@@ -850,32 +848,31 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    background: #e9f7ef;
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );;
     color: #ffffff;
     font-size: 34px;
     font-weight: 700;
 }
 
-
 .patient-detail-avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
-
 .patient-detail-profile h1 {
     margin: 0;
-
-    font-size: 30px;
+    font-size: 24px;
+    font-weight: 550;
 }
-
 
 .patient-detail-profile p {
     margin: 5px 0 0;
-
-    color: #777;
+    color: #6B6868;
 }
 
 
@@ -883,44 +880,33 @@
 
 .patient-details-grid {
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
-
+    gap: 40px;
     margin-top: 30px;
 }
 
-
 .patient-detail-item {
-    background: #fafafa;
-
+    background: #F1F1F1;
     border-radius: 14px;
-
-    padding: 20px;
+    padding: 20px 30px 20px;
 }
-
 
 .patient-detail-item span {
     display: block;
-
-    color: #777;
-
-    font-size: 14px;
-
-    margin-bottom: 8px;
+    color: #6B6868;
+    font-size: 15px;
+    margin-bottom: 9px;
 }
-
 
 .patient-detail-item span i {
     margin-right: 8px;
-
-    color: #198754;
+    font-size: 20px;
+    color: #007B75;
 }
 
-
 .patient-detail-item strong {
-    font-size: 17px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 
@@ -928,41 +914,27 @@
 
 .patient-detail-actions {
     display: flex;
-
     gap: 15px;
-
     margin-top: 35px;
-
     padding-top: 25px;
-
     border-top: 1px solid #eeeeee;
 }
-
 
 .edit-patient-button,
 .delete-patient-button {
     display: inline-flex;
-
     align-items: center;
-
     gap: 8px;
-
     padding: 12px 22px;
-
     border-radius: 10px;
-
     text-decoration: none;
-
     font-weight: 600;
 }
 
-
 .edit-patient-button {
-    background: #198754;
-
+    background: #007B75;
     color: white;
 }
-
 
 .delete-patient-button {
     background: #fff0f0;
@@ -981,7 +953,6 @@
 .form-page {
     max-width: 1050px;
     margin: 0 auto;
-
     padding: 10px 30px 70px;
 }
 
@@ -992,21 +963,17 @@
     margin-bottom: 28px;
 }
 
-
 .form-page-header h1 {
     margin-top: 25px;
     margin-bottom: 8px;
-
-    font-size: 34px;
+    font-size: 28px;
+    font-weight: 550;
 }
-
 
 .form-page-header p {
     margin: 0;
-
-    color: #777;
-
-    font-size: 16px;
+    color: #6B6868;
+    font-size: 15px;
 }
 
 
@@ -1014,26 +981,17 @@
 
 .patient-form-card {
     background: #ffffff;
-
     border-radius: 22px;
-
-    padding: 35px;
-
+    padding: 50px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
-
 .form-card-header {
     display: flex;
-
     align-items: center;
-
     gap: 15px;
-
     padding-bottom: 25px;
-
     margin-bottom: 30px;
-
     border-bottom: 1px solid #eeeeee;
 }
 
@@ -1041,34 +999,28 @@
 .form-card-icon {
     width: 50px;
     height: 50px;
-
     border-radius: 14px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: #eaf7ef;
-
-    color: #198754;
-
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );;
+    color: #ffffff;
     font-size: 20px;
 }
 
-
 .form-card-header h2 {
     margin: 0;
-
-    font-size: 21px;
+    font-size: 20px;
 }
-
 
 .form-card-header p {
     margin: 4px 0 0;
-
-    color: #777;
-
-    font-size: 14px;
+    color: #6B6868;
+    font-size: 13px;
 }
 
 
@@ -1076,135 +1028,97 @@
 
 .profile-upload-section {
     display: flex;
-
     align-items: center;
-
     gap: 22px;
-
     margin-bottom: 32px;
-
     padding: 20px;
-
-    background: #fafafa;
-
+    background: #F1F1F1;
     border-radius: 16px;
 }
-
 
 .profile-upload {
     text-align: center;
 }
 
-
 .profile-upload-preview {
     width: 90px;
     height: 90px;
-
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
-
-    background: #eaf7ef;
-
-    color: #198754;
-
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );;
+    color: #ffffff;
     font-size: 30px;
-
     margin-bottom: 10px;
 }
-
 
 .profile-upload-preview img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
 
-
 .profile-upload-button {
     display: inline-flex;
-
     align-items: center;
-
     gap: 7px;
-
     padding: 8px 13px;
-
     border-radius: 8px;
-
-    background: #198754;
-
+    background: #007B75;
     color: white;
-
     font-size: 13px;
-
     font-weight: 600;
-
     cursor: pointer;
 }
-
 
 .profile-upload input[type="file"] {
     display: none;
 }
 
-
 .profile-upload-text strong {
     font-size: 16px;
 }
 
-
 .profile-upload-text p {
     max-width: 400px;
     margin: 5px 0 0;
-    color: #777;
+    color: #6B6868;
     font-size: 14px;
 }
-
 
 /* FORM ROW */
 
 .form-row {
     display: grid;
-
     grid-template-columns: repeat(2, 1fr);
-
-    gap: 20px;
+    gap: 40px;
 }
-
 
 .form-field {
     margin-bottom: 22px;
 }
 
-
 .form-field.full-width {
     width: 100%;
 }
 
-
 .form-field label {
     display: block;
-
     margin-bottom: 8px;
-
     font-size: 14px;
-
     font-weight: 600;
-
-    color: #333;
+    color: #000000;
 }
-
 
 .form-field label i {
     margin-right: 7px;
-
-    color: #198754;
+    color: #007B75;
 }
 
 
@@ -1214,56 +1128,36 @@
 .form-field select,
 .form-field textarea {
     width: 100%;
-
     padding: 13px 15px;
-
     border: 1px solid #dddddd;
-
     border-radius: 10px;
-
     background: #ffffff;
-
     font-family: inherit;
-
     font-size: 14px;
-
     outline: none;
-
     box-sizing: border-box;
 }
-
 
 .form-field input:focus,
 .form-field select:focus,
 .form-field textarea:focus {
-    border-color: #198754;
-
+    border-color: #007B75;
     box-shadow: 0 0 0 3px rgba(25, 135, 84, 0.08);
 }
 
-
 .field-error {
     display: block;
-
     margin-top: 5px;
-
     color: #dc3545;
-
     font-size: 12px;
 }
 
-
 .form-error-box {
     padding: 13px 16px;
-
     margin-bottom: 20px;
-
     border-radius: 10px;
-
     background: #fff1f1;
-
     color: #dc3545;
-
     font-size: 14px;
 }
 
@@ -1272,69 +1166,38 @@
 
 .form-actions {
     display: flex;
-
     justify-content: flex-end;
-
     gap: 12px;
-
     margin-top: 15px;
-
     padding-top: 25px;
-
     border-top: 1px solid #eeeeee;
 }
-
 
 .form-cancel-button,
 .form-save-button {
     display: inline-flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 8px;
-
     padding: 12px 22px;
-
     border-radius: 10px;
-
     font-family: inherit;
-
     font-size: 14px;
-
     font-weight: 600;
-
     text-decoration: none;
-
     cursor: pointer;
 }
 
-
 .form-cancel-button {
-    background: #f3f3f3;
-
-    color: #555;
+    background: #F1F1F1;
+    color: #000000;
 }
-
 
 .form-save-button {
     border: none;
-
-    background: #198754;
-
+    background: #007B75;
     color: white;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1352,175 +1215,128 @@
 
 .delete-page {
     min-height: 80vh;
-
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     padding: 20px 30px 60px;
 }
 
-
 .delete-card {
     width: 100%;
-
     max-width: 520px;
-
     padding: 40px;
-
     text-align: center;
-
     background: #ffffff;
-
     border-radius: 22px;
-
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
-
 
 .delete-icon {
     width: 70px;
     height: 70px;
-
     margin: 0 auto 20px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border-radius: 50%;
-
     background: #fff1f1;
-
     color: #dc3545;
-
-    font-size: 27px;
+    font-size: 28px;
 }
-
 
 .delete-card h1 {
     margin-bottom: 12px;
-
-    font-size: 27px;
+    font-size: 28px;
 }
-
 
 .delete-card > p {
-    color: #666;
-
+    color: #6B6868;
     line-height: 1.6;
-
     margin-bottom: 8px;
+    font-size: 18px;
 }
-
 
 .delete-warning {
     display: block;
-
     color: #dc3545;
-
-    font-size: 13px;
-
+    font-size: 18px;
     margin-bottom: 25px;
 }
-
 
 .delete-patient-preview {
     display: flex;
-
     align-items: center;
-
     justify-content: center;
-
     gap: 12px;
-
     padding: 15px;
-
     margin-bottom: 25px;
-
-    background: #fafafa;
-
+    background: #F1F1F1;
     border-radius: 12px;
-
     text-align: left;
 }
-
 
 .delete-avatar {
     width: 48px;
     height: 48px;
-
     border-radius: 50%;
-
     overflow: hidden;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background: #eaf7ef;
-
-    color: #198754;
-
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );;
+    color: #ffffff;
+    font-size: 20px;
     font-weight: 700;
 }
-
 
 .delete-avatar img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
 }
-
 
 .delete-patient-preview strong,
 .delete-patient-preview span {
     display: block;
+    font-size: 18px;
 }
 
-
 .delete-patient-preview span {
-    color: #777;
-
-    font-size: 13px;
-
+    color: #6B6868;
+    font-size: 15px;
     margin-top: 3px;
 }
 
-
 .delete-actions {
     display: flex;
-
     justify-content: center;
-
     gap: 12px;
 }
 
+.form-cancel-button {
+    font-size: 16px;
+    color: #F1F1F1;
+    color: #000;
+    font-size: 16px;
+    text-decoration: none;
+}
 
 .delete-confirm-button {
     display: inline-flex;
-
     align-items: center;
     justify-content: center;
-
     gap: 8px;
-
     padding: 12px 20px;
-
     border: none;
-
     border-radius: 10px;
-
     background: #dc3545;
-
     color: white;
-
     font-family: inherit;
-
+    font-size: 16px;
     font-weight: 600;
-
     cursor: pointer;
 }
