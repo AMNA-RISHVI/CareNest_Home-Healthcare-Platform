@@ -211,7 +211,7 @@ def patient_dashboard(request):
 
     return render(
         request,
-        "patient_dashboard.html"
+        "patient_dashboard/dashboard.html"
     )
 
 
