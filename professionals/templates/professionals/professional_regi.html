@@ -14,69 +14,87 @@
         <form method="post" action= "{% url 'professionals' %}" enctype=multipart/form-data>
         {% csrf_token %}
             <div class="from-box">
-        <div>
-        <label>Qualifications</label><br>
-        <textarea name="qualifications" required></textarea><br>
-        </div>
-             
 
-        <div>
-        <label>Experiance</label><br>
-        <textarea name="experience" required> </textarea>
-        </div>
+                <div class="form-group">
+                    <label>Service Types:</label><br>
+                    <select name="service_type" id="service_type" required>
+                            <option value="">Select Service Type</option>
+                            <option value="doctor">Doctor Home Visit</option>
+                            <option value="nursing">Nursing Care</option>
+                            <option value="mlt">Medical Laboratory Technologist (MLT)</option>
+                            <option value="physiotherapist">Physiotherapist</option>
+                            <option value="caregiver">Caregiver</option>
+                            <option value="nutritionist">Nutritionist</option>
+                            <option value="counselor">Mental Health Counselor</option>
+                    </select>
+                </div>
+        
+            <div class="from-group">
+            <label>NIC number:</label><br>
+            <input type ="text" id="NIC" name="NIC">
+            </div> 
 
-        <div>
-        <label>Consultation Fee</label><br>
-        <input type ="text" id="fee" name="consultation_fee" step="0.01">
-        </div>
 
-        <div>
-        <label>Language</label><br>
-        <input type ="text" id="language" name="language">
-        </div>
 
-        <div>
-        <label>NIC number:</label><br>
-        <input type ="text" id="NIC" name="NIC">
-        </div> 
-        <div>
-        <label>Bio</label><br>
-        <input type ="text" id="bio" name="bio">
-        </div>
+            <div class="from-group">  
+            <label>Qualifications</label><br>
+            <textarea name="qualifications" required></textarea><br>
+            </div>
+                
+            <div class="from-group">
+            <label>Experiance</label><br>
+            <textarea name="experience" required> </textarea>
+            </div>
 
-        <div>
-        <label>Specialization</label><br>
-        <textarea name="description" required></textarea> 
-        </div>
+            <div class="from-group">
+            <label>Consultation Fee</label><br>
+            <input type ="text" id="fee" name="consultation_fee" step="0.01">
+            </div>
 
-        <div>
-        <label>District</label><br>
-        <input type ="text" id="district" name="district">
-        </div>
+            <div class="from-group">
+            <label>Language</label><br>
+            <input type ="text" id="language" name="language">
+            </div>
 
-        <div>
-        <label>city</label><br>
-        <input type ="text" id="city" name="city">
-        </div>
-
-         <div>
             
-            <label>submit the qualifications here </label>
-            <input
-                type="file"
-                id="qualifications_file"
-                name="qualifications_file"
-                hidden
-            >
-             <button
-                type="submit"
-                onclick="document.getElementById('qualifications_file').click()">
-                Add qualification here
-            </button>
-        </div>
-        <div class = "button-box">
-        <button type="submit" >Submit</button>
-        </div>
+            <div class="from-group">
+            <label>Bio</label><br>
+            <input type ="text" id="bio" name="bio">
+            </div>
+
+            <div class="from-group">
+            <label>Specialization</label><br>
+            <textarea name="description" required></textarea> 
+            </div>
+
+            <div class="from-group">
+            <label>District</label><br>
+            <input type ="text" id="district" name="district">
+            </div>
+
+            <div class="from-group">
+            <label>city</label><br>
+            <input type ="text" id="city" name="city">
+            </div>
+
+            <div>
+                
+                <label>submit the qualifications here </label>
+                <input
+                    type="file"
+                    id="qualifications_file"
+                    name="qualifications_file"
+                    hidden
+                >
+                <button
+                    type="submit"
+                    onclick="document.getElementById('qualifications_file').click()">
+                    Add qualification here
+                </button>
+            </div>
+            <div class = "button-box">
+            <button type="submit" >Submit</button>
+            </div>
         </form>
 
     </body>

@@ -3,8 +3,20 @@ from django.db import models
 # Create your models here.
 class Professionals(models.Model):
     professional_id= models.AutoField(primary_key=True)
-    User= models.OneToOneField('authentication.User', 
-                            on_delete=models.CASCADE)
+    #User= models.OneToOneField('authentication.User', 
+                            #on_delete=models.CASCADE)
+    service_type = models.CharField(
+        max_length=20,
+        choices=[
+        ('doctor', 'Doctor Home Visit'),
+        ('nursing', 'Nursing Care'),
+        ('mlt', 'Medical Laboratory Technologist (MLT)'),
+        ('physiotherapist', 'Physiotherapist'),
+        ('caregiver', 'Caregiver'),
+        ('nutritionist', 'Nutritionist'),
+        ('counselor', 'Mental Health Counselor'),
+        ]
+    )
                             
     qualifications = models.TextField()
     qualifications_file = models.FileField(

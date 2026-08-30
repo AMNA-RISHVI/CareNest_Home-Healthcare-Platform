@@ -8,6 +8,7 @@ class ProfessionalRegistrationForm(forms.ModelForm):
         model = Professionals
 
         fields = [
+            'service_type',
             'qualifications',
             'qualifications_file',
             'experience',

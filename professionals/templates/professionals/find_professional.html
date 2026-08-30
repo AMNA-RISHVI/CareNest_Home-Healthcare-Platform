@@ -7,7 +7,15 @@
     <title>Find Healthcare Professionals</title>
     <link rel="stylesheet" href="{% static 'professional/css/find_professional.css' %}">  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <script src="{% static 'professional/js/find_professional.js' %}"></script>
+    <script>
+    function selectService(button) {
+        document.querySelectorAll('.service-btn').forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+    }
+    </script>
 </head>
 <body>
 

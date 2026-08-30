@@ -27,20 +27,12 @@ def professionals(request):
         bio = request.POST.get('bio')
         nic_number = request.POST.get('nic_number')
         professional_code = request.POST.get('professional_code')
-
+        service_type = request.POST.get('service_type')
         qualifications_file = request.FILES.get(
             'qualifications_file'
         )
 
-        experience = request.POST.get('experience')
-        consultation_fee = request.POST.get('consultation_fee')
-        language = request.POST.get('language')
-        bio = request.POST.get('bio')
-        professional_code = request.POST.get('professional_code')
-
-        qualifications_file = request.FILES.get(
-            'qualifications_file'
-        )
+       
 
         # LOCATION DATA
         # -------------------------
@@ -56,19 +48,22 @@ def professionals(request):
         # 2. Create Professional profile
         Professionals.objects.create(
             User=request.user,
+            service_type=service_type,
             qualifications=qualifications,
             qualifications_file=qualifications_file,
             experience=experience,
             consultation_fee=consultation_fee,
             language=language,
             bio=bio,
+            nic_number=nic_number,
+
             professional_code=professional_code
         )
 
          # 3. CREATE LOCATION
         # -------------------------
         ProfessionalsLocation.objects.create(
-            professional=professional,
+            professional=professionals,
             district=district,
             city=city
         )
@@ -76,13 +71,13 @@ def professionals(request):
          # 4. CREATE SPECIALIZATION
         # -------------------------
         Specializations.objects.create(
-            professional=professional,
+            professional=professionals,
             description=specialization
         )
 
 
 
-        return redirect('professional_profile')
+        return redirect('professional_dashboard')
      # Show registration page
     return render(
             request,
@@ -122,8 +117,7 @@ def professional_profile(request):
 
 
 
-def availability(request):
-    return render(request,'professionals/availability.html')
+
 
 def find_professional(request):
          # Get approved professionals
@@ -164,7 +158,6 @@ def find_professional(request):
 
 
 
-def professional_dashboard(request):
-    return render(request,'professionals/professional_dashboard.html')
+
 
 
