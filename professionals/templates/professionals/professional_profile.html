@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1 class="page-title">Professionals Profile Created !</h1> 
+        <link rel="stylesheet" href="{% static 'professional/css/profile.css' %}">
+   </head>
+    <body>
+
+        <!--VIEW MODE-->
+        <div class ="profile-box">
+
+            <p>
+                <b> Name :</b>
+                 {{professional.User.full_name}}
+            </p>
+            <p>
+                <b>Qualifications:</b>
+                {{professional.qualifications}}
+                
+            </p>
+
+           {% for specialization in specializations %}
+            <p>
+                <b>Specializations:</b>
+                {{Specialization.description}}
+            </p>
+            {% endfor %}
+
+            <p>
+                <b>Experience:</b>
+                {{professional.experience}}
+            </p>
+
+            <p>
+                <b>Bio:</b>
+                {{professional.bio}}
+            </p>
+
+            <p>
+                <b>Language:</b>
+                {{professional.language}}
+            </p>
+
+            {% for location in locations %}
+            <p>
+                <b>District </b>
+                {{location.district}}
+            </p>
+           
+
+            <p>
+                <b>City</b>
+                {{location.city}}
+            </p>
+             {% endfor %}
+            
+        </div>
+
+        <div class="button-container">
+            
+
+            <button class="btn-box button"
+                    onclick="location.href='/login/'">
+                Next
+            </button>
+        </div>
+        <h3>Verification Status</h3>
+
+        {% if professional.verify_status == 'approved' %}
+            <span class="approved">✓ Verified</span>
+
+        {% elif professional.verify_status == 'pending' %}
+            <span class="pending">Verification Pending</span>
+
+        {% elif professional.verify_status == 'rejected' %}
+            <span class="rejected">Verification Rejected</span>
+        {% endif %}
+    
+    </body>  
+
+       
+</html>
