@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block navbar %}
+    {% include "landing/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'health_wallet/css/professional_access.css' %}"
+>
+
+<div class="professional-access-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Patient Access</h1>
+
+            <p>
+                Manage your health-record access requests.
+            </p>
+        </div>
+
+    </div>
+
+
+    {% if access_requests %}
+
+        <div class="access-list">
+
+            {% for access in access_requests %}
+
+                <div class="access-card">
+
+                    <div class="access-patient">
+
+                        {% if access.patient.profile_picture %}
+
+                            <img
+                                src="{{ access.patient.profile_picture.url }}"
+                                alt="{{ access.patient.patient_name }}"
+                                class="patient-avatar"
+                            >
+
+                        {% else %}
+
+                            <div class="patient-avatar placeholder">
+                                {{ access.patient.patient_name|first|upper }}
+                            </div>
+
+                        {% endif %}
+
+                        <div>
+
+                            <h3>
+                                {{ access.patient.patient_name }}
+                            </h3>
+
+                            <p>
+                                {{ access.patient.relationship }}
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="access-status">
+
+                        {% if access.status == "active" %}
+
+                            <span class="status active">
+                                Active
+                            </span>
+
+                            <a
+                                href="{% url 'health_wallet:professional_patient_records' access.patient.patient_id %}"
+                                class="btn-primary"
+                            >
+                                View Health Records
+                            </a>
+
+                        {% elif access.status == "pending" %}
+
+                            <span class="status pending">
+                                Pending Patient Approval
+                            </span>
+
+                        {% elif access.status == "rejected" %}
+
+                            <span class="status rejected">
+                                Rejected
+                            </span>
+
+                        {% elif access.status == "revoked" %}
+
+                            <span class="status revoked">
+                                Access Revoked
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>No Access Requests</h3>
+
+            <p>
+                You currently do not have any patient access requests.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,2825 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        All Health Records | CareNest
+    </title>
+
+    <!--
+        Main page stylesheet
+    -->
+    <link
+        rel="stylesheet"
+        href="{% static 'health_wallet/css/all_records.css' %}"
+    >
+
+    <!--
+        Font Awesome
+        Used for:
+        - edit
+        - delete
+        - filter
+        - medical icons
+        - file icons
+    -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="health-wallet-page">
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="wallet-container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <section class="page-header">
+
+            <div class="page-header-text">
+
+                <div class="breadcrumb">
+
+                    <a
+                        href="{% url 'patient_dashboard:dashboard' %}"
+                    >
+                        Dashboard
+                    </a>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <a href="#">
+                        Health Wallet
+                    </a>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                    <span>
+                        All Records
+                    </span>
+
+                </div>
+
+
+                <h1>
+                    All Health Records
+                </h1>
+
+                <p>
+                    View and manage the complete health record
+                    history of {{ patient.patient_name }}.
+                </p>
+
+            </div>
+
+
+            <div class="header-actions">
+
+                <a
+                    href="{% url 'health_wallet:health_wallet' patient.patient_id %}"
+                    class="back-button"
+                >
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Health Wallet
+
+                </a>
+
+
+                {% if category != "all" %}
+
+                    <a
+                        href="{% url 'health_wallet:add_record' patient.patient_id category %}"
+                        class="add-record-button"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Record
+
+                    </a>
+
+                {% else %}
+
+                    <button
+                        type="button"
+                        class="add-record-button"
+                        id="openAddRecordMenu"
+                    >
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Record
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PATIENT SELECTOR
+        ================================================== -->
+
+        <section class="patient-selector-section">
+
+            <div class="selector-title">
+
+                <div class="selector-icon">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Family Member
+                    </h2>
+
+                    <p>
+                        Select whose health records you want
+                        to view.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="patient-selector">
+
+                {% for family_member in patient.user.patients.all %}
+
+                    <a
+                        href="{% url 'health_wallet:all_records' family_member.patient_id %}?category={{ category }}"
+                        class="patient-option
+                        {% if family_member.patient_id == patient.patient_id %}
+                            active
+                        {% endif %}"
+                    >
+
+                        <div class="patient-option-avatar">
+
+                            {% if family_member.profile_picture %}
+
+                                <img
+                                    src="{{ family_member.profile_picture.url }}"
+                                    alt="{{ family_member.patient_name }}"
+                                >
+
+                            {% else %}
+
+                                {{ family_member.patient_name|first|upper }}
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="patient-option-info">
+
+                            <strong>
+                                {{ family_member.patient_name }}
+                            </strong>
+
+                            <span>
+                                {{ family_member.relationship }}
+                            </span>
+
+                        </div>
+
+
+                        {% if family_member.patient_id == patient.patient_id %}
+
+                            <span class="selected-check">
+
+                                <i class="fa-solid fa-check"></i>
+
+                            </span>
+
+                        {% endif %}
+
+                    </a>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACCESS INFORMATION
+        ================================================== -->
+
+        {% if request.user.role == "PROFESSIONAL" %}
+
+            <div class="professional-access-banner">
+
+                <div class="access-banner-icon">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                </div>
+
+                <div class="access-banner-content">
+
+                    <strong>
+                        Authorized Professional Access
+                    </strong>
+
+                    <p>
+                        You are viewing this patient's health
+                        records through approved professional
+                        access.
+                    </p>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             CATEGORY FILTER
+        ================================================== -->
+
+        <section class="records-toolbar">
+
+            <div class="filter-heading">
+
+                <span class="filter-icon">
+
+                    <i class="fa-solid fa-filter"></i>
+
+                </span>
+
+                <div>
+
+                    <h2>
+                        Health Records
+                    </h2>
+
+                    <p>
+                        Filter records by category.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="category-filter">
+
+                <a
+                    href="?category=all"
+                    class="filter-button
+                    {% if category == 'all' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-layer-group"></i>
+
+                    All
+
+                </a>
+
+
+                <a
+                    href="?category=allergies"
+                    class="filter-button
+                    {% if category == 'allergies' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    Allergies
+
+                </a>
+
+
+                <a
+                    href="?category=chronic"
+                    class="filter-button
+                    {% if category == 'chronic' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-heart-pulse"></i>
+
+                    Chronic Conditions
+
+                </a>
+
+
+                <a
+                    href="?category=prescriptions"
+                    class="filter-button
+                    {% if category == 'prescriptions' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    Prescriptions
+
+                </a>
+
+
+                <a
+                    href="?category=lab_reports"
+                    class="filter-button
+                    {% if category == 'lab_reports' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-flask"></i>
+
+                    Lab Reports
+
+                </a>
+
+
+                <a
+                    href="?category=vaccination"
+                    class="filter-button
+                    {% if category == 'vaccination' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-syringe"></i>
+
+                    Vaccinations
+
+                </a>
+
+
+                <a
+                    href="?category=medical_history"
+                    class="filter-button
+                    {% if category == 'medical_history' %}active{% endif %}"
+                >
+
+                    <i class="fa-solid fa-notes-medical"></i>
+
+                    Medical History
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             RECORD CONTENT
+        ================================================== -->
+
+        <section class="records-content">
+
+
+            <!-- =================================================
+                 ALL RECORDS
+            ================================================== -->
+
+            {% if category == "all" %}
+
+
+                <!-- =============================================
+                     ALLERGIES
+                ============================================== -->
+
+                <div class="record-category-section">
+
+                    <div class="category-section-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon allergy-icon">
+
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Allergies
+                                </h2>
+
+                                <span>
+                                    {{ allergies|length }}
+                                    record{{ allergies|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'allergies' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if allergies %}
+
+                        <div class="records-grid">
+
+                            {% for record in allergies %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="record-main-icon allergy-icon">
+
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'allergies' record.allergy_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'allergies' record.allergy_id %}"
+                                                data-record-name="{{ record.allergy_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.allergy_name }}
+                                        </h3>
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Severity
+                                            </span>
+
+                                            <strong>
+                                                {{ record.severity }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.reaction %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Reaction
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.reaction }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                        {% if record.updated_by %}
+
+                                            <span>
+                                                Updated
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            <h3>
+                                No allergies recorded
+                            </h3>
+
+                            <p>
+                                Add an allergy record to keep
+                                important information available.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- =============================================
+                     CHRONIC CONDITIONS
+                ============================================== -->
+
+                <div class="record-category-section">
+
+                    <div class="category-section-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon chronic-icon">
+
+                                <i class="fa-solid fa-heart-pulse"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Chronic Conditions
+                                </h2>
+
+                                <span>
+                                    {{ chronic_conditions|length }}
+                                    record{{ chronic_conditions|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'chronic_conditions' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if chronic_conditions %}
+
+                        <div class="records-grid">
+
+                            {% for record in chronic_conditions %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="record-main-icon chronic-icon">
+
+                                            <i class="fa-solid fa-heart-pulse"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'chronic_conditions' record.condition_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'chronic_conditions' record.condition_id %}"
+                                                data-record-name="{{ record.condition_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.condition_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Status
+                                            </span>
+
+                                            <strong>
+                                                {{ record.status }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.diagnosed_date %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Diagnosed
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.diagnosed_date|date:"d M Y" }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-heart-pulse"></i>
+
+                            <h3>
+                                No chronic conditions recorded
+                            </h3>
+
+                            <p>
+                                No chronic condition records
+                                are currently available.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- =============================================
+                     PRESCRIPTIONS
+                ============================================== -->
+
+                <div class="record-category-section">
+
+                    <div class="category-section-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon prescription-icon">
+
+                                <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Prescriptions
+                                </h2>
+
+                                <span>
+                                    {{ prescriptions|length }}
+                                    record{{ prescriptions|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'prescriptions' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if prescriptions %}
+
+                        <div class="records-grid">
+
+                            {% for record in prescriptions %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon prescription-icon">
+
+                                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'prescriptions' record.prescription_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'prescriptions' record.prescription_id %}"
+                                                data-record-name="{{ record.title }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.title }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Medication
+                                            </span>
+
+                                            <strong>
+                                                {{ record.medication }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Dosage
+                                            </span>
+
+                                            <strong>
+                                                {{ record.dosage }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.prescription_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.instructions %}
+
+                                            <p class="record-notes">
+
+                                                <strong>
+                                                    Instructions:
+                                                </strong>
+
+                                                {{ record.instructions }}
+
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        {% if record.prescription_file %}
+
+                                            <a
+                                                href="{{ record.prescription_file.url }}"
+                                                target="_blank"
+                                                class="file-link"
+                                            >
+
+                                                <i class="fa-solid fa-file-medical"></i>
+
+                                                View Prescription File
+
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                            <h3>
+                                No prescriptions recorded
+                            </h3>
+
+                            <p>
+                                Prescription records will appear
+                                here when added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- =============================================
+                     LAB REPORTS
+                ============================================== -->
+
+                <div class="record-category-section">
+
+                    <div class="category-section-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon lab-icon">
+
+                                <i class="fa-solid fa-flask"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Laboratory Reports
+                                </h2>
+
+                                <span>
+                                    {{ lab_reports|length }}
+                                    report{{ lab_reports|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'lab_reports' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if lab_reports %}
+
+                        <div class="records-grid">
+
+                            {% for record in lab_reports %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon lab-icon">
+
+                                            <i class="fa-solid fa-flask"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'lab_reports' record.report_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'lab_reports' record.report_id %}"
+                                                data-record-name="{{ record.report_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.report_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Test Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.test_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.laboratory_name %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Laboratory
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.laboratory_name }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.result_summary %}
+
+                                            <p class="record-notes">
+
+                                                <strong>
+                                                    Result:
+                                                </strong>
+
+                                                {{ record.result_summary }}
+
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        {% if record.report_file %}
+
+                                            <a
+                                                href="{{ record.report_file.url }}"
+                                                target="_blank"
+                                                class="file-link"
+                                            >
+
+                                                <i class="fa-solid fa-file-waveform"></i>
+
+                                                View Lab Report
+
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-flask"></i>
+
+                            <h3>
+                                No laboratory reports
+                            </h3>
+
+                            <p>
+                                Laboratory reports will appear
+                                here when added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- =============================================
+                     VACCINATIONS
+                ============================================== -->
+
+                <div class="record-category-section">
+
+                    <div class="category-section-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon vaccination-icon">
+
+                                <i class="fa-solid fa-syringe"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Vaccination Records
+                                </h2>
+
+                                <span>
+                                    {{ vaccinations|length }}
+                                    record{{ vaccinations|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'vaccination' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if vaccinations %}
+
+                        <div class="records-grid">
+
+                            {% for record in vaccinations %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon vaccination-icon">
+
+                                            <i class="fa-solid fa-syringe"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'vaccination' record.vaccination_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'vaccination' record.vaccination_id %}"
+                                                data-record-name="{{ record.vaccine_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.vaccine_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Vaccination Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.vaccination_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.dose %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Dose
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.dose }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.next_due_date %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Next Due
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.next_due_date|date:"d M Y" }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.provider %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Provider
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.provider }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-syringe"></i>
+
+                            <h3>
+                                No vaccination records
+                            </h3>
+
+                            <p>
+                                Vaccination records will appear
+                                here when added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+
+            <!-- =================================================
+                 ALLERGIES FILTER
+            ================================================== -->
+
+            {% elif category == "allergies" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                Health Wallet
+                            </span>
+
+                            <h2>
+                                Allergies
+                            </h2>
+
+                            <p>
+                                Allergies and reactions recorded
+                                for {{ patient.patient_name }}.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'allergies' %}"
+                            class="add-record-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Allergy
+
+                        </a>
+
+                    </div>
+
+
+                    {% if allergies %}
+
+                        <div class="records-grid">
+
+                            {% for record in allergies %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon allergy-icon">
+
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'allergies' record.allergy_id %}"
+                                                class="edit-action"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'allergies' record.allergy_id %}"
+                                                data-record-name="{{ record.allergy_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.allergy_name }}
+                                        </h3>
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Severity
+                                            </span>
+
+                                            <strong>
+                                                {{ record.severity }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.reaction %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Reaction
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.reaction }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+
+                            <h3>
+                                No allergy records
+                            </h3>
+
+                            <p>
+                                No allergy information has been
+                                recorded for this patient.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+            <!-- =================================================
+                 CHRONIC CONDITIONS FILTER
+            ================================================== -->
+
+            {% elif category == "chronic" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                Health Wallet
+                            </span>
+
+                            <h2>
+                                Chronic Conditions
+                            </h2>
+
+                            <p>
+                                Long-term medical conditions
+                                recorded for this patient.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'chronic_conditions' %}"
+                            class="add-record-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Condition
+
+                        </a>
+
+                    </div>
+
+
+                    {% if chronic_conditions %}
+
+                        <div class="records-grid">
+
+                            {% for record in chronic_conditions %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon chronic-icon">
+
+                                            <i class="fa-solid fa-heart-pulse"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'chronic_conditions' record.condition_id %}"
+                                                class="edit-action"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'chronic_conditions' record.condition_id %}"
+                                                data-record-name="{{ record.condition_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.condition_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Status
+                                            </span>
+
+                                            <strong>
+                                                {{ record.status }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.diagnosed_date %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Diagnosed
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.diagnosed_date|date:"d M Y" }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-heart-pulse"></i>
+
+                            <h3>
+                                No chronic conditions
+                            </h3>
+
+                            <p>
+                                No chronic conditions have been
+                                recorded.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+            <!-- =================================================
+                 PRESCRIPTIONS FILTER
+            ================================================== -->
+
+            {% elif category == "prescriptions" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                Health Wallet
+                            </span>
+
+                            <h2>
+                                Prescriptions
+                            </h2>
+
+                            <p>
+                                Medication and prescription records
+                                for this patient.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'prescriptions' %}"
+                            class="add-record-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Prescription
+
+                        </a>
+
+                    </div>
+
+
+                    {% if prescriptions %}
+
+                        <div class="records-grid">
+
+                            {% for record in prescriptions %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon prescription-icon">
+
+                                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'prescriptions' record.prescription_id %}"
+                                                class="edit-action"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'prescriptions' record.prescription_id %}"
+                                                data-record-name="{{ record.title }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.title }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Medication
+                                            </span>
+
+                                            <strong>
+                                                {{ record.medication }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Dosage
+                                            </span>
+
+                                            <strong>
+                                                {{ record.dosage }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.prescription_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.instructions %}
+
+                                            <p class="record-notes">
+
+                                                <strong>
+                                                    Instructions:
+                                                </strong>
+
+                                                {{ record.instructions }}
+
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        {% if record.prescription_file %}
+
+                                            <a
+                                                href="{{ record.prescription_file.url }}"
+                                                target="_blank"
+                                                class="file-link"
+                                            >
+
+                                                <i class="fa-solid fa-file-medical"></i>
+
+                                                View Prescription
+
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                            <h3>
+                                No prescriptions
+                            </h3>
+
+                            <p>
+                                No prescription records have
+                                been added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+            <!-- =================================================
+                 LAB REPORT FILTER
+            ================================================== -->
+
+            {% elif category == "lab_reports" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                Health Wallet
+                            </span>
+
+                            <h2>
+                                Laboratory Reports
+                            </h2>
+
+                            <p>
+                                Laboratory and diagnostic reports
+                                for this patient.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'lab_reports' %}"
+                            class="add-record-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Lab Report
+
+                        </a>
+
+                    </div>
+
+
+                    {% if lab_reports %}
+
+                        <div class="records-grid">
+
+                            {% for record in lab_reports %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon lab-icon">
+
+                                            <i class="fa-solid fa-flask"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'lab_reports' record.report_id %}"
+                                                class="edit-action"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'lab_reports' record.report_id %}"
+                                                data-record-name="{{ record.report_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.report_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Test Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.test_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.laboratory_name %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Laboratory
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.laboratory_name }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.result_summary %}
+
+                                            <p class="record-notes">
+
+                                                <strong>
+                                                    Result:
+                                                </strong>
+
+                                                {{ record.result_summary }}
+
+                                            </p>
+
+                                        {% endif %}
+
+
+                                        {% if record.report_file %}
+
+                                            <a
+                                                href="{{ record.report_file.url }}"
+                                                target="_blank"
+                                                class="file-link"
+                                            >
+
+                                                <i class="fa-solid fa-file-waveform"></i>
+
+                                                View Lab Report
+
+                                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+
+                                            </a>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-flask"></i>
+
+                            <h3>
+                                No laboratory reports
+                            </h3>
+
+                            <p>
+                                No laboratory reports have
+                                been added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+            <!-- =================================================
+                 VACCINATION FILTER
+            ================================================== -->
+
+            {% elif category == "vaccination" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div>
+
+                            <span class="section-label">
+                                Health Wallet
+                            </span>
+
+                            <h2>
+                                Vaccination Records
+                            </h2>
+
+                            <p>
+                                Vaccination history for
+                                {{ patient.patient_name }}.
+                            </p>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'vaccination' %}"
+                            class="add-record-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Vaccination
+
+                        </a>
+
+                    </div>
+
+
+                    {% if vaccinations %}
+
+                        <div class="records-grid">
+
+                            {% for record in vaccinations %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon vaccination-icon">
+
+                                            <i class="fa-solid fa-syringe"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'vaccination' record.vaccination_id %}"
+                                                class="edit-action"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'vaccination' record.vaccination_id %}"
+                                                data-record-name="{{ record.vaccine_name }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.vaccine_name }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Vaccination Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.vaccination_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        {% if record.dose %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Dose
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.dose }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.next_due_date %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Next Due
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.next_due_date|date:"d M Y" }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.provider %}
+
+                                            <div class="record-detail-row">
+
+                                                <span>
+                                                    Provider
+                                                </span>
+
+                                                <strong>
+                                                    {{ record.provider }}
+                                                </strong>
+
+                                            </div>
+
+                                        {% endif %}
+
+
+                                        {% if record.notes %}
+
+                                            <p class="record-notes">
+                                                {{ record.notes }}
+                                            </p>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-syringe"></i>
+
+                            <h3>
+                                No vaccination records
+                            </h3>
+
+                            <p>
+                                No vaccination records have
+                                been added.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+            
+        
+
+
+
+
+
+
+
+
+            <!-- =============================================
+            MEDICAL HISTORY   
+            ============================================== -->
+            {% elif category == "medical_history" %}
+
+                <div class="filtered-category-page">
+
+                    <div class="filtered-header">
+
+                        <div class="category-title-wrapper">
+
+                            <div class="category-icon history-icon">
+
+                                <i class="fa-solid fa-notes-medical"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h2>
+                                    Medical History
+                                </h2>
+
+                                <span>
+                                    {{ medical_history|length }}
+                                    record{{ medical_history|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <a
+                            href="{% url 'health_wallet:add_record' patient.patient_id 'medical_history' %}"
+                            class="category-add-button"
+                        >
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add
+
+                        </a>
+
+                    </div>
+
+
+                    {% if medical_history %}
+
+                        <div class="records-grid">
+
+                            {% for record in medical_history %}
+
+                                <article class="record-card">
+
+                                    <div class="record-card-top">
+
+                                        <div class="category-icon history-icon">
+
+                                            <i class="fa-solid fa-notes-medical"></i>
+
+                                        </div>
+
+
+                                        <div class="record-actions">
+
+                                            <a
+                                                href="{% url 'health_wallet:edit_record' patient.patient_id 'medical_history' record.history_id %}"
+                                                class="edit-action"
+                                                title="Edit record"
+                                            >
+
+                                                <i class="fa-solid fa-pencil"></i>
+
+                                            </a>
+
+
+                                            <button
+                                                type="button"
+                                                class="delete-action delete-record-button"
+                                                title="Delete record"
+                                                data-delete-url="{% url 'health_wallet:delete_record' patient.patient_id 'medical_history' record.history_id %}"
+                                                data-record-name="{{ record.title }}"
+                                            >
+
+                                                <i class="fa-solid fa-trash"></i>
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="record-card-body">
+
+                                        <h3>
+                                            {{ record.title }}
+                                        </h3>
+
+
+                                        <div class="record-detail-row">
+
+                                            <span>
+                                                Event Date
+                                            </span>
+
+                                            <strong>
+                                                {{ record.event_date|date:"d M Y" }}
+                                            </strong>
+
+                                        </div>
+
+
+                                        <p class="record-notes">
+                                            {{ record.description }}
+                                        </p>
+
+                                    </div>
+
+
+                                    <div class="record-card-footer">
+
+                                        <span>
+                                            Added
+                                            {{ record.created_at|date:"d M Y" }}
+                                        </span>
+
+                                    </div>
+
+                                </article>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="empty-record-state">
+
+                            <i class="fa-solid fa-notes-medical"></i>
+
+                            <h3>
+                                No medical history recorded
+                            </h3>
+
+                            <p>
+                                Add important medical events,
+                                surgeries or hospitalizations.
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {% endif %}
+
+
+        </section>
+
+    </main>
+
+
+
+    <!-- =====================================================
+         ADD RECORD MENU
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="addRecordModal"
+    >
+
+        <div class="add-record-modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeAddRecordMenu"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+
+                    <i class="fa-solid fa-folder-plus"></i>
+
+                </div>
+
+                <h2>
+                    Add Health Record
+                </h2>
+
+                <p>
+                    Select the type of health record
+                    you want to add.
+                </p>
+
+            </div>
+
+
+            <div class="add-record-options">
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'allergies' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon allergy-icon">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Allergy
+                        </strong>
+
+                        <small>
+                            Record allergies and reactions
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'chronic_conditions' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon chronic-icon">
+
+                        <i class="fa-solid fa-heart-pulse"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Chronic Condition
+                        </strong>
+
+                        <small>
+                            Record long-term conditions
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'prescriptions' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon prescription-icon">
+
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Prescription
+                        </strong>
+
+                        <small>
+                            Add medication and prescription files
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'lab_reports' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon lab-icon">
+
+                        <i class="fa-solid fa-flask"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Lab Report
+                        </strong>
+
+                        <small>
+                            Add laboratory results and files
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'vaccination' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon vaccination-icon">
+
+                        <i class="fa-solid fa-syringe"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Vaccination
+                        </strong>
+
+                        <small>
+                            Record vaccination history
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="{% url 'health_wallet:add_record' patient.patient_id 'medical_history' %}"
+                    class="add-record-option"
+                >
+
+                    <span class="option-icon history-icon">
+
+                        <i class="fa-solid fa-notes-medical"></i>
+
+                    </span>
+
+                    <span>
+
+                        <strong>
+                            Medical History
+                        </strong>
+
+                        <small>
+                            Add important medical events
+                        </small>
+
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         DELETE CONFIRMATION MODAL
+    ====================================================== -->
+
+    <div
+        class="modal-overlay"
+        id="deleteModal"
+    >
+
+        <div class="delete-modal">
+
+            <button
+                type="button"
+                class="modal-close"
+                id="closeDeleteModal"
+            >
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+
+            <div class="delete-icon">
+
+                <i class="fa-solid fa-trash"></i>
+
+            </div>
+
+
+            <h2>
+                Delete Record?
+            </h2>
+
+
+            <p>
+
+                Are you sure you want to delete
+
+                <strong id="deleteRecordName">
+                    this record
+                </strong>?
+
+                <br>
+
+                This action cannot be undone.
+
+            </p>
+
+
+            <div class="delete-modal-actions">
+
+                <button
+                    type="button"
+                    class="cancel-delete-button"
+                    id="cancelDelete"
+                >
+                    Cancel
+                </button>
+
+
+                <form
+                    method="POST"
+                    id="deleteRecordForm"
+                >
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="confirm-delete-button"
+                    >
+
+                        <i class="fa-solid fa-trash"></i>
+
+                        Delete
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{% static 'health_wallet/js/all_records.js' %}"
+    ></script>
+
+</div>
+
+</body>
+
+</html>

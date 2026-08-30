@@ -1,0 +1,219 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Delete {{ category|title }} - Health Wallet
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'health_wallet/css/delete_record.css' %}">
+
+</head>
+
+<body>
+
+<div class="delete-page">
+
+    <div class="delete-card">
+
+
+        <!-- ===================================== -->
+        <!-- WARNING ICON -->
+        <!-- ===================================== -->
+
+        <div class="warning-icon">
+
+            🗑
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- TITLE -->
+        <!-- ===================================== -->
+
+        <h1>
+            Delete Record?
+        </h1>
+
+
+        <p class="warning-text">
+
+            Are you sure you want to permanently delete this
+            <strong>{{ category|title }}</strong> record?
+
+        </p>
+
+
+        <!-- ===================================== -->
+        <!-- PATIENT -->
+        <!-- ===================================== -->
+
+        <div class="patient-info">
+
+            <span class="label">
+                Patient
+            </span>
+
+            <strong>
+                {{ patient.patient_name }}
+            </strong>
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- RECORD PREVIEW -->
+        <!-- ===================================== -->
+
+        <div class="record-preview">
+
+            {% if category == "allergies" %}
+
+                <h3>
+                    {{ record.allergy_name }}
+                </h3>
+
+                <p>
+                    Severity: {{ record.severity }}
+                </p>
+
+                {% if record.reaction %}
+
+                    <p>
+                        Reaction: {{ record.reaction }}
+                    </p>
+
+                {% endif %}
+
+
+            {% elif category == "chronic" %}
+
+                <h3>
+                    {{ record.condition_name }}
+                </h3>
+
+                <p>
+                    Status: {{ record.status }}
+                </p>
+
+
+            {% elif category == "prescriptions" %}
+
+                <h3>
+                    {{ record.title }}
+                </h3>
+
+                <p>
+                    Medication: {{ record.medication }}
+                </p>
+
+
+            {% elif category == "lab_reports" %}
+
+                <h3>
+                    {{ record.report_name }}
+                </h3>
+
+                <p>
+                    Test Date: {{ record.test_date }}
+                </p>
+
+
+            {% elif category == "vaccination" %}
+
+                <h3>
+                    {{ record.vaccine_name }}
+                </h3>
+
+                <p>
+                    Vaccination Date:
+                    {{ record.vaccination_date }}
+                </p>
+
+
+            {% elif category == "medical_history" %}
+
+                <h3>
+                    {{ record.title }}
+                </h3>
+
+                <p>
+                    Event Date:
+                    {{ record.event_date }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- WARNING -->
+        <!-- ===================================== -->
+
+        <div class="danger-message">
+
+            <strong>
+                This action cannot be undone.
+            </strong>
+
+            <p>
+                The record will be permanently removed
+                from the patient's Health Wallet.
+            </p>
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- ACTIONS -->
+        <!-- ===================================== -->
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="delete-actions">
+
+                <a href="{% url 'health_wallet:all_records' patient.patient_id %}?category={{ category }}"
+                   class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="delete-btn">
+
+                    🗑
+
+                    Delete Permanently
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'health_wallet/js/delete_record.js' %}">
+</script>
+
+</body>
+
+</html>

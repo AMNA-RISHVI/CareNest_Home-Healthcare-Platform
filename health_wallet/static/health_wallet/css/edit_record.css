@@ -1,0 +1,15 @@
+@import url("add_record.css");
+
+.update-btn {
+    border: none;
+    background: #397f83;
+    color: white;
+    padding: 12px 22px;
+    border-radius: 9px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.update-btn:hover {
+    opacity: 0.9;
+}

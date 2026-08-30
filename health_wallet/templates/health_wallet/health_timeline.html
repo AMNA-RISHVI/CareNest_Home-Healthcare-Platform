@@ -1,0 +1,503 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Health Timeline | CareNest
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'health_wallet/css/health_timeline.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="timeline-page">
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <header class="timeline-header">
+
+        <div class="header-left">
+
+            <a
+                href="{% url 'health_wallet:health_wallet' patient_id=patient.patient_id %}"
+                class="back-button"
+            >
+                ←
+            </a>
+
+            <div>
+
+                <h1>
+                    Health Timeline
+                </h1>
+
+                <p>
+                    Complete health history of
+                    {{ patient.patient_name }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="header-right">
+
+            <a
+                href="{% url 'health_wallet:all_records' patient_id=patient.patient_id %}"
+                class="records-button"
+            >
+                View All Records
+            </a>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================================================= -->
+    <!-- PATIENT SUMMARY -->
+    <!-- ================================================= -->
+
+    <section class="patient-summary">
+
+        <div class="patient-avatar">
+
+            {% if patient.profile_picture %}
+
+                <img
+                    src="{{ patient.profile_picture.url }}"
+                    alt="{{ patient.patient_name }}"
+                >
+
+            {% else %}
+
+                <span>
+                    {{ patient.patient_name|first|upper }}
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="patient-info">
+
+            <h2>
+                {{ patient.patient_name }}
+            </h2>
+
+            <p>
+                {{ patient.relationship }}
+            </p>
+
+        </div>
+
+
+        {% if patient.blood_group %}
+
+        <div class="blood-group">
+
+            <span class="blood-label">
+                Blood Group
+            </span>
+
+            <strong>
+                {{ patient.blood_group }}
+            </strong>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- ================================================= -->
+    <!-- TIMELINE -->
+    <!-- ================================================= -->
+
+    <main class="timeline-container">
+
+
+        {% if timeline %}
+
+
+            <div class="timeline-line"></div>
+
+
+            {% for item in timeline %}
+
+            <article class="timeline-item">
+
+
+                <!-- Timeline marker -->
+
+                <div class="timeline-marker">
+
+                    {% if item.category == "Allergy" %}
+
+                        ⚠
+
+                    {% elif item.category == "Chronic Condition" %}
+
+                        ♡
+
+                    {% elif item.category == "Prescription" %}
+
+                        💊
+
+                    {% elif item.category == "Laboratory Report" %}
+
+                        🧪
+
+                    {% elif item.category == "Vaccination" %}
+
+                        💉
+
+                    {% elif item.category == "Medical History" %}
+
+                        🏥
+
+                    {% else %}
+
+                        •
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- Timeline card -->
+
+                <div class="timeline-card">
+
+
+                    <div class="timeline-card-header">
+
+                        <span class="timeline-category">
+
+                            {{ item.category }}
+
+                        </span>
+
+                        <span class="timeline-date">
+
+                            {{ item.date|date:"M d, Y" }}
+
+                        </span>
+
+                    </div>
+
+
+                    <h3>
+                        {{ item.title }}
+                    </h3>
+
+
+                    <!-- ================================= -->
+                    <!-- ALLERGY -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Allergy" %}
+
+                        <div class="timeline-details">
+
+                            <p>
+                                <strong>Severity:</strong>
+                                {{ item.record.severity }}
+                            </p>
+
+                            {% if item.record.reaction %}
+
+                            <p>
+                                <strong>Reaction:</strong>
+                                {{ item.record.reaction }}
+                            </p>
+
+                            {% endif %}
+
+                            {% if item.record.notes %}
+
+                            <p>
+                                {{ item.record.notes }}
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ================================= -->
+                    <!-- CHRONIC CONDITION -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Chronic Condition" %}
+
+                        <div class="timeline-details">
+
+                            <p>
+                                <strong>Status:</strong>
+                                {{ item.record.status }}
+                            </p>
+
+                            {% if item.record.diagnosed_date %}
+
+                            <p>
+                                <strong>Diagnosed:</strong>
+                                {{ item.record.diagnosed_date|date:"M d, Y" }}
+                            </p>
+
+                            {% endif %}
+
+                            {% if item.record.notes %}
+
+                            <p>
+                                {{ item.record.notes }}
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ================================= -->
+                    <!-- PRESCRIPTION -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Prescription" %}
+
+                        <div class="timeline-details">
+
+                            <p>
+                                <strong>Medication:</strong>
+                                {{ item.record.medication }}
+                            </p>
+
+                            <p>
+                                <strong>Dosage:</strong>
+                                {{ item.record.dosage }}
+                            </p>
+
+                            <p>
+                                <strong>Instructions:</strong>
+                                {{ item.record.instructions }}
+                            </p>
+
+
+                            {% if item.record.professional %}
+
+                            <p>
+                                <strong>Professional:</strong>
+                                {{ item.record.professional.get_full_name|default:item.record.professional.username }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if item.record.prescription_file %}
+
+                            <a
+                                href="{{ item.record.prescription_file.url }}"
+                                target="_blank"
+                                class="file-link"
+                            >
+                                View Prescription File
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ================================= -->
+                    <!-- LAB REPORT -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Laboratory Report" %}
+
+                        <div class="timeline-details">
+
+                            {% if item.record.laboratory_name %}
+
+                            <p>
+                                <strong>Laboratory:</strong>
+                                {{ item.record.laboratory_name }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if item.record.result_summary %}
+
+                            <p>
+                                <strong>Results:</strong>
+                                {{ item.record.result_summary }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if item.record.report_file %}
+
+                            <a
+                                href="{{ item.record.report_file.url }}"
+                                target="_blank"
+                                class="file-link"
+                            >
+                                View Laboratory Report
+                            </a>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ================================= -->
+                    <!-- VACCINATION -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Vaccination" %}
+
+                        <div class="timeline-details">
+
+                            {% if item.record.dose %}
+
+                            <p>
+                                <strong>Dose:</strong>
+                                {{ item.record.dose }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if item.record.provider %}
+
+                            <p>
+                                <strong>Provider:</strong>
+                                {{ item.record.provider }}
+                            </p>
+
+                            {% endif %}
+
+
+                            {% if item.record.next_due_date %}
+
+                            <p>
+                                <strong>Next Due:</strong>
+                                {{ item.record.next_due_date|date:"M d, Y" }}
+                            </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endif %}
+
+
+
+                    <!-- ================================= -->
+                    <!-- MEDICAL HISTORY -->
+                    <!-- ================================= -->
+
+                    {% if item.category == "Medical History" %}
+
+                        <div class="timeline-details">
+
+                            <p>
+                                {{ item.record.description }}
+                            </p>
+
+                        </div>
+
+                    {% endif %}
+
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+
+        {% else %}
+
+            <!-- ========================================= -->
+            <!-- EMPTY TIMELINE -->
+            <!-- ========================================= -->
+
+            <div class="empty-timeline">
+
+                <div class="empty-icon">
+                    🩺
+                </div>
+
+                <h2>
+                    No Health History Yet
+                </h2>
+
+                <p>
+                    Health records added for
+                    {{ patient.patient_name }}
+                    will appear here.
+                </p>
+
+                <a
+                    href="{% url 'health_wallet:all_records' patient_id=patient.patient_id %}"
+                    class="add-record-button"
+                >
+                    Manage Health Records
+                </a>
+
+            </div>
+
+        {% endif %}
+
+
+    </main>
+
+
+</div>
+
+
+<script
+    src="{% static 'health_wallet/js/health_timeline.js' %}"
+></script>
+
+</body>
+
+</html>

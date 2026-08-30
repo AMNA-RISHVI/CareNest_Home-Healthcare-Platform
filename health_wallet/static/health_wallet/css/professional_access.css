@@ -1,0 +1,144 @@
+.professional-access-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    margin-bottom: 8px;
+}
+
+.page-header p {
+    color: #777;
+}
+
+
+.access-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+
+.access-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+}
+
+
+.access-patient {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.patient-avatar {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+
+.patient-avatar.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e8f3f0;
+    color: #246b5d;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+
+.access-patient h3 {
+    margin: 0 0 5px;
+}
+
+
+.access-patient p {
+    margin: 0;
+    color: #777;
+}
+
+
+.access-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+
+.status {
+    padding: 7px 13px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+
+.status.active {
+    background: #e6f7ef;
+    color: #18794e;
+}
+
+
+.status.pending {
+    background: #fff5d9;
+    color: #9a6b00;
+}
+
+
+.status.rejected,
+.status.revoked {
+    background: #fde8e8;
+    color: #b42318;
+}
+
+
+.btn-primary {
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 9px;
+    background: #246b5d;
+    color: white;
+    font-weight: 600;
+}
+
+
+.empty-state {
+    text-align: center;
+    padding: 70px 20px;
+    background: #ffffff;
+    border-radius: 16px;
+}
+
+
+@media (max-width: 768px) {
+
+    .professional-access-page {
+        padding: 20px;
+    }
+
+    .access-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .access-status {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+}

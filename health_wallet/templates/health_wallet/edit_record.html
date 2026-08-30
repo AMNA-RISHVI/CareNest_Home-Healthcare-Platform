@@ -1,0 +1,206 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Edit {{ category|title }} - Health Wallet
+    </title>
+
+    <link rel="stylesheet"
+          href="{% static 'health_wallet/css/edit_record.css' %}">
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <!-- ========================================= -->
+    <!-- HEADER -->
+    <!-- ========================================= -->
+
+    <div class="page-header">
+
+        <a href="{% url 'health_wallet:all_records' patient.patient_id %}"
+           class="back-btn">
+
+            ← Back to Health Records
+
+        </a>
+
+
+        <div class="header-content">
+
+            <span class="header-icon">
+                ✎
+            </span>
+
+            <div>
+
+                <h1>
+                    Edit {{ category|title }}
+                </h1>
+
+                <p>
+
+                    Update the health record for
+
+                    <strong>
+                        {{ patient.patient_name }}
+                    </strong>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================================= -->
+    <!-- FORM CARD -->
+    <!-- ========================================= -->
+
+    <div class="form-card">
+
+        <div class="form-card-header">
+
+            <div>
+
+                <h2>
+                    Update Record
+                </h2>
+
+                <p>
+                    Modify the information below.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ===================================== -->
+        <!-- FORM -->
+        <!-- ===================================== -->
+
+        <form method="POST"
+              enctype="multipart/form-data">
+
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error-box">
+
+                    {% for error in form.non_field_errors %}
+
+                        <p>{{ error }}</p>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="form-fields">
+
+                {% for field in form %}
+
+                    <div class="form-group">
+
+                        <label for="{{ field.id_for_label }}">
+
+                            {{ field.label }}
+
+                            {% if field.field.required %}
+                                <span class="required">*</span>
+                            {% endif %}
+
+                        </label>
+
+
+                        {{ field }}
+
+
+                        {% if field.help_text %}
+
+                            <small class="help-text">
+                                {{ field.help_text }}
+                            </small>
+
+                        {% endif %}
+
+
+                        {% if field.errors %}
+
+                            <div class="field-errors">
+
+                                {% for error in field.errors %}
+
+                                    <span>
+                                        {{ error }}
+                                    </span>
+
+                                {% endfor %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- ACTIONS -->
+            <!-- ================================= -->
+
+            <div class="form-actions">
+
+                <a href="{% url 'health_wallet:all_records' patient.patient_id %}?category={{ category }}"
+                   class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="update-btn">
+
+                    ✎
+
+                    Update Record
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'health_wallet/js/edit_record.js' %}">
+</script>
+
+</body>
+
+</html>

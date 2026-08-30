@@ -1,0 +1,729 @@
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #fffef2;
+    color: #111111;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.passport-page {
+    width: 100%;
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 24px 70px 40px;
+}
+
+
+/* =========================================================
+   PAGE TITLE
+========================================================= */
+
+.passport-title {
+    margin-bottom: 28px;
+}
+
+.passport-title h1 {
+    margin: 0;
+    color: #205f5b;
+    font-size: 29px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.passport-title p {
+    margin: 8px 0 0;
+    color: #555555;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   PATIENT SELECTOR
+========================================================= */
+
+.patient-selector {
+    position: relative;
+
+    width: 100%;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+    border-radius: 14px;
+
+    padding: 0 16px 0 24px;
+
+    box-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.12);
+
+    margin-bottom: 27px;
+}
+
+.selector-label {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    min-width: 160px;
+
+    color: #111111;
+
+    font-size: 13px;
+}
+
+.selector-label i {
+    color: #338b87;
+    font-size: 18px;
+}
+
+.patient-select {
+    position: relative;
+
+    width: 100%;
+    height: 31px;
+
+    appearance: none;
+
+    border: 1px solid #999999;
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    padding: 0 42px 0 31px;
+
+    color: #111111;
+
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    outline: none;
+
+    cursor: pointer;
+}
+
+.patient-select:focus {
+    border-color: #298d89;
+}
+
+.select-arrow {
+    position: absolute;
+
+    right: 28px;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   PATIENT PROFILE CARD
+========================================================= */
+
+.patient-card {
+    width: 100%;
+
+    background: #ffffff;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    border: 1px solid #dddddd;
+
+    box-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.12);
+
+    margin-bottom: 17px;
+}
+
+
+/* =========================================================
+   PROFILE GRADIENT HEADER
+========================================================= */
+
+.patient-card-header {
+    min-height: 92px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 18px 22px;
+
+    background: linear-gradient(
+        100deg,
+        #1ca7a4 0%,
+        #176c68 100%
+    );
+
+    color: #ffffff;
+}
+
+
+/* Avatar */
+
+.patient-avatar {
+    width: 53px;
+    height: 53px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #13b8b3;
+
+    border-radius: 5px;
+
+    margin-right: 11px;
+
+    color: #ffffff;
+
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+
+    overflow: hidden;
+}
+
+.patient-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* Name */
+
+.patient-name {
+    flex: 1;
+}
+
+.patient-name h2 {
+    margin: 0 0 4px;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+.patient-name p {
+    margin: 0;
+
+    color: #d5eeee;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* Health ID */
+
+.health-id {
+    text-align: right;
+
+    padding-right: 1px;
+}
+
+.health-id span {
+    display: block;
+
+    margin-bottom: 6px;
+
+    color: #d3efed;
+
+    font-size: 11px;
+}
+
+.health-id strong {
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   PATIENT INFORMATION
+========================================================= */
+
+.patient-information {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+
+    padding: 17px 25px 18px;
+}
+
+.info-box {
+    min-height: 57px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: #eeeeee;
+
+    border-radius: 12px;
+
+    padding: 9px 15px;
+}
+
+.info-box span {
+    color: #666666;
+
+    font-size: 11px;
+
+    margin-bottom: 7px;
+}
+
+.info-box strong {
+    color: #111111;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   GENERAL MEDICAL CARD
+========================================================= */
+
+.medical-card {
+    width: 100%;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 2px 3px rgba(0, 0, 0, 0.12);
+
+    padding: 20px 24px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   CARD TITLE
+========================================================= */
+
+.medical-card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+.title-left {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+}
+
+.title-left h3 {
+    margin: 0;
+
+    color: #111111;
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.title-left i {
+    width: 20px;
+
+    text-align: center;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   ICONS
+========================================================= */
+
+.warning-icon {
+    color: #f26c21;
+}
+
+.prescription-icon {
+    color: #9c1bd3;
+}
+
+.lab-icon {
+    color: #55a9d0;
+}
+
+.vaccine-icon {
+    color: #328c91;
+}
+
+
+/* =========================================================
+   VIEW ALL
+========================================================= */
+
+.view-all {
+    color: #555555;
+
+    font-size: 10px;
+
+    text-decoration: none;
+
+    white-space: nowrap;
+}
+
+.view-all:hover {
+    color: #176c68;
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   ALLERGIES / CONDITIONS
+========================================================= */
+
+.medical-columns {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 50px;
+}
+
+.column-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+}
+
+.column-heading span {
+    color: #666666;
+
+    font-size: 12px;
+}
+
+.column-heading a {
+    color: #555555;
+
+    font-size: 9px;
+
+    text-decoration: none;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 8px;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+
+    height: 20px;
+
+    padding: 0 11px;
+
+    border-radius: 15px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+    font-weight: 600;
+}
+
+.tag i {
+    margin-right: 7px;
+
+    font-size: 9px;
+}
+
+.allergy-tag {
+    background: #ffc9cd;
+    color: #ad1d26;
+}
+
+.condition-tag {
+    background: #ffe0bd;
+    color: #9d5c15;
+}
+
+.no-record {
+    color: #888888;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   RECORD BOXES
+========================================================= */
+
+.record-box {
+    width: 100%;
+
+    min-height: 87px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    border-radius: 11px;
+
+    padding: 13px 15px;
+}
+
+.prescription-box {
+    background: #f8e9fb;
+}
+
+.lab-record-box {
+    background: #e3f5fc;
+}
+
+.record-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.record-content strong {
+    color: #111111;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    margin-bottom: 6px;
+}
+
+.record-content span {
+    color: #555555;
+
+    font-size: 11px;
+}
+
+.record-date {
+    color: #666666;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   EMPTY RECORD
+========================================================= */
+
+.empty-record {
+    padding: 20px;
+
+    text-align: center;
+
+    color: #777777;
+
+    font-size: 12px;
+
+    background: #fafafa;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   VACCINATION
+========================================================= */
+
+.vaccination-card {
+    min-height: 118px;
+}
+
+.vaccination-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 43px;
+
+    color: #777777;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   NO PATIENT
+========================================================= */
+
+.no-patient {
+    margin-top: 80px;
+
+    background: #ffffff;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 14px;
+
+    padding: 50px;
+
+    text-align: center;
+}
+
+.no-patient h2 {
+    color: #205f5b;
+
+    font-size: 22px;
+}
+
+.no-patient p {
+    color: #666666;
+
+    font-size: 13px;
+}
+
+.no-patient a {
+    display: inline-block;
+
+    margin-top: 15px;
+
+    padding: 10px 20px;
+
+    background: #1b9994;
+
+    color: #ffffff;
+
+    border-radius: 8px;
+
+    text-decoration: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .passport-page {
+        padding: 20px;
+    }
+
+    .patient-selector {
+        height: auto;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        gap: 10px;
+
+        padding: 15px;
+    }
+
+    .selector-label {
+        min-width: 0;
+    }
+
+    .patient-select {
+        width: 100%;
+    }
+
+    .select-arrow {
+        right: 29px;
+        top: 58px;
+    }
+
+    .patient-card-header {
+        padding: 18px;
+
+        flex-wrap: wrap;
+    }
+
+    .health-id {
+        width: 100%;
+
+        margin-top: 12px;
+
+        text-align: left;
+    }
+
+    .patient-information {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 10px;
+
+        padding: 15px;
+    }
+
+    .medical-columns {
+        grid-template-columns: 1fr;
+
+        gap: 18px;
+    }
+
+}
+
+
+@media (max-width: 450px) {
+
+    .passport-page {
+        padding: 15px;
+    }
+
+    .passport-title h1 {
+        font-size: 24px;
+    }
+
+    .patient-information {
+        grid-template-columns: 1fr;
+    }
+
+    .patient-card-header {
+        align-items: flex-start;
+    }
+
+}

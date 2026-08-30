@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block navbar %}
+    {% include "landing/partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'health_wallet/css/manage_professional_access.css' %}"
+>
+
+<div class="manage-access-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h1>Professional Access</h1>
+
+            <p>
+                Control which healthcare professionals can
+                access your family's health records.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'patient_dashboard:dashboard' %}"
+            class="secondary-button"
+        >
+            Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         SECURITY NOTICE
+    ====================================================== -->
+
+    <div class="security-notice">
+
+        <div class="security-icon">
+            🔒
+        </div>
+
+        <div>
+
+            <h3>Your Health Records Stay Under Your Control</h3>
+
+            <p>
+                Healthcare professionals can only access records
+                after you approve their request. You can revoke
+                access at any time.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACCESS REQUESTS
+    ====================================================== -->
+
+    <div class="section-header">
+
+        <h2>Access Requests</h2>
+
+        <span>
+            {{ access_requests|length }}
+            request{{ access_requests|length|pluralize }}
+        </span>
+
+    </div>
+
+
+    {% if access_requests %}
+
+        <div class="access-request-list">
+
+            {% for access in access_requests %}
+
+                <div class="access-request-card">
+
+                    <!-- PROFESSIONAL -->
+
+                    <div class="professional-info">
+
+                        <div class="professional-avatar">
+
+                            {{ access.professional.first_name|first|upper }}
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+                                {% if access.professional.get_full_name %}
+                                    {{ access.professional.get_full_name }}
+                                {% else %}
+                                    {{ access.professional.username }}
+                                {% endif %}
+                            </h3>
+
+                            <p>
+                                Healthcare Professional
+                            </p>
+
+                            <small>
+                                Request for:
+                                <strong>
+                                    {{ access.patient.patient_name }}
+                                </strong>
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="request-status">
+
+                        {% if access.status == "pending" %}
+
+                            <span class="status-badge pending">
+                                Pending Approval
+                            </span>
+
+                        {% elif access.status == "active" %}
+
+                            <span class="status-badge active">
+                                Active Access
+                            </span>
+
+                        {% elif access.status == "rejected" %}
+
+                            <span class="status-badge rejected">
+                                Rejected
+                            </span>
+
+                        {% elif access.status == "revoked" %}
+
+                            <span class="status-badge revoked">
+                                Revoked
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="request-actions">
+
+                        {% if access.status == "pending" %}
+
+                            <form
+                                method="POST"
+                                action="{% url 'health_wallet:approve_professional_access' access.access_id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="approve-button"
+                                >
+                                    Approve
+                                </button>
+
+                            </form>
+
+
+                            <form
+                                method="POST"
+                                action="{% url 'health_wallet:reject_professional_access' access.access_id %}"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="reject-button"
+                                >
+                                    Reject
+                                </button>
+
+                            </form>
+
+
+                        {% elif access.status == "active" %}
+
+                            <a
+                                href="{% url 'health_wallet:all_records' access.patient.patient_id %}"
+                                class="view-button"
+                            >
+                                View Records
+                            </a>
+
+                            <form
+                                method="POST"
+                                action="{% url 'health_wallet:revoke_professional_access' access.access_id %}"
+                                class="revoke-form"
+                            >
+
+                                {% csrf_token %}
+
+                                <button
+                                    type="submit"
+                                    class="revoke-button"
+                                    onclick="return confirm(
+                                        'Are you sure you want to revoke this professional access?'
+                                    );"
+                                >
+                                    Revoke Access
+                                </button>
+
+                            </form>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <div class="empty-icon">
+                🔐
+            </div>
+
+            <h3>
+                No Professional Access Requests
+            </h3>
+
+            <p>
+                When a healthcare professional requests access
+                to your health records, it will appear here.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
