@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Receipt</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'appointment/css/appointment_status.css' %}">
+</head>
+<body class="bg-neutral-100 min-h-screen flex items-center justify-center p-4 font-sans text-slate-700">
+
+    <!-- Compact Receipt Card Container -->
+    <div class="receipt-card bg-white rounded-2xl shadow-md border border-neutral-200 overflow-hidden w-full max-w-md">
+        
+        <!-- Receipt Header -->
+        <div class="bg-teal-700 text-white p-4 sm:p-5">
+            <div class="flex justify-between items-start">
+                <div>
+                    <span class="text-[10px] uppercase tracking-wider text-teal-200 font-semibold">Appointment Receipt</span>
+                    <h1 class="text-lg font-bold mt-0.5">Status: <span id="res-status" class="capitalize">{[appointment.appointment_status ]}</span></h1>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] text-teal-200">Invoice Reference</p>
+                    <p id="res-invoice" class="font-mono text-xs font-semibold">INV-9021</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Receipt Body -->
+        <div class="p-4 sm:p-5 space-y-4">
+            
+            <!-- Doctor Info -->
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <div>
+                    <h3 id="res-doc-name" class="text-base font-bold text-slate-800">{{ appointment.professional.User.full_name }}</h3>
+                    <p id="res-doc-spec" class="text-xs text-teal-600 font-medium">{{appointment.professional.specializations}}</p>
+                    <p id="res-doc-city" class="text-[11px] text-slate-400 mt-0.5">📍 {{appointment.professional.location}}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-[10px] text-slate-400 block">Consultation Fee</span>
+                    <span id="res-fee" class="text-base font-bold text-slate-800">{{professional.consultation_fee}}</span>
+                </div>
+            </div>
+
+            <!-- Patient & Booking Details -->
+            <div class="grid grid-cols-2 gap-3 text-xs bg-neutral-50 p-3 rounded-xl border border-slate-100">
+                <div>
+                    <p class="text-[10px] text-slate-400 font-medium mb-0.5">👤 PATIENT DETAILS</p>
+                    <p id="res-patient-name" class="font-semibold text-slate-800">Amara Perera</p>
+                    <p id="res-patient-code" class="text-[11px] text-slate-500">Code: P-8821</p>
+                </div>
+                <div>
+                    <p class="text-[10px] text-slate-400 font-medium mb-0.5">📅 SCHEDULED TIME</p>
+                    <p id="res-date" class="font-semibold text-slate-800">Jul 9, 2026</p>
+                    <p id="res-time" class="text-[11px] text-slate-500">02:00 PM</p>
+                </div>
+            </div>
+
+            <!-- Patient Notes -->
+            <div>
+                <p class="text-[10px] text-slate-400 font-medium mb-0.5">📝 PATIENT NOTES</p>
+                <p id="res-note" class="text-xs bg-slate-50 p-2.5 rounded-lg border border-slate-100 text-slate-600 italic">
+                    {{appointment.patient_note}}
+                </p>
+            </div>
+
+            <!-- Payment Meta -->
+            <div class="border-t border-slate-100 pt-3 space-y-1.5 text-xs">
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Payment Method</span>
+                    <span id="res-pay-method" class="font-medium text-slate-700 capitalize">Card</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Transaction ID</span>
+                    <span id="res-txn" class="font-mono text-[11px] text-slate-700">TXN-884920</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-slate-500">Payment Status</span>
+                    <span id="res-pay-status" class="font-semibold text-emerald-600 capitalize">Completed</span>
+                </div>
+            </div>
+
+            <!-- Action Button (Print Preview එකේදී පෙන්නේ නැත) -->
+            <div class="pt-2 no-print">
+                <button onclick="window.print()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 rounded-xl text-xs transition flex items-center justify-center gap-2 shadow-sm">
+                    🖨️ Download / Print Receipt
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

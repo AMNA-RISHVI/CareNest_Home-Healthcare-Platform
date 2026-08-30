@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment History - CareNest</title>
+    <link rel="stylesheet" href="{% static 'appointment/css/appointment_history.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header-section">
+            <h1>Appointment History</h1>
+            <p class="subtitle">View and manage your upcoming and past healthcare appointments</p>
+        </header>
+
+        <!-- Status Filter Tabs -->
+        <div class="status-tabs">
+            <button class="tab-btn active" data-filter="all">All Appointments</button>
+            <button class="tab-btn" data-filter="upcoming">Upcoming</button>
+            <button class="tab-btn" data-filter="completed">Completed</button>
+            <button class="tab-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+
+        <!-- Appointments List Container -->
+        <div class="history-list">
+            
+            {% for appointment in appointments %}
+            <div class="history-card">
+                <div class="card-left">
+                    <div class="avatar-icon">
+                        {{ appointment.professional.user.full_name|default:"L"|slice:":1"|upper }}
+                    </div>
+                    <div class="doctor-info">
+                        <div class="name-row">
+                            <h3>Dr. {{ appointment.professional.User.full_name|default:"not specified" }}</h3>
+                            <span class="status-badge
+                             {{ appointment.appointment_status }}">
+                                {{ appointment.get_appointment_status_display }}
+                            </span>
+                        </div>
+                        <p class="specialty"><i class="fa-solid fa-stethoscope"></i> {{ appointment.specialization.description|default:"Internal Medicine" }}</p>
+                        <p class="datetime"><i class="fa-regular fa-calendar"></i>
+                             {{ appointment.scheduled_at|date:"d M Y"}}</p>
+                        <p class="datetime"><i class="fa-regular fa-calendar"></i>
+                             {{ appointment.scheduled_at|time:"h:i A"}}</p> 
+                             
+                             
+                        <p class="location">
+                            <i class="fa-solid fa-location-dot"></i>
+                             {{ appointment.appointment_address }}|default:" not specified" </p>
+                    </div>
+                </div>
+
+                <div class="card-right">
+                    <div class="fee-info">
+                        <span class="fee-label">Fee Paid</span>
+                        <span class="fee-amount">Rs. {{ appointment.professional.consultation_fee }}</span>
+                    </div>
+                    <div class="action-buttons">
+                        {% if appointment.appointment_status == 'Completed' %}
+                            <button class="btn-secondary">Leave Review</button>
+                            <button class="btn-primary">Book Again</button>
+                        {% elif appointment.appointment_status == 'Cancelled' %}
+                            <button class="btn-secondary">View Details</button>
+                        {% else %}
+                            <button class="btn-secondary danger">Cancel</button>
+                            <button class="btn-primary">View Details</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <!-- Fallback Empty State -->
+            <div class="empty-state">
+                <i class="fa-regular fa-calendar-xmark"></i>
+                <p>No appointments found.</p>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+    <script src="{% static 'appointment/js/appointment_history.js' %}"></script>
+
+</body>
+</html>
