@@ -133,6 +133,30 @@ def require_record_modify_access(user, patient):
 
 
 
+def can_view_health_record_changes(user, patient):
+    """
+    Determine whether the logged-in user can view
+    audit history for a patient's health records.
+
+    Patient owner:
+        Full access.
+
+    Connected professional:
+        Access only while active access exists.
+    """
+
+    # Patient owner has highest authority
+    if is_patient_owner(user, patient):
+        return True
+
+    # Professional must have active access
+    if professional_has_access(user, patient):
+        return True
+
+    return False
+
+
+
 
 def create_health_record_change(
     patient,

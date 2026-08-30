@@ -96,33 +96,31 @@
 
         </div>
 
-
-        <select id="patientSelect"
-                class="patient-select">
+        <select
+            id="patientSelect"
+            class="patient-select"
+            onchange="if (this.value) window.location.href=this.value;"
+        >
 
             {% for patient in patients %}
 
                 <option
-                    value="{% url 'health_wallet:health_wallet' patient.patient_id %}"
+                    value="{% url 'health_wallet:health_wallet_patient' patient.patient_id %}"
                     {% if selected_patient.patient_id == patient.patient_id %}
                         selected
                     {% endif %}
                 >
-
                     {{ patient.patient_name }}
                     ({{ patient.relationship }})
-
                 </option>
 
             {% endfor %}
 
         </select>
 
-
         <i class="fa-solid fa-chevron-down select-arrow"></i>
 
     </section>
-
 
 
     <!-- =====================================================
@@ -577,16 +575,27 @@
 
     </section>
 
-    <div class="manage-view">
+    <div class="manage-healthwallet">
 
         <a
             href="{% url 'health_wallet:health_timeline' patient_id=selected_patient.patient_id %}"
+            class="healthwallet-action"
         >
             Health Timeline
         </a>
 
-        <a href="{% url 'health_wallet:manage_professional_access' %}">
+        <a
+            href="{% url 'health_wallet:manage_professional_access' %}"
+            class="healthwallet-action"
+        >
             Manage Professional Access
+        </a>
+
+        <a
+            href="{% url 'health_wallet:health_record_changes' selected_patient.patient_id %}"
+            class="healthwallet-action"
+        >
+            View Change History
         </a>
 
     </div>

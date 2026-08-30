@@ -16,8 +16,10 @@ from .models import (
 from .services import (
     can_access_patient_records,
     can_modify_patient_records,
+    can_view_health_record_changes,
     create_health_record_change,
     professional_has_access,
+    HealthRecordChange,
 )
 
 from django.contrib import messages
@@ -1237,4 +1239,125 @@ def professional_patient_records(
     )
 
 
+
+@login_required
+def health_record_changes(request, patient_id):
+
+    """
+    Display the audit history of health-record changes.
+
+    Patient:
+        Can view changes for their own patient profile.
+
+    Professional:
+        Can view changes only for patients with
+        active professional access.
+    """
+
+    # ---------------------------------------------------------
+    # GET PATIENT
+    # ---------------------------------------------------------
+
+    patient = get_object_or_404(
+        Patient,
+        patient_id=patient_id
+    )
+
+    # ---------------------------------------------------------
+    # SECURITY
+    # ---------------------------------------------------------
+
+    if not can_view_health_record_changes(
+        request.user,
+        patient
+    ):
+        raise PermissionDenied(
+            "You do not have permission to view this patient's audit history."
+        )
+
+    # ---------------------------------------------------------
+    # GET AUDIT RECORDS
+    # ---------------------------------------------------------
+
+    changes = HealthRecordChange.objects.filter(
+        patient=patient
+    ).select_related(
+        "actor"
+    ).order_by(
+        "-created_at"
+    )
+
+    # ---------------------------------------------------------
+    # CATEGORY FILTER
+    # ---------------------------------------------------------
+
+    category = request.GET.get(
+        "category",
+        "all"
+    ).strip()
+
+    allowed_categories = [
+        "all",
+        "allergies",
+        "chronic_conditions",
+        "prescriptions",
+        "lab_reports",
+        "vaccinations",
+        "medical_history",
+    ]
+
+    if category not in allowed_categories:
+        category = "all"
+
+    if category != "all":
+
+        changes = changes.filter(
+            category=category
+        )
+
+    # ---------------------------------------------------------
+    # ACTION FILTER
+    # ---------------------------------------------------------
+
+    action = request.GET.get(
+        "action",
+        "all"
+    ).strip().upper()
+
+    allowed_actions = [
+        "all",
+        "CREATE",
+        "UPDATE",
+        "DELETE",
+    ]
+
+    if action not in allowed_actions:
+        action = "all"
+
+    if action != "all":
+
+        changes = changes.filter(
+            action=action
+        )
+
+    # ---------------------------------------------------------
+    # CONTEXT
+    # ---------------------------------------------------------
+
+    context = {
+
+        "patient": patient,
+
+        "changes": changes,
+
+        "category": category,
+
+        "action": action,
+    }
+
+    return render(
+        request,
+        "health_wallet/health_record_changes.html",
+        context
+    )
 

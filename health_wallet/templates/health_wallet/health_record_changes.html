@@ -1,0 +1,462 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Health Record History</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'health_wallet/css/health_record_changes.css' %}"
+    >
+
+</head>
+
+<body>
+
+<div class="audit-page">
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
+    <div class="audit-header">
+
+        <div>
+
+            <span class="page-label">
+                HEALTH WALLET
+            </span>
+
+            <h1>
+                Health Record History
+            </h1>
+
+            <p>
+                View all changes made to
+                {{ patient.patient_name }}'s health records.
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'health_wallet:health_wallet' patient.patient_id %}"
+            class="back-button"
+        >
+            ← Back to Health Wallet
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         PATIENT INFORMATION
+    ====================================================== -->
+
+    <div class="patient-card">
+
+        <div class="patient-avatar">
+
+            {{ patient.patient_name|first|upper }}
+
+        </div>
+
+        <div>
+
+            <h2>
+                {{ patient.patient_name }}
+            </h2>
+
+            {% if patient.relationship %}
+
+                <p>
+                    {{ patient.relationship }}
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="filter-card">
+
+        <form method="GET">
+
+            <div class="filter-group">
+
+                <label for="category">
+                    Record Type
+                </label>
+
+                <select
+                    id="category"
+                    name="category"
+                >
+
+                    <option
+                        value="all"
+                        {% if category == "all" %}
+                            selected
+                        {% endif %}
+                    >
+                        All Records
+                    </option>
+
+                    <option
+                        value="allergies"
+                        {% if category == "allergies" %}
+                            selected
+                        {% endif %}
+                    >
+                        Allergies
+                    </option>
+
+                    <option
+                        value="chronic_conditions"
+                        {% if category == "chronic_conditions" %}
+                            selected
+                        {% endif %}
+                    >
+                        Chronic Conditions
+                    </option>
+
+                    <option
+                        value="prescriptions"
+                        {% if category == "prescriptions" %}
+                            selected
+                        {% endif %}
+                    >
+                        Prescriptions
+                    </option>
+
+                    <option
+                        value="lab_reports"
+                        {% if category == "lab_reports" %}
+                            selected
+                        {% endif %}
+                    >
+                        Laboratory Reports
+                    </option>
+
+                    <option
+                        value="vaccinations"
+                        {% if category == "vaccinations" %}
+                            selected
+                        {% endif %}
+                    >
+                        Vaccinations
+                    </option>
+
+                    <option
+                        value="medical_history"
+                        {% if category == "medical_history" %}
+                            selected
+                        {% endif %}
+                    >
+                        Medical History
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="filter-group">
+
+                <label for="action">
+                    Action
+                </label>
+
+                <select
+                    id="action"
+                    name="action"
+                >
+
+                    <option
+                        value="all"
+                        {% if action == "all" %}
+                            selected
+                        {% endif %}
+                    >
+                        All Actions
+                    </option>
+
+                    <option
+                        value="CREATE"
+                        {% if action == "CREATE" %}
+                            selected
+                        {% endif %}
+                    >
+                        Created
+                    </option>
+
+                    <option
+                        value="UPDATE"
+                        {% if action == "UPDATE" %}
+                            selected
+                        {% endif %}
+                    >
+                        Updated
+                    </option>
+
+                    <option
+                        value="DELETE"
+                        {% if action == "DELETE" %}
+                            selected
+                        {% endif %}
+                    >
+                        Deleted
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="filter-button"
+            >
+                Apply Filters
+            </button>
+
+
+            <a
+                href="{% url 'health_wallet:health_record_changes' patient.patient_id %}"
+                class="clear-button"
+            >
+                Clear
+            </a>
+
+        </form>
+
+    </div>
+
+
+    <!-- =====================================================
+         AUDIT TIMELINE
+    ====================================================== -->
+
+    <div class="audit-section">
+
+        <div class="section-heading">
+
+            <div>
+
+                <span class="section-label">
+                    AUDIT LOG
+                </span>
+
+                <h2>
+                    Record Changes
+                </h2>
+
+            </div>
+
+            <span class="change-count">
+                {{ changes|length }} change{{ changes|length|pluralize }}
+            </span>
+
+        </div>
+
+
+        {% if changes %}
+
+            <div class="audit-list">
+
+                {% for change in changes %}
+
+                    <div class="audit-item">
+
+                        <div class="audit-line">
+
+                            <div class="audit-dot
+                                {% if change.action == 'CREATE' %}
+                                    created
+                                {% elif change.action == 'UPDATE' %}
+                                    updated
+                                {% elif change.action == 'DELETE' %}
+                                    deleted
+                                {% endif %}
+                            ">
+                            </div>
+
+                        </div>
+
+
+                        <div class="audit-card">
+
+                            <div class="audit-top">
+
+                                <div>
+
+                                    <span class="record-category">
+                                        {{ change.category|title }}
+                                    </span>
+
+                                    <h3>
+
+                                        {% if change.action == "CREATE" %}
+
+                                            Record Created
+
+                                        {% elif change.action == "UPDATE" %}
+
+                                            Record Updated
+
+                                        {% elif change.action == "DELETE" %}
+
+                                            Record Deleted
+
+                                        {% else %}
+
+                                            Record Changed
+
+                                        {% endif %}
+
+                                    </h3>
+
+                                </div>
+
+
+                                <span class="action-badge
+                                    {% if change.action == 'CREATE' %}
+                                        badge-created
+                                    {% elif change.action == 'UPDATE' %}
+                                        badge-updated
+                                    {% elif change.action == 'DELETE' %}
+                                        badge-deleted
+                                    {% endif %}
+                                ">
+
+                                    {{ change.get_action_display }}
+
+                                </span>
+
+                            </div>
+
+
+                            <p class="audit-description">
+
+                                {{ change.description }}
+
+                            </p>
+
+
+                            <div class="audit-meta">
+
+                                <span>
+
+                                    <strong>
+                                        Changed by:
+                                    </strong>
+
+                                    {% if change.actor %}
+
+                                        {% if change.actor.get_full_name %}
+
+                                            {{ change.actor.get_full_name }}
+
+                                        {% else %}
+
+                                            {{ change.actor.username }}
+
+                                        {% endif %}
+
+                                    {% else %}
+
+                                        Former User
+
+                                    {% endif %}
+
+                                </span>
+
+
+                                <span>
+
+                                    <strong>
+                                        Role:
+                                    </strong>
+
+                                    {{ change.actor_role }}
+
+                                </span>
+
+
+                                <span>
+
+                                    <strong>
+                                        Date:
+                                    </strong>
+
+                                    {{ change.created_at|date:"d M Y" }}
+
+                                </span>
+
+
+                                <span>
+
+                                    <strong>
+                                        Time:
+                                    </strong>
+
+                                    {{ change.created_at|time:"h:i A" }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-state">
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    No Changes Found
+                </h3>
+
+                <p>
+                    There are no health-record changes
+                    matching the selected filters.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'health_wallet/js/health_record_changes.js' %}"></script>
+
+</body>
+
+</html>

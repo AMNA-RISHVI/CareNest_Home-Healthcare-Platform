@@ -115,9 +115,21 @@ urlpatterns = [
     ),
 
     path(
+        "patient/<int:patient_id>/",
+        views.health_wallet,
+        name="health_wallet_patient"
+    ),
+
+    path(
         "<int:patient_id>/",
         views.health_wallet,
         name="health_wallet"
+    ),
+
+    path(
+        "patient/<int:patient_id>/changes/",
+        views.health_record_changes,
+        name="health_record_changes"
     ),
 
  
