@@ -149,12 +149,16 @@
                     <button
                         type="button"
                         class="patient-item {% if forloop.first %}selected{% endif %}"
+                        data-health-wallet-url="{% url 'health_wallet:health_wallet' patient.patient_id %}"
                         data-patient-id="{{ patient.patient_id }}"
                         data-patient-name="{{ patient.patient_name }}"
                         data-patient-relationship="{{ patient.relationship }}"
                         data-patient-blood-group="{{ patient.blood_group|default:'—' }}"
                         data-patient-dob="{{ patient.dob|default:'—' }}"
                         data-patient-gender="{{ patient.gender|default:'—' }}"
+                        data-patient-allergies="{{ patient.allergy_names|join:', ' }}"
+                        data-patient-health-status="{{ patient.health_status }}"
+                        data-patient-total-records="{{ patient.total_health_records }}"
                     >
                         
 
@@ -418,7 +422,7 @@
                                 Total
                             </span>
 
-                            <strong>
+                            <strong id="overview-total-records">
                                 —
                             </strong>
 
@@ -446,7 +450,7 @@
                                 Health
                             </span>
 
-                            <strong>
+                            <strong id="overview-health-status">
                                 —
                             </strong>
 
@@ -479,7 +483,7 @@
                         </div>
 
 
-                        <a href="#">
+                        <a href="{% url 'health_wallet:health_wallet' %}">
 
                             View Full Passport
 
@@ -547,7 +551,7 @@
                                 Allergies
                             </span>
 
-                            <strong>
+                            <strong id="overview-allergies">
                                 —
                             </strong>
 
@@ -701,7 +705,17 @@
                                 </span>
 
                                 <strong>
-                                    —
+
+                                    {% if patient.has_allergies %}
+
+                                        {{ patient.allergy_names|join:", " }}
+
+                                    {% else %}
+
+                                        None recorded
+
+                                    {% endif %}
+
                                 </strong>
 
                             </div>
@@ -714,7 +728,21 @@
                                 </span>
 
                                 <strong>
-                                    —
+
+                                    {% if patient.dashboard_conditions %}
+
+                                        {% for condition in patient.dashboard_conditions %}
+
+                                            {{ condition.condition_name }}{% if not forloop.last %}, {% endif %}
+
+                                         {% endfor %}
+
+                                    {% else %}
+
+                                         None recorded
+
+                                    {% endif %}
+
                                 </strong>
 
                             </div>
@@ -834,32 +862,22 @@
                         </h2>
 
                         <p>
-                            Health records for the selected patient
+                            View the complete health records
+                            for the selected patient.
                         </p>
 
+                        <a
+                            id="health-wallet-link"
+                            href="#"
+                            class="book-appointment-button small"
+                        >
+                            <i class="fa-solid fa-folder-open me-2"></i>
+                                Open Health Wallet
+                        </a>
+
                     </div>
 
                 </div>
-
-
-
-                <div class="integration-placeholder large">
-
-                    <div class="placeholder-icon">
-                        <i class="fa-solid fa-file-medical"></i>
-                    </div>
-
-                    <h3>
-                        Health Records
-                    </h3>
-
-                    <p>
-                        Health records will be connected
-                        after integration.
-                    </p>
-
-                </div>
-
 
             </div>
 

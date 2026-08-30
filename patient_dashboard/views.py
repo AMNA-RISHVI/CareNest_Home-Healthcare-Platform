@@ -10,6 +10,14 @@ from .services import (
     get_family_member_limit,
 )
 from functools import wraps
+from health_wallet.models import (
+    Allergy,
+    ChronicCondition,
+    Prescription,
+    LabReport,
+    VaccinationRecord,
+    MedicalHistory,
+)
 
 
 
@@ -47,6 +55,95 @@ def dashboard(request):
     patients = Patient.objects.filter(
         user=request.user
     ).order_by('patient_id')
+
+    # =====================================================
+    # HEALTH WALLET INFORMATION FOR EACH PATIENT
+    # =====================================================
+
+    for patient in patients:
+
+        # -------------------------------------------------
+        # ALLERGIES
+        # -------------------------------------------------
+
+        patient.dashboard_allergies = Allergy.objects.filter(
+            patient=patient
+        ).order_by("-created_at")
+
+
+        # -------------------------------------------------
+        # CHRONIC CONDITIONS
+        # -------------------------------------------------
+
+        patient.dashboard_conditions = ChronicCondition.objects.filter(
+            patient=patient
+        ).order_by("-created_at")
+
+
+        # -------------------------------------------------
+        # TOTAL HEALTH RECORDS
+        #
+        # Includes:
+        # Allergies
+        # Chronic Conditions
+        # Prescriptions
+        # Lab Reports
+        # Vaccinations
+        # Medical History
+        # -------------------------------------------------
+
+        patient.total_health_records = (
+            patient.dashboard_allergies.count()
+            + patient.dashboard_conditions.count()
+            + Prescription.objects.filter(
+                patient=patient
+            ).count()
+            + LabReport.objects.filter(
+                patient=patient
+            ).count()
+            + VaccinationRecord.objects.filter(
+                patient=patient
+            ).count()
+            + MedicalHistory.objects.filter(
+                patient=patient
+            ).count()
+        )
+
+
+        # -------------------------------------------------
+        # ALLERGY INFORMATION
+        # -------------------------------------------------
+
+        patient.has_allergies = patient.dashboard_allergies.exists()
+
+        patient.allergy_names = list(
+            patient.dashboard_allergies.values_list(
+                "allergy_name",
+                flat=True
+            )
+        )
+
+
+        # -------------------------------------------------
+        # HEALTH STATUS
+        # -------------------------------------------------
+
+        if patient.dashboard_conditions.exists():
+
+            patient.health_status = "Needs Attention"
+
+        elif patient.dashboard_allergies.exists():
+
+            patient.health_status = "Needs Attention"
+
+        elif patient.total_health_records > 0:
+
+            patient.health_status = "Good"
+
+        else:
+
+            patient.health_status = "No Data"
+
 
     subscription = get_active_subscription(
         request.user

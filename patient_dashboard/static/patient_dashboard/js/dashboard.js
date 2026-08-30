@@ -27,6 +27,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         patientItems[0].classList.add("selected");
 
+        const healthWalletLink =
+            document.getElementById("health-wallet-link");
+
+        if (healthWalletLink) {
+
+            healthWalletLink.href =
+                selectedPatient.dataset.healthWalletUrl;
+
+        }
+
     }
 
 
@@ -49,6 +59,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 item.classList.remove("selected");
 
             });
+
+            const healthWalletLink =
+                document.getElementById("health-wallet-link");
+
+            if (healthWalletLink) {
+
+                healthWalletLink.href =
+                    patient.dataset.healthWalletUrl;
+
+            }
 
 
             /*
@@ -251,10 +271,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
 
+        console.log("Selected patient:", selectedPatient);
+        console.log("Allergies:", selectedPatient.dataset.patientAllergies);
+        console.log("Health status:", selectedPatient.dataset.patientHealthStatus);
+        console.log("Total records:", selectedPatient.dataset.patientTotalRecords);
+        console.log("Health Wallet URL:", selectedPatient.dataset.healthWalletUrl);
+
 
         const bloodGroup =
             selectedPatient.dataset.patientBloodGroup;
+        
+        const allergies =
+            selectedPatient.dataset.patientAllergies || "None recorded";
 
+        const healthStatus =
+            selectedPatient.dataset.patientHealthStatus || "No Data";
+
+        const totalRecords =
+            selectedPatient.dataset.patientTotalRecords || "0";
 
         const dob =
             selectedPatient.dataset.patientDob;
@@ -280,6 +314,20 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById(
                 "overview-gender"
             );
+        
+        
+        const allergiesElement =
+            document.getElementById(
+                "overview-allergies"
+            ).textContent = allergies;
+
+        document.getElementById(
+            "overview-total-records"
+        ).textContent = totalRecords;
+
+        document.getElementById(
+            "overview-health-status"
+        ).textContent = healthStatus;
 
 
         if (bloodGroupElement) {
