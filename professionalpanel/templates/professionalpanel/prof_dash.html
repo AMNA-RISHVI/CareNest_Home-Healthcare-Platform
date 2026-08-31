@@ -20,7 +20,7 @@
         .modal-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
     </style>
 </head>
-<body class="p-6 max-w-7xl mx-auto">
+<body class="p-4 md:p-6 max-w-[450px] mx-auto md:max-w-7xl">
 
     <!-- Main Dashboard Header -->
     <div id="main-dashboard" class="block">
@@ -49,12 +49,12 @@
         </div>
 
         <!-- Stats Cards -->
-        <div id="stats-container" class="grid grid-cols-4 gap-4 mb-6">
+        <div id="stats-container" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             <!-- JS will load data here -->
         </div>
 
         <!-- Main Body Grid -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Left Column (Appointments, Patients, Earnings) -->
             <div class="col-span-2 bg-white border-b-2 border-r-2 rounded-xl shadow-sm p-4 card-shadow">
                 <!-- Tab Switcher -->
