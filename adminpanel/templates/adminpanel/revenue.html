@@ -1,7 +1,7 @@
 {% extends 'adminpanel/base.html' %}
 {% block content %}
 <!-- TOP 3 CARDS -->
-<div class="grid grid-cols-3 gap-6 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
     <!-- Monthly Revenue -->
     <div class="bg-[#0f766e] text-white rounded-xl p-6 shadow-lg">
         <div class="text-sm opacity-80">Monthly Revenue</div>
@@ -23,7 +23,7 @@
 </div>
 
 <!-- MONTHLY REVENUE BREAKDOWN (Mockup Revenue 2) -->
-<div class="bg-white rounded-xl p-6 shadow-sm mb-8">
+<div class="bg-white rounded-xl p-4 shadow-sm mb-8">
     <div class="flex justify-between items-center mb-6">
         <h3 class="font-semibold text-lg text-gray-800">Monthly Revenue Breakdown</h3>
         <div class="flex gap-4 text-xs text-gray-600">
@@ -58,9 +58,9 @@
 </div>
 
 <!-- REVENUE BY DISTRICT (Mockup Revenue 1) -->
-<div class="bg-white rounded-xl p-6 shadow-sm">
+<div class="bg-white rounded-xl p-4 shadow-sm">
     <h3 class="font-semibold text-lg mb-6 text-gray-800">Revenue by District</h3>
-    <div class="grid grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {% for dist in district_data %}
         <div class="flex flex-col items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
             <!-- Colored Icon Square -->
