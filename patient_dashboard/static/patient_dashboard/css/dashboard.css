@@ -706,94 +706,7 @@
 }
 
 
-/* =========================================================
-   RESPONSIVE DESIGN
-========================================================= */
 
-@media (max-width: 1100px) {
-
-    .dashboard-page {
-        padding-left: 30px;
-        padding-right: 30px;
-    }
-
-    .dashboard-layout {
-        grid-template-columns: 220px minmax(0, 1fr);
-    }
-
-    .health-profile-grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-}
-
-
-@media (max-width: 850px) {
-
-    .dashboard-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .dashboard-left-column {
-        display: grid;
-
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-
-        align-items: start;
-    }
-
-}
-
-
-@media (max-width: 650px) {
-
-    .dashboard-page {
-        padding: 105px 18px 30px;
-    }
-
-    .dashboard-heading {
-        flex-direction: column;
-        align-items: flex-start;
-
-        gap: 15px;
-    }
-
-    .dashboard-heading h1 {
-        font-size: 27px;
-    }
-
-    .dashboard-layout {
-        display: block;
-    }
-
-    .dashboard-left-column {
-        display: flex;
-    }
-
-    .overview-stat-grid {
-        grid-template-columns: 1fr;
-        padding-top:50px ;
-        gap: 10px;
-    }
-
-    .health-profile-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .family-members-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .content-panel-header {
-        align-items: flex-start;
-        padding-top: 50px;
-        flex-direction: column;
-        gap: 12px;
-    }
-
-}
 
 
 
@@ -1339,4 +1252,924 @@
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   MOBILE RESPONSIVE DESIGN
+   Add this at the END of your CSS
+========================================================= */
+
+
+/* =========================================================
+   TABLET / SMALL LAPTOP
+========================================================= */
+
+@media (max-width: 900px) {
+
+    /* DASHBOARD */
+
+    .dashboard-page {
+        padding: 30px 25px 50px;
+    }
+
+    .dashboard-layout {
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 30px;
+    }
+
+    .patient-card,
+    .feature-card {
+        min-width: 0;
+    }
+
+    .overview-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .health-profile-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .family-members-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    /* PATIENT DETAIL */
+
+    .patient-detail-page {
+        padding: 20px 25px 50px;
+    }
+
+    .patient-detail-card {
+        padding: 30px;
+    }
+
+    .patient-details-grid {
+        gap: 20px;
+    }
+
+    /* FORM */
+
+    .form-page {
+        padding: 20px 25px 60px;
+    }
+
+    .patient-form-card {
+        padding: 35px;
+    }
+
+    .form-row {
+        gap: 20px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    /* -----------------------------------------------------
+       DASHBOARD PAGE
+    ----------------------------------------------------- */
+
+    .dashboard-page {
+        min-height: 100vh;
+        padding: 100px 15px 30px;
+    }
+
+
+    /* -----------------------------------------------------
+       DASHBOARD HEADER
+    ----------------------------------------------------- */
+
+    .dashboard-heading {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 26px;
+        line-height: 1.25;
+    }
+
+    .dashboard-heading p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .book-appointment-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+
+    /* -----------------------------------------------------
+       MAIN DASHBOARD LAYOUT
+    ----------------------------------------------------- */
+
+    .dashboard-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: 100%;
+    }
+
+
+    /* -----------------------------------------------------
+       LEFT COLUMN
+    ----------------------------------------------------- */
+
+    .dashboard-left-column {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .patient-card,
+    .feature-card {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .patient-card {
+        padding: 16px;
+    }
+
+    .feature-card {
+        padding: 16px;
+    }
+
+
+    /* -----------------------------------------------------
+       PATIENT LIST
+    ----------------------------------------------------- */
+
+    .patient-list {
+        width: 100%;
+    }
+
+    .patient-item {
+        width: 100%;
+        padding: 10px 8px;
+        box-sizing: border-box;
+    }
+
+    .patient-avatar {
+        width: 42px;
+        height: 42px;
+        flex-shrink: 0;
+    }
+
+    .patient-item-details {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .patient-item-details strong {
+        max-width: 100%;
+    }
+
+
+    /* -----------------------------------------------------
+       ADD FAMILY MEMBER
+    ----------------------------------------------------- */
+
+    .add-family-button {
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 10px;
+    }
+
+
+    /* -----------------------------------------------------
+       FEATURE ITEMS
+    ----------------------------------------------------- */
+
+    .feature-item {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 10px;
+    }
+
+
+    /* -----------------------------------------------------
+       RIGHT CONTENT
+    ----------------------------------------------------- */
+
+    .dashboard-content {
+        width: 100%;
+        min-width: 0;
+    }
+
+
+    /* -----------------------------------------------------
+       OVERVIEW STATISTICS
+    ----------------------------------------------------- */
+
+    .overview-stat-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-bottom: 15px;
+        padding-top: 0;
+    }
+
+    .overview-stat-card {
+        width: 100%;
+        min-height: 85px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 17px;
+    }
+
+    .overview-stat-card span {
+        font-size: 13px;
+    }
+
+    .overview-stat-card strong {
+        font-size: 20px;
+    }
+
+    .overview-stat-card small {
+        font-size: 11px;
+    }
+
+
+    /* -----------------------------------------------------
+       CONTENT CARDS
+    ----------------------------------------------------- */
+
+    .dashboard-content-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 17px;
+        margin-bottom: 15px;
+    }
+
+    .content-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-bottom: 15px;
+    }
+
+    .content-card-header h3 {
+        font-size: 15px;
+    }
+
+    .content-card-header a {
+        font-size: 12px;
+    }
+
+
+    /* -----------------------------------------------------
+       HEALTH PROFILE
+    ----------------------------------------------------- */
+
+    .health-profile-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .health-profile-item {
+        padding: 13px;
+    }
+
+    .health-profile-item span {
+        font-size: 11px;
+    }
+
+    .health-profile-item strong {
+        font-size: 16px;
+    }
+
+
+    /* -----------------------------------------------------
+       INTEGRATION PLACEHOLDER
+    ----------------------------------------------------- */
+
+    .integration-placeholder {
+        min-height: 120px;
+        padding: 15px;
+        box-sizing: border-box;
+    }
+
+    .integration-placeholder.large {
+        min-height: 220px;
+    }
+
+    .integration-placeholder h3 {
+        font-size: 15px;
+    }
+
+    .integration-placeholder p {
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .placeholder-icon {
+        font-size: 22px;
+    }
+
+
+    /* -----------------------------------------------------
+       CONTENT PANEL HEADER
+    ----------------------------------------------------- */
+
+    .content-panel-header {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 18px;
+        padding-top: 0;
+    }
+
+    .content-panel-header h2 {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .content-panel-header p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------------
+       FAMILY MEMBERS
+    ----------------------------------------------------- */
+
+    .family-members-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .family-member-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px;
+    }
+
+    .family-member-header {
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .family-member-avatar {
+        width: 48px;
+        height: 48px;
+    }
+
+    .family-member-header h3 {
+        font-size: 16px;
+    }
+
+    .family-member-header p {
+        font-size: 12px;
+    }
+
+    .family-detail-row {
+        gap: 10px;
+        padding-bottom: 8px;
+    }
+
+    .family-detail-row span {
+        font-size: 12px;
+    }
+
+    .family-detail-row strong {
+        font-size: 12.5px;
+        text-align: right;
+    }
+
+
+    /* -----------------------------------------------------
+       EMPTY FAMILY STATE
+    ----------------------------------------------------- */
+
+    .empty-family-state {
+        padding: 40px 15px;
+        box-sizing: border-box;
+    }
+
+    .empty-family-state h3 {
+        font-size: 17px;
+    }
+
+    .empty-family-state p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------------
+       PATIENT DETAIL PAGE
+    ----------------------------------------------------- */
+
+    .patient-detail-page {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 15px 40px;
+    }
+
+    .patient-detail-header {
+        margin-bottom: 18px;
+    }
+
+    .back-button {
+        font-size: 17px;
+    }
+
+    .patient-detail-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 22px 17px;
+        border-radius: 16px;
+    }
+
+
+    /* -----------------------------------------------------
+       PATIENT DETAIL PROFILE
+    ----------------------------------------------------- */
+
+    .patient-detail-profile {
+        align-items: center;
+        gap: 13px;
+        padding-bottom: 20px;
+    }
+
+    .patient-detail-avatar {
+        width: 65px;
+        height: 65px;
+        flex-shrink: 0;
+        font-size: 25px;
+    }
+
+    .patient-detail-profile h1 {
+        font-size: 20px;
+        line-height: 1.3;
+    }
+
+    .patient-detail-profile p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+
+
+    /* -----------------------------------------------------
+       PATIENT DETAILS
+    ----------------------------------------------------- */
+
+    .patient-details-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
+    .patient-detail-item {
+        padding: 15px 17px;
+        border-radius: 11px;
+    }
+
+    .patient-detail-item span {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .patient-detail-item span i {
+        margin-right: 5px;
+        font-size: 16px;
+    }
+
+    .patient-detail-item strong {
+        font-size: 15px;
+    }
+
+
+    /* -----------------------------------------------------
+       PATIENT DETAIL ACTIONS
+    ----------------------------------------------------- */
+
+    .patient-detail-actions {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+    }
+
+    .edit-patient-button,
+    .delete-patient-button {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: center;
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM PAGE
+    ----------------------------------------------------- */
+
+    .form-page {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 15px 50px;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM PAGE HEADER
+    ----------------------------------------------------- */
+
+    .form-page-header {
+        margin-bottom: 20px;
+    }
+
+    .form-page-header h1 {
+        margin-top: 15px;
+        margin-bottom: 6px;
+        font-size: 24px;
+        line-height: 1.3;
+    }
+
+    .form-page-header p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM CARD
+    ----------------------------------------------------- */
+
+    .patient-form-card {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 20px 16px;
+        border-radius: 17px;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM CARD HEADER
+    ----------------------------------------------------- */
+
+    .form-card-header {
+        gap: 10px;
+        padding-bottom: 18px;
+        margin-bottom: 20px;
+    }
+
+    .form-card-icon {
+        width: 43px;
+        height: 43px;
+        flex-shrink: 0;
+        border-radius: 11px;
+        font-size: 18px;
+    }
+
+    .form-card-header h2 {
+        font-size: 17px;
+    }
+
+    .form-card-header p {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+
+
+    /* -----------------------------------------------------
+       PROFILE UPLOAD
+    ----------------------------------------------------- */
+
+    .profile-upload-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 25px;
+        padding: 18px 14px;
+        text-align: center;
+    }
+
+    .profile-upload-preview {
+        width: 85px;
+        height: 85px;
+        font-size: 27px;
+    }
+
+    .profile-upload-button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .profile-upload-text {
+        width: 100%;
+    }
+
+    .profile-upload-text strong {
+        font-size: 15px;
+    }
+
+    .profile-upload-text p {
+        max-width: 100%;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM ROW
+    ----------------------------------------------------- */
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .form-field {
+        width: 100%;
+        margin-bottom: 18px;
+    }
+
+    .form-field label {
+        margin-bottom: 7px;
+        font-size: 13px;
+    }
+
+    .form-field label i {
+        margin-right: 5px;
+        font-size: 12px;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM INPUTS
+    ----------------------------------------------------- */
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 12px 13px;
+        font-size: 13px;
+        border-radius: 9px;
+    }
+
+    .form-field textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .field-error {
+        font-size: 11px;
+    }
+
+    .form-error-box {
+        padding: 11px 13px;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    /* -----------------------------------------------------
+       FORM ACTIONS
+    ----------------------------------------------------- */
+
+    .form-actions {
+        flex-direction: column-reverse;
+        gap: 10px;
+        margin-top: 10px;
+        padding-top: 20px;
+    }
+
+    .form-cancel-button,
+    .form-save-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+
+
+    /* -----------------------------------------------------
+       DELETE PAGE
+    ----------------------------------------------------- */
+
+    .delete-page {
+        min-height: 80vh;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 30px 15px 50px;
+    }
+
+    .delete-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 28px 18px;
+        border-radius: 17px;
+    }
+
+    .delete-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 16px;
+        font-size: 24px;
+    }
+
+    .delete-card h1 {
+        margin-bottom: 10px;
+        font-size: 23px;
+    }
+
+    .delete-card > p {
+        margin-bottom: 7px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .delete-warning {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+
+    /* -----------------------------------------------------
+       DELETE PATIENT PREVIEW
+    ----------------------------------------------------- */
+
+    .delete-patient-preview {
+        width: 100%;
+        box-sizing: border-box;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 12px;
+        margin-bottom: 20px;
+    }
+
+    .delete-avatar {
+        width: 45px;
+        height: 45px;
+        flex-shrink: 0;
+        font-size: 18px;
+    }
+
+    .delete-patient-preview strong {
+        font-size: 15px;
+    }
+
+    .delete-patient-preview span {
+        font-size: 12px;
+    }
+
+
+    /* -----------------------------------------------------
+       DELETE ACTIONS
+    ----------------------------------------------------- */
+
+    .delete-actions {
+        flex-direction: column-reverse;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .delete-actions .form-cancel-button,
+    .delete-confirm-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 18px;
+        font-size: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 400px) {
+
+    .dashboard-page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .dashboard-heading h1 {
+        font-size: 23px;
+    }
+
+    .patient-card,
+    .feature-card,
+    .dashboard-content-card {
+        padding: 14px;
+    }
+
+    .patient-detail-page,
+    .form-page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .patient-detail-card,
+    .patient-form-card {
+        padding: 18px 13px;
+    }
+
+    .patient-detail-profile h1 {
+        font-size: 18px;
+    }
+
+    .family-member-card {
+        padding: 16px;
+    }
+
+    .form-page-header h1 {
+        font-size: 22px;
+    }
+
+    .delete-page {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .delete-card {
+        padding: 25px 14px;
+    }
+
+}
+
+
+@media (max-width: 650px) {
+
+    .profile-upload-section {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    .profile-upload {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .profile-upload a {
+        display: inline-block;
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+        font-size: 11px;
+    }
+
+    .profile-upload-section label {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .profile-upload input[type="file"] {
+        display: none;
+    }
+
 }
