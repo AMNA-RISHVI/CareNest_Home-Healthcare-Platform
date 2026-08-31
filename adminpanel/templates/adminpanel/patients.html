@@ -1,6 +1,6 @@
 {% extends 'adminpanel/base.html' %}
 {% block content %}
-<div class="flex justify-between items-center mb-6">
+<div class="flex justify-between items-center mb-4 p-4">
     <h1 class="text-2xl font-bold text-gray-800">Patients</h1>
     <div class="flex gap-3">
         <button class="border border-teal-600 text-teal-600 px-4 py-2 rounded-lg hover:bg-teal-50">Filter</button>
@@ -9,8 +9,8 @@
     </div>
 </div>
 
-<div class="bg-white shadow-sm rounded-xl p-6">
-    <table class="w-full text-left">
+<div class="bg-white shadow-sm rounded-xl p-4 overflow-x-auto">
+    <table class="w-full text-left min-w-[600px]">
         <thead>
             <tr class="text-gray-400 text-sm border-b">
                 <th class="py-3">PATIENT</th>
