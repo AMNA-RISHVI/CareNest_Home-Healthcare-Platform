@@ -16,7 +16,7 @@
         .toggle-switch.on::after { left: 18px; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
         <!-- Header -->
     <div class="flex justify-between items-center mb-6">
@@ -40,7 +40,7 @@
         <div class="flex-1 flex flex-col gap-6">
             
             <!-- Top Stats Grid (3 Cards) - Centered Icons & Stethoscope added -->
-            <div class="grid grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="card-stat flex flex-col items-center justify-center p-4 text-center border-b-2 border-r-2">
                     <i class="fas fa-calendar-day text-teal-600 bg-teal-100 p-3 rounded-lg text-xl mb-1"></i>
                     <div>
@@ -67,7 +67,7 @@
             <!-- Appointment Settings -->
             <div class="bg-white rounded-xl border-b-2 border-r-2 p-6 shadow-sm w-full">
                 <h2 class="font-bold text-lg mb-4">Appointment Settings</h2>
-                <div class="grid grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div><label class="text-sm text-gray-500">Duration per Appointment</label>
                         <select id="duration" class="time-select mt-1">
                             <script>for(let i=5; i<=60; i+=5) document.write(`<option value="${i}" ${i==30?'selected':''}>${i} min</option>`);</script>
@@ -167,7 +167,7 @@
                     </div>
                 </div>
                 <div class="details mt-4 hidden pt-4 border-t border-gray-100">
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div class="bg-teal-50 border-b-4 p-3 rounded-lg">
                             <div class="text-sm font-medium mb-2"><i class="fas fa-sun text-teal-600"></i> Morning Session <span class="text-red-500 text-xs cursor-pointer float-right" onclick="removeSession(${i}, 'morning')">Remove</span></div>
                             <div class="flex gap-2 text-sm"><div><label class="text-xs text-gray-500">Start time</label><select class="time-select morning-start-${i}">${generateTimeOptions(0, 12)}</select></div><div><label class="text-xs text-gray-500">End time</label><select class="time-select morning-end-${i}">${generateTimeOptions(0, 12)}</select></div></div>
