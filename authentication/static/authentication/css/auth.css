@@ -1021,19 +1021,6 @@ input[type=file]{
     font-size: 14px;
 }
 
-.profile-back-header {
-    margin-bottom: 25px;
-}
-
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    color: #333;
-}
-
 
 /* =========================================================
    MAIN PROFILE CARD

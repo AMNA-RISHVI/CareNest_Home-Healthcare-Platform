@@ -1,6 +1,18 @@
 {% extends "authentication/base_auth.html" %}
 {% load static %}
 
+{% block navbar %}
+    {% include "landing/partials/navbar.html" %}
+{% endblock %}
+
+{% block extra_css %}
+    <!-- Landing / Navbar CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'landing/css/style.css' %}"
+    >
+{% endblock %}
+
 {% block title %}
 My Profile
 {% endblock %}
@@ -8,16 +20,6 @@ My Profile
 {% block content %}
 
 <div class="profile-page">
-
-    <div class="profile-back-header">
-        <a
-            href="{% url 'patient_dashboard:dashboard' %}"
-            class="back-button">
-            
-            <i class="fa-solid fa-arrow-left"></i>
-            Back to Dashboard
-        </a>
-    </div>
 
     <!-- PAGE HEADER -->
     <div class="profile-page-header">
