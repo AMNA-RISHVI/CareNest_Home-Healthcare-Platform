@@ -1,0 +1,1035 @@
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    color: #263D3B;
+
+    background: linear-gradient(
+        to bottom,
+        #FFFFF7 0%,
+        #FFFFF7 50%,
+        #FFFFEF 80%,
+        #FFFCE6 100%
+    );
+
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   NAVBAR
+========================================= */
+
+.navbar {
+    height: 88px;
+    width: 100%;
+
+    background: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 55px;
+
+    border-bottom: 1px solid #eeeeee;
+
+    position: relative;
+    z-index: 10;
+}
+
+
+/* Logo + CareNest */
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 220px;
+}
+
+.navbar-logo {
+    width: 62px;
+    height: 62px;
+
+    object-fit: contain;
+}
+
+.brand-text {
+    font-family: Arial, sans-serif;
+    font-size: 27px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.brand-care {
+    color: #178982;
+}
+
+.brand-nest {
+    color: #E05906;
+}
+
+
+/* Navigation */
+
+.navigation {
+    display: flex;
+    align-items: center;
+    gap: 45px;
+
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navigation a {
+    text-decoration: none;
+    color: #555;
+
+    font-size: 15px;
+
+    padding: 8px 25px;
+    border-radius: 8px;
+
+    white-space: nowrap;
+
+    transition: 0.2s ease;
+}
+
+.navigation a:hover {
+    color: #178982;
+}
+
+.navigation a.active {
+    background: #B7F5EA;
+    color: #168D87;
+    border: 1px solid #7DDED1;
+}
+
+
+/* User */
+
+.user-area {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+.notification {
+    font-size: 19px;
+    color: #777;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.profile-avatar {
+    width: 34px;
+    height: 34px;
+
+    border-radius: 7px;
+
+    background: #24A59A;
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+}
+
+.dropdown-arrow {
+    color: #777;
+    font-size: 16px;
+}
+
+
+/* =========================================
+   PRICING INTRO
+========================================= */
+
+.pricing-intro {
+    text-align: center;
+
+    padding: 30px 20px 5px;
+}
+
+.section-badge {
+    display: inline-block;
+
+    background: #B7F5EA;
+    color: #168D87;
+
+    border: 1px solid #7DDED1;
+
+    padding: 4px 55px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+
+    margin-bottom: 8px;
+}
+
+.pricing-intro h1 {
+    font-size: 28px;
+    color: #24635F;
+
+    margin-bottom: 5px;
+}
+
+.pricing-intro > p {
+    font-family: Arial, sans-serif;
+
+    color: #777;
+
+    font-size: 13px;
+    line-height: 1.6;
+
+    max-width: 700px;
+    margin: auto;
+}
+
+
+/* =========================================
+   BILLING TOGGLE
+========================================= */
+
+.billing-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 13px;
+
+    margin: 18px 0;
+}
+
+.billing-option {
+    font-family: Arial, sans-serif;
+    color: #777;
+    font-size: 13px;
+}
+
+.active-billing {
+    color: #333;
+}
+
+.toggle {
+    width: 53px;
+    height: 27px;
+
+    border: none;
+    border-radius: 20px;
+
+    background: #cccccc;
+
+    padding: 3px;
+
+    cursor: pointer;
+}
+
+.toggle-circle {
+    display: block;
+
+    width: 21px;
+    height: 21px;
+
+    background: white;
+
+    border-radius: 50%;
+}
+
+.save-badge {
+    font-family: Arial, sans-serif;
+
+    background: #8DEFE2;
+    color: #168D87;
+
+    padding: 3px 12px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   TRUST FEATURES
+========================================= */
+
+.trust-features {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 35px;
+
+    margin: 15px 0 25px;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-family: Arial, sans-serif;
+
+    color: #777;
+    font-size: 12px;
+}
+
+.trust-item span {
+    color: #31B3AD;
+    font-size: 18px;
+}
+
+
+/* =========================================
+   PLAN CARDS
+========================================= */
+
+.plans-container {
+    display: grid;
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 18px;
+
+    width: calc(100% - 80px);
+    max-width: 1360px;
+
+    margin: 0 auto;
+
+    align-items: stretch;
+}
+
+.plan-card {
+    position: relative;
+
+    border-radius: 12px;
+
+    min-height: 555px;
+
+    padding: 20px 16px 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    box-shadow:
+        4px 5px 12px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Slight shading on ONE side */
+
+.free-plan {
+    background:
+        linear-gradient(
+            to right,
+            rgba(220, 220, 220, 0.28),
+            rgba(249, 249, 249, 0) 22%
+        ),
+        #F9F9F9;
+}
+
+.family-plan {
+    background:
+        linear-gradient(
+            to right,
+            rgba(0, 123, 117, 0.10),
+            rgba(226, 255, 249, 0) 20%
+        ),
+        #E2FFF9;
+
+    border: 2px solid #007B75;
+
+    padding-top: 48px;
+
+    box-shadow:
+        4px 5px 12px rgba(0, 123, 117, 0.14);
+}
+
+.senior-plan {
+    background:
+        linear-gradient(
+            to right,
+            rgba(224, 89, 6, 0.08),
+            rgba(255, 247, 235, 0) 20%
+        ),
+        #FFF7EB;
+}
+
+.overseas-plan {
+    background:
+        linear-gradient(
+            to right,
+            rgba(162, 12, 182, 0.08),
+            rgba(254, 240, 255, 0) 20%
+        ),
+        #FEF0FF;
+}
+
+
+/* =========================================
+   LABELS
+========================================= */
+
+.popular-label,
+.expat-label {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    z-index: 2;
+}
+
+.popular-label {
+    background: #007B75;
+}
+
+.expat-label {
+    background: #E05906;
+}
+
+
+/* =========================================
+   INNER CONTENT
+========================================= */
+
+.plan-inner {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+}
+
+
+/* =========================================
+   ICONS
+========================================= */
+
+.plan-icon {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 12px;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 22px;
+
+    flex-shrink: 0;
+}
+
+.free-icon {
+    background: #A1A1A1;
+}
+
+.family-icon {
+    background: #24A59A;
+}
+
+.senior-icon {
+    background: #E05906;
+}
+
+.overseas-icon {
+    background: #A20CB6;
+}
+
+
+/* Important:
+   Keeps the Overseas icon BELOW the "For Expats" label
+*/
+
+.overseas-plan .plan-inner {
+    padding-top: 5px;
+}
+
+
+/* =========================================
+   CARD TEXT
+========================================= */
+
+.plan-card h2 {
+    font-size: 17px;
+    color: #222;
+
+    margin-bottom: 5px;
+
+    line-height: 1.25;
+}
+
+.plan-description {
+    color: #777;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    margin-bottom: 17px;
+}
+
+.price {
+    font-family: Arial, sans-serif;
+
+    font-size: 22px;
+    font-weight: bold;
+
+    color: #202020;
+
+    margin-bottom: 2px;
+}
+
+.free-price {
+    margin-bottom: 25px;
+}
+
+.currency,
+.per-month {
+    font-size: 11px;
+    color: #777;
+    font-weight: normal;
+}
+
+.billing {
+    font-family: Arial, sans-serif;
+
+    color: #777;
+
+    font-size: 10px;
+
+    margin-top: 2px;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================
+   FEATURES
+========================================= */
+
+.features {
+    list-style: none;
+
+    flex: 1;
+
+    padding: 0;
+    margin: 0;
+}
+
+.features li {
+    position: relative;
+
+    padding-left: 21px;
+
+    margin-bottom: 12px;
+
+    color: #666;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    line-height: 1.45;
+}
+
+.features li::before {
+    content: "✓";
+
+    position: absolute;
+
+    left: 0;
+    top: 1px;
+
+    width: 13px;
+    height: 13px;
+
+    border: 1.5px solid #31B3AD;
+
+    border-radius: 50%;
+
+    color: #31B3AD;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 8px;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   SUBSCRIBE BUTTONS
+========================================= */
+
+.subscribe-button {
+    width: 100%;
+
+    height: 43px;
+
+    margin-top: auto;
+
+    border-radius: 4px;
+
+    border: 1px solid #31B3AD;
+
+    background: transparent;
+
+    color: #178982;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    flex-shrink: 0;
+}
+
+.subscribe-button:hover {
+    background: #178982;
+
+    color: white;
+
+    border-color: #178982;
+}
+
+.filled-button {
+    background: #178982;
+
+    color: white;
+
+    border-color: #178982;
+}
+
+.filled-button:hover {
+    background: #178982;
+    color: white;
+}
+
+
+/* =========================================
+   COMPARISON TABLE
+========================================= */
+
+.comparison-section {
+    width: calc(100% - 80px);
+    max-width: 1360px;
+
+    margin: 70px auto 0;
+}
+
+.comparison-heading {
+    text-align: center;
+
+    margin-bottom: 22px;
+}
+
+.comparison-heading h2 {
+    font-size: 22px;
+
+    color: #222;
+
+    margin-bottom: 4px;
+}
+
+.comparison-heading p {
+    font-family: Arial, sans-serif;
+
+    color: #888;
+
+    font-size: 12px;
+}
+
+.comparison-table-wrapper {
+    background: white;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.08);
+}
+
+.comparison-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 7px 16px;
+
+    text-align: center;
+
+    border-bottom: 1px solid #eeeeee;
+
+    line-height: 1.25;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+    text-align: left;
+}
+
+.comparison-table th {
+    font-weight: normal;
+
+    color: #444;
+
+    background: #fafafa;
+}
+
+.comparison-table td {
+    color: #555;
+
+    height: 31px;
+}
+
+.comparison-table tr:nth-child(even) td {
+    background: #f8f8f8;
+}
+
+.comparison-table .family-column {
+    background: #E4F9F5;
+}
+
+.comparison-table tr:nth-child(even) .family-column {
+    background: #DDF5F1;
+}
+
+.comparison-table td:not(:first-child) {
+    color: #333;
+}
+
+
+/* =========================================
+   CORPORATE SECTION
+========================================= */
+
+.corporate-section {
+    width: calc(100% - 120px);
+    max-width: 1100px;
+
+    margin: 48px auto 0;
+
+    padding: 38px 60px;
+
+    text-align: center;
+
+    border: 1px solid #D7DDD0;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        to right,
+        #D9FFF8,
+        #FFF9E9
+    );
+
+    box-shadow:
+        3px 4px 10px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* Lift slightly on hover */
+
+.corporate-section:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        3px 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.corporate-icon {
+    width: 40px;
+    height: 40px;
+
+    margin: 0 auto 13px;
+
+    border-radius: 10px;
+
+    background: #24A59A;
+
+    color: white;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 22px;
+}
+
+.corporate-section h2 {
+    color: #178982;
+
+    font-size: 17px;
+
+    margin-bottom: 12px;
+}
+
+.corporate-section p {
+    max-width: 700px;
+
+    margin: auto;
+
+    color: #777;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+.corporate-buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    margin-top: 23px;
+}
+
+.corporate-primary,
+.corporate-secondary {
+    padding: 11px 20px;
+
+    border-radius: 4px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.corporate-primary {
+    background: #178982;
+
+    color: white;
+
+    border: 1px solid #178982;
+}
+
+.corporate-secondary {
+    background: transparent;
+
+    color: #178982;
+
+    border: 1px solid #31B3AD;
+}
+
+
+/* =========================================
+   FINAL CTA
+========================================= */
+
+.final-cta {
+    text-align: center;
+
+    padding: 50px 20px 65px;
+}
+
+.final-cta h2 {
+    color: #178982;
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+}
+
+.final-cta p {
+    font-family: Arial, sans-serif;
+
+    color: #888;
+
+    font-size: 12px;
+
+    margin-bottom: 20px;
+}
+
+.create-account-button {
+    background: #178982;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 4px;
+
+    padding: 12px 25px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.create-account-button:hover {
+    background: #0F706A;
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+        padding: 0 25px;
+    }
+
+    .navigation {
+        gap: 10px;
+    }
+
+    .plans-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        width: calc(100% - 40px);
+    }
+
+    .comparison-section {
+        width: calc(100% - 40px);
+    }
+}
+
+
+@media (max-width: 650px) {
+
+    .navbar {
+        height: 75px;
+        padding: 0 15px;
+    }
+
+    .navbar-brand {
+        min-width: auto;
+    }
+
+    .navbar-logo {
+        width: 48px;
+        height: 48px;
+    }
+
+    .brand-text {
+        font-size: 21px;
+    }
+
+    .navigation {
+        display: none;
+    }
+
+    .plans-container {
+        grid-template-columns: 1fr;
+
+        width: calc(100% - 30px);
+    }
+
+    .comparison-section {
+        width: calc(100% - 30px);
+
+        overflow-x: auto;
+    }
+
+    .comparison-table-wrapper {
+        overflow-x: auto;
+    }
+
+    .comparison-table {
+        min-width: 700px;
+    }
+
+    .corporate-section {
+        width: calc(100% - 30px);
+
+        margin-top: 35px;
+
+        padding: 35px 20px;
+    }
+
+    .corporate-buttons {
+        flex-direction: column;
+    }
+
+    .trust-features {
+        flex-direction: column;
+
+        gap: 10px;
+    }
+}
