@@ -236,7 +236,7 @@ body {
 .patient-name h2 {
     margin: 0 0 4px;
 
-    font-size: 17px;
+    font-size: 20px;
     font-weight: 700;
 
     color: #ffffff;
@@ -245,10 +245,10 @@ body {
 .patient-name p {
     margin: 0;
 
-    color: #d5eeee;
+    color: #A1FDEB;
 
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 
@@ -265,15 +265,15 @@ body {
 
     margin-bottom: 6px;
 
-    color: #d3efed;
+    color: #A1FDEB;
 
-    font-size: 11px;
+    font-size: 14px;
 }
 
 .health-id strong {
     font-family: Arial, sans-serif;
 
-    font-size: 13px;
+    font-size: 16px;
     font-weight: 700;
 
     color: #ffffff;
@@ -302,7 +302,7 @@ body {
     flex-direction: column;
     justify-content: center;
 
-    background: #eeeeee;
+    background: #F1F1F1;
 
     border-radius: 12px;
 
@@ -310,19 +310,19 @@ body {
 }
 
 .info-box span {
-    color: #666666;
+    color: #6B6868;
 
-    font-size: 11px;
+    font-size: 12px;
 
     margin-bottom: 7px;
 }
 
 .info-box strong {
-    color: #111111;
+    color: #000000;
 
     font-family: Arial, sans-serif;
 
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 700;
 }
 
@@ -371,10 +371,10 @@ body {
 .title-left h3 {
     margin: 0;
 
-    color: #111111;
+    color: #000000;
 
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 .title-left i {
@@ -412,9 +412,10 @@ body {
 ========================================================= */
 
 .view-all {
-    color: #555555;
+    color: #6B6868;
 
-    font-size: 10px;
+    font-size: 12px;
+    font-weight: 500;
 
     text-decoration: none;
 
@@ -450,13 +451,15 @@ body {
 .column-heading span {
     color: #666666;
 
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 550;
 }
 
 .column-heading a {
-    color: #555555;
+    color: #6B6868;
 
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: 500;
 
     text-decoration: none;
 }
@@ -480,8 +483,8 @@ body {
 
     font-family: Arial, sans-serif;
 
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 500;
 }
 
 .tag i {

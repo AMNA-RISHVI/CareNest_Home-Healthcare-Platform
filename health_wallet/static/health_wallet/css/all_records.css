@@ -10,16 +10,21 @@
 
 :root {
 
-    --primary: #1976d2;
-    --primary-dark: #125ca3;
-    --primary-light: #eaf4ff;
+    --primary: #007B75;
+    --primary-dark: #035B57;
+    --primary-light: #c3fbf0;
 
     --secondary: #18a999;
 
-    --background: #f5f8fc;
+    --background: linear-gradient(
+        135deg,
+        #FFFFF7 20%,
+        #FFFFEF 50%,
+        #FFFCE6 100%
+    );
     --surface: #ffffff;
 
-    --text: #172b4d;
+    --text: #034A46;
     --text-light: #6b7a90;
     --text-muted: #8b98a9;
 

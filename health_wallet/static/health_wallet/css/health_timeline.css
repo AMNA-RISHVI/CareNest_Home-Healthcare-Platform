@@ -7,8 +7,13 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background: #f5f7fb;
-    color: #1f2937;
+    background: linear-gradient(
+        135deg,
+        #FFFFF7 20%,
+        #FFFFEF 50%,
+        #FFFCE6 100%
+    );
+    color: #035B57;
 }
 
 
@@ -56,9 +61,9 @@ a {
     align-items: center;
     justify-content: center;
 
-    background: #eef2ff;
+    background: #c3fbf0;
 
-    color: #334155;
+    color: #035B57;
 
     font-size: 22px;
 
@@ -67,7 +72,7 @@ a {
 
 
 .back-button:hover {
-    background: #e0e7ff;
+    background: #A1FDEB;
 }
 
 
@@ -78,13 +83,13 @@ a {
 
 
 .timeline-header p {
-    color: #64748b;
+    color: #6B6868;
     font-size: 14px;
 }
 
 
 .records-button {
-    background: #2563eb;
+    background: #007B75;
 
     color: #ffffff;
 
@@ -99,7 +104,9 @@ a {
 
 
 .records-button:hover {
-    background: #1d4ed8;
+    background: #ffffff;
+    color: #007B75;
+    border: 2px solid #007B75;
 }
 
 
@@ -136,13 +143,17 @@ a {
 
     overflow: hidden;
 
-    background: #dbeafe;
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    color: #2563eb;
+    color: #ffffff;
 
     font-size: 24px;
     font-weight: bold;
@@ -170,7 +181,7 @@ a {
 
 
 .patient-info p {
-    color: #64748b;
+    color: #6B6868;
 
     font-size: 14px;
 }
@@ -189,7 +200,7 @@ a {
 .blood-label {
     font-size: 12px;
 
-    color: #64748b;
+    color: #6B6868;
 }
 
 
@@ -226,7 +237,7 @@ a {
 
     width: 3px;
 
-    background: #dbeafe;
+    background: #f1f1f1;
 
     border-radius: 10px;
 }
@@ -253,9 +264,9 @@ a {
 
     border-radius: 50%;
 
-    background: #2563eb;
+    background: #007B75;
 
-    border: 5px solid #f5f7fb;
+    border: 5px solid #c3fbf0;
 
     display: flex;
     align-items: center;
@@ -280,7 +291,7 @@ a {
 
     box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
 
-    border: 1px solid #eef2f7;
+    border: 1px solid #c3fbf0;
 
     transition: 0.2s;
 }
@@ -313,14 +324,14 @@ a {
 
     letter-spacing: 0.4px;
 
-    color: #2563eb;
+    color: #007B75;
 }
 
 
 .timeline-date {
     font-size: 13px;
 
-    color: #64748b;
+    color: #6B6868;
 }
 
 
@@ -332,7 +343,7 @@ a {
 
 
 .timeline-details {
-    color: #475569;
+    color: #6B6868;
 
     font-size: 14px;
 
@@ -355,7 +366,7 @@ a {
 
     margin-top: 10px;
 
-    color: #2563eb;
+    color: #007B75;
 
     font-weight: 600;
 
@@ -401,7 +412,7 @@ a {
 
 
 .empty-timeline p {
-    color: #64748b;
+    color: #6B6868;
 
     font-size: 14px;
 
@@ -412,7 +423,7 @@ a {
 .add-record-button {
     display: inline-block;
 
-    background: #2563eb;
+    background: #007B75;
 
     color: #ffffff;
 
