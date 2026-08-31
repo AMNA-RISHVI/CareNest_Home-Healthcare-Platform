@@ -9,12 +9,6 @@ body{
 
 .professional-request-page {
     max-width: 1200px;
-    background: linear-gradient(
-        135deg,
-        #FFFFF7 20%,
-        #FFFFEF 50%,
-        #FFFCE6 100%
-    );
     margin: 0 auto;
     padding: 40px;
 }
@@ -55,14 +49,14 @@ body{
 
 
 .primary-button {
-    background: #246b5d;
+    background: #007B75;
     color: #ffffff;
 }
 
 
 .secondary-button {
     background: #eef3f1;
-    color: #246b5d;
+    color: #007B75;
 }
 
 

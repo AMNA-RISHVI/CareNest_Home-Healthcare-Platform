@@ -64,8 +64,12 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #e8f3f0;
-    color: #246b5d;
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );
+    color: #ffffff;
     font-weight: 700;
     font-size: 20px;
 }

@@ -1,10 +1,19 @@
-body{
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
     background: linear-gradient(
         135deg,
         #FFFFF7 20%,
         #FFFFEF 50%,
         #FFFCE6 100%
     );
+
+    font-family: 'Poppins', sans-serif;
 }
 
 .manage-access-page {
@@ -24,13 +33,16 @@ body{
 
 
 .page-header h1 {
-    margin: 0 0 8px;
+    margin: 50px 0 8px;
+    font-size: 34px;
+    font-weight: 600;
 }
 
 
 .page-header p {
     margin: 0;
     color: #777;
+    font-size: 14px;
 }
 
 
@@ -38,8 +50,8 @@ body{
     text-decoration: none;
     padding: 11px 18px;
     border-radius: 9px;
-    background: #eef3f1;
-    color: #246b5d;
+    background: #007B75;
+    color: #ffffff;
     font-weight: 600;
 }
 
@@ -62,12 +74,14 @@ body{
 
 .security-notice h3 {
     margin: 0 0 7px;
+    font-size: 18px;
 }
 
 
 .security-notice p {
     margin: 0;
     color: #66736f;
+    font-size: 14px;
 }
 
 
@@ -81,6 +95,7 @@ body{
 
 .section-header h2 {
     margin: 0;
+    font-size: 20px;
 }
 
 
@@ -120,8 +135,12 @@ body{
     height: 58px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: #e7f1ee;
-    color: #246b5d;
+    background: linear-gradient(
+        135deg,
+        #3CD5C0 0%,
+        #007B75 100%
+    );
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -138,6 +157,7 @@ body{
 .professional-info p {
     margin: 0 0 5px;
     color: #777;
+
 }
 
 
@@ -252,33 +272,210 @@ body{
 }
 
 
+/* =========================================
+   TABLET / SMALL LAPTOP
+========================================= */
+
 @media (max-width: 900px) {
 
     .manage-access-page {
-        padding: 20px;
+        width: 100%;
+        max-width: 100%;
+        padding: 25px 20px;
+        box-sizing: border-box;
     }
 
     .access-request-card {
         flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .request-actions {
-        flex-wrap: wrap;
-    }
-
-}
-
-
-@media (max-width: 600px) {
-
-    .page-header {
-        flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
+        gap: 18px;
     }
 
     .professional-info {
         width: 100%;
     }
 
+    .request-status {
+        width: 100%;
+    }
+
+    .request-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
 }
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .manage-access-page {
+        margin: 0;
+        padding: 20px 12px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .page-header p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .secondary-button {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .security-notice {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .security-icon {
+        font-size: 22px;
+    }
+
+    .security-notice h3 {
+        font-size: 16px;
+    }
+
+    .security-notice p {
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    .section-header h2 {
+        font-size: 18px;
+    }
+
+    .section-header span {
+        font-size: 13px;
+    }
+
+    .access-request-card {
+        padding: 16px;
+        border-radius: 14px;
+        gap: 15px;
+    }
+
+    .professional-info {
+        gap: 12px;
+    }
+
+    .professional-avatar {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+    }
+
+    .professional-info h3 {
+        font-size: 16px;
+    }
+
+    .professional-info p {
+        font-size: 13px;
+    }
+
+    .professional-info small {
+        font-size: 12px;
+    }
+
+    .request-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        gap: 8px;
+    }
+
+    .request-actions form {
+        width: 100%;
+    }
+
+    .approve-button,
+    .reject-button,
+    .view-button,
+    .revoke-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px 12px;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONES
+========================================= */
+
+@media (max-width: 350px) {
+
+    .manage-access-page {
+        padding: 15px 8px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+    }
+
+    .page-header p {
+        font-size: 13px;
+    }
+
+    .security-notice {
+        padding: 12px;
+    }
+
+    .security-notice h3 {
+        font-size: 14px;
+    }
+
+    .security-notice p {
+        font-size: 12px;
+    }
+
+    .section-header h2 {
+        font-size: 16px;
+    }
+
+    .section-header span {
+        font-size: 12px;
+    }
+
+    .access-request-card {
+        padding: 12px;
+    }
+
+    .professional-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    .professional-info h3 {
+        font-size: 15px;
+    }
+
+    .professional-info p {
+        font-size: 12px;
+    }
+
+    .professional-info small {
+        font-size: 11px;
+    }
+
+}
+
