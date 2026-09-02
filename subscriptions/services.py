@@ -212,4 +212,22 @@ def downgrade_subscription(subscription, new_plan_id):
         plan=new_plan,
     )
 
+def expire_subscriptions():
+    """
+    Mark active subscriptions as expired when their due date has passed.
+    """
+
+    today = timezone.now().date()
+
+    expired_subscriptions = UserSubscription.objects.filter(
+        status='activated',
+        due_date__lt=today
+    )
+
+    count = expired_subscriptions.update(
+        status='expired'
+    )
+
+    return count
+
     return new_subscription
