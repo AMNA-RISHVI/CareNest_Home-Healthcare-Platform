@@ -18,13 +18,17 @@
     <header class="navbar">
 
         <div class="brand">
+
             <img
                 src="{% static 'images/carenest-logo.png' %}"
                 alt="CareNest Logo"
                 class="brand-logo"
             >
 
-            <span class="brand-name">CareNest</span>
+            <span class="brand-name">
+                <span class="brand-care">Care</span><span class="brand-nest">Nest</span>
+            </span>
+
         </div>
 
         <div class="secure-payment">
@@ -67,7 +71,7 @@
                 </div>
 
                 <div class="plan-price" id="plan-price">
-                    Rs. 2,500.00
+                    Rs. 3,000.00
                 </div>
 
             </div>
@@ -75,6 +79,7 @@
 
             <!-- Payment Form -->
             <form id="payment-form">
+                {% csrf_token %}
 
                 <h2 class="section-title">
                     Payment Details

@@ -1,118 +1,246 @@
-const paymentForm = document.getElementById("payment-form");
-const payButton = document.getElementById("pay-button");
-const paymentResult = document.getElementById("payment-result");
+document.addEventListener("DOMContentLoaded", function () {
+
+    const paymentForm = document.getElementById("payment-form");
+    const payButton = document.getElementById("pay-button");
+    const paymentResult = document.getElementById("payment-result");
+
+    function getCSRFToken() {
+        return document.querySelector(
+            '[name=csrfmiddlewaretoken]'
+        ).value;
+    }
+
+    // Read the selected plan and billing cycle from the URL
+    const urlParams = new URLSearchParams(
+        window.location.search
+    );
+
+    const selectedPlan = urlParams.get("plan");
+    const billingCycle =
+        urlParams.get("billing") || "monthly";
 
 
-paymentForm.addEventListener("submit", async function (event) {
+    // Subscription plan information
+    const plans = {
 
-    event.preventDefault();
+        family: {
+            name: "Family Plan",
+            monthlyPrice: 3000,
+            planId: 2
+        },
+
+        senior: {
+            name: "Senior Care Plan",
+            monthlyPrice: 2500,
+            planId: 3
+        },
+
+        overseas: {
+            name: "Overseas Parent Care Plan",
+            monthlyPrice: 3500,
+            planId: 4
+        }
+
+    };
 
 
-    const paymentMethod =
-        document.getElementById("payment-method").value;
+    // Find the selected plan
+    const plan = plans[selectedPlan];
 
 
-    if (!paymentMethod) {
+    // Display selected plan
+    if (plan) {
 
-        showResult(
-            "Please select a payment method.",
-            "error"
-        );
+        document.getElementById("plan-name").textContent =
+            plan.name;
 
-        return;
+        let price = plan.monthlyPrice;
+
+        // Apply 20% annual discount
+        if (billingCycle === "annual") {
+
+            price = price * 12 * 0.8;
+
+        }
+
+        document.getElementById("plan-price").textContent =
+            `Rs. ${price.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+
     }
 
 
-    payButton.disabled = true;
-    payButton.textContent = "Processing...";
+    // Handle payment form
+    paymentForm.addEventListener(
+        "submit",
+        async function (event) {
+
+            event.preventDefault();
 
 
-    /*
-        Temporary test values.
+            // Make sure a valid plan was selected
+            if (!plan) {
 
-        Later these will come from the
-        logged-in user and selected plan.
-    */
+                showResult(
+                    "Invalid subscription plan.",
+                    "error"
+                );
 
-    const userId = 1;
-    const planId = 1;
-
-
-    try {
-
-        const response = await fetch(
-            "/payments/fake-payment/",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json"
-                },
-
-                body: JSON.stringify({
-                    user_id: userId,
-                    plan_id: planId,
-                    payment_method: paymentMethod
-                })
+                return;
             }
-        );
 
 
-        const data = await response.json();
+            payButton.disabled = true;
+
+            payButton.innerHTML =
+                "<span>Processing...</span>";
 
 
-        if (response.ok) {
+            // Temporary user ID
+            const userId = 1;
 
-            showResult(
-                `
-                <strong>Payment Successful!</strong>
-                <br><br>
-                Transaction ID:
-                ${data.transaction_id}
-                <br>
-                Invoice ID:
-                ${data.invoice_id}
-                `,
-                "success"
-            );
 
-            payButton.textContent = "Payment Complete";
+            try {
 
-        } else {
+                const response = await fetch(
+                    "/payments/fake-payment/",
+                    {
+                        method: "POST",
 
-            showResult(
-                data.error || "Payment failed.",
-                "error"
-            );
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRFToken": getCSRFToken()
+                        },
 
-            payButton.disabled = false;
-            payButton.textContent = "Pay Now";
+                        body: JSON.stringify({
+
+                            user_id: userId,
+
+                            plan_id: plan.planId,
+
+                            payment_method: "card"
+
+                        })
+                    }
+                );
+
+
+                const data =
+                    await response.json();
+
+
+                // Payment successful
+                if (response.ok) {
+
+                    showResult(
+                        `
+                        <strong>
+                            Payment Successful!
+                        </strong>
+
+                        <br><br>
+
+                        Transaction ID:
+                        ${data.transaction_id}
+
+                        <br>
+
+                        Invoice ID:
+                        ${data.invoice_id}
+
+                        <br>
+
+                        Amount:
+                        Rs. ${data.amount}
+                        `,
+                        "success"
+                    );
+
+
+                    payButton.innerHTML =
+                        "<span>Payment Complete</span>";
+
+                }
+
+
+                // Payment failed
+                else {
+
+                    showResult(
+                        data.error ||
+                        "Payment failed.",
+                        "error"
+                    );
+
+
+                    payButton.disabled = false;
+
+                    payButton.innerHTML =
+                        `
+                        <span class="lock-icon">
+                            🔒
+                        </span>
+
+                        <span>
+                            Pay Now
+                        </span>
+                        `;
+
+                }
+
+
+            }
+
+
+            // Connection error
+            catch (error) {
+
+                console.error(
+                    "Payment error:",
+                    error
+                );
+
+
+                showResult(
+                    "Unable to process payment. Please try again.",
+                    "error"
+                );
+
+
+                payButton.disabled = false;
+
+                payButton.innerHTML =
+                    `
+                    <span class="lock-icon">
+                        🔒
+                    </span>
+
+                    <span>
+                        Pay Now
+                    </span>
+                    `;
+
+            }
+
         }
+    );
 
 
-    } catch (error) {
+    // Display result message
+    function showResult(message, type) {
 
-        showResult(
-            "Unable to process payment. Please try again.",
+        paymentResult.innerHTML = message;
+
+        paymentResult.classList.remove(
+            "hidden",
+            "success",
             "error"
         );
 
-        payButton.disabled = false;
-        payButton.textContent = "Pay Now";
+        paymentResult.classList.add(type);
+
     }
 
 });
-
-
-function showResult(message, type) {
-
-    paymentResult.innerHTML = message;
-
-    paymentResult.classList.remove(
-        "hidden",
-        "success",
-        "error"
-    );
-
-    paymentResult.classList.add(type);
-}
