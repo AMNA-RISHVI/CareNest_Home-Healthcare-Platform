@@ -160,4 +160,56 @@ def upgrade_subscription(subscription, new_plan_id):
         plan=new_plan,
     )
 
+def downgrade_subscription(subscription, new_plan_id):
+    """
+    Downgrade a user's subscription to a lower-priced plan.
+    """
+
+    new_plan = SubscriptionPlan.objects.get(
+        plan_id=new_plan_id
+    )
+
+    latest_history = (
+        SubscriptionHistory.objects
+        .filter(usersub=subscription)
+        .order_by('-sub_date')
+        .first()
+    )
+
+    if latest_history is None or latest_history.plan is None:
+        raise ValueError(
+            'Current subscription plan not found.'
+        )
+
+    current_plan = latest_history.plan
+
+    if new_plan.price >= current_plan.price:
+        raise ValueError(
+            'Selected plan is not a downgrade.'
+        )
+
+    # Deactivate the current subscription
+    subscription.status = 'deactivated'
+    subscription.save()
+
+    # Create the new subscription
+    start_date = timezone.now().date()
+    due_date = start_date + timedelta(
+        days=new_plan.duration_days
+    )
+
+    new_subscription = UserSubscription.objects.create(
+        user_id=subscription.user_id,
+        start_date=start_date,
+        due_date=due_date,
+        auto_renew=False,
+        status='activated',
+    )
+
+    # Record the new plan in history
+    SubscriptionHistory.objects.create(
+        usersub=new_subscription,
+        plan=new_plan,
+    )
+
     return new_subscription

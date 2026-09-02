@@ -41,6 +41,12 @@ urlpatterns = [
     ),
 
     path(
+    'downgrade/<int:user_id>/',
+    views.downgrade,
+    name='downgrade-subscription'
+    ),
+
+    path(
         'history/<int:user_id>/',
         views.subscription_history,
         name='subscription-history'

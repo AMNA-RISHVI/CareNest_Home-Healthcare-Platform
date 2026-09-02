@@ -11,6 +11,7 @@ from .services import (
     get_subscription_history,
     renew_subscription,
     upgrade_subscription,
+    downgrade_subscription,
 )
 
 def subscription_page(request):
@@ -169,6 +170,48 @@ def upgrade(request, user_id):
 
         return JsonResponse({
             'message': 'Subscription upgraded successfully.',
+            'usersub_id': new_subscription.usersub_id,
+            'status': new_subscription.status,
+        })
+
+    except SubscriptionPlan.DoesNotExist:
+        return JsonResponse({
+            'error': 'New subscription plan not found.'
+        }, status=404)
+
+    except Exception as e:
+        return JsonResponse({
+            'error': str(e)
+        }, status=400)
+
+@require_POST
+def downgrade(request, user_id):
+    """Downgrade the user's subscription."""
+
+    try:
+        body = json.loads(request.body)
+
+        new_plan_id = body.get('plan_id')
+
+        if new_plan_id is None:
+            return JsonResponse({
+                'error': 'plan_id is required.'
+            }, status=400)
+
+        current = get_current_subscription(user_id)
+
+        if current is None:
+            return JsonResponse({
+                'error': 'No active subscription found.'
+            }, status=404)
+
+        new_subscription = downgrade_subscription(
+            subscription=current,
+            new_plan_id=new_plan_id
+        )
+
+        return JsonResponse({
+            'message': 'Subscription downgraded successfully.',
             'usersub_id': new_subscription.usersub_id,
             'status': new_subscription.status,
         })
