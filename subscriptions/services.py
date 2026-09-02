@@ -110,12 +110,31 @@ def renew_subscription(subscription):
 
 def upgrade_subscription(subscription, new_plan_id):
     """
-    Upgrade a user's subscription to a new plan.
+    Upgrade a user's subscription to a higher-priced plan.
     """
 
     new_plan = SubscriptionPlan.objects.get(
         plan_id=new_plan_id
     )
+
+    latest_history = (
+        SubscriptionHistory.objects
+        .filter(usersub=subscription)
+        .order_by('-sub_date')
+        .first()
+    )
+
+    if latest_history is None or latest_history.plan is None:
+        raise ValueError(
+            'Current subscription plan not found.'
+        )
+
+    current_plan = latest_history.plan
+
+    if new_plan.price <= current_plan.price:
+        raise ValueError(
+            'Selected plan is not an upgrade.'
+        )
 
     # Deactivate the current subscription
     subscription.status = 'deactivated'
