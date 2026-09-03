@@ -1,0 +1,674 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareNest - Plans</title>
+
+    <link rel="stylesheet" href="{% static 'css/subscriptions.css' %}">
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================
+     NAVIGATION BAR
+========================================= -->
+
+<header class="navbar">
+
+    <div class="navbar-brand">
+
+        <img
+            src="{% static 'images/carenest-logo.png' %}"
+            alt="CareNest Logo"
+            class="navbar-logo"
+        >
+
+        <div class="brand-text">
+            <span class="brand-care">Care</span><span class="brand-nest">Nest</span>
+        </div>
+
+    </div>
+
+
+    <nav class="navigation">
+
+        <a href="#">Home</a>
+
+        <a href="#">Find Professionals</a>
+
+        <a href="#" class="active">Plans</a>
+
+    </nav>
+
+
+    <div class="user-area">
+
+        <span class="notification">♧</span>
+
+        <div class="profile">
+
+            <div class="profile-avatar">
+                A
+            </div>
+
+            <span>Amara</span>
+
+            <span class="dropdown-arrow">⌄</span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+
+<!-- =========================================
+     MAIN PAGE
+========================================= -->
+
+<main>
+
+
+    <!-- =====================================
+         PRICING INTRO
+    ====================================== -->
+
+    <section class="pricing-intro">
+
+        <div class="section-badge">
+            Pricing
+        </div>
+
+        <h1>
+            Plans for Every Family
+        </h1>
+
+        <p>
+            Start free and upgrade as your family's healthcare needs grow.
+            All plans include a 7-day free trial.
+        </p>
+
+
+        <!-- Monthly / Annual -->
+
+        <div class="billing-toggle">
+
+            <span class="billing-option active-billing">
+                Monthly
+            </span>
+
+            <button
+                type="button"
+                class="toggle"
+                id="billing-toggle"
+            >
+                <span class="toggle-circle"></span>
+            </button>
+
+            <span class="billing-option">
+                Annual
+            </span>
+
+            <span class="save-badge">
+                Save 20%
+            </span>
+
+        </div>
+
+
+        <!-- Trust Features -->
+
+        <div class="trust-features">
+
+            <div class="trust-item">
+                <span>♢</span>
+                SSL Encrypted
+            </div>
+
+            <div class="trust-item">
+                <span>◷</span>
+                7-Day Free Trial
+            </div>
+
+            <div class="trust-item">
+                <span>ϟ</span>
+                Cancel Anytime
+            </div>
+
+            <div class="trust-item">
+                <span>♧</span>
+                Instant Activation
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         PLAN CARDS
+    ====================================== -->
+
+    <section class="plans-container">
+
+
+        <!-- FREE PLAN -->
+
+        <article class="plan-card free-plan">
+
+            <div class="plan-icon free-icon">
+                ♡
+            </div>
+
+            <h2>
+                Free Plan
+            </h2>
+
+            <p class="plan-description">
+                Perfect for individuals
+            </p>
+
+            <div class="price free-price">
+                Free
+            </div>
+
+
+            <ul class="features">
+
+                <li>1 personal health profile</li>
+
+                <li>Basic appointment booking</li>
+
+                <li>Digital Health Passport</li>
+
+                <li>Email notifications</li>
+
+                <li>Access to all service categories</li>
+
+            </ul>
+
+
+            <button class="subscribe-button">
+                Get Started Free
+            </button>
+
+        </article>
+
+
+
+        <!-- FAMILY PLAN -->
+
+        <article class="plan-card family-plan">
+
+            <div class="popular-label">
+                Most Popular
+            </div>
+
+
+            <div class="plan-inner">
+
+                <div class="plan-icon family-icon">
+                    ♧
+                </div>
+
+                <h2>
+                    Family Plan
+                </h2>
+
+                <p class="plan-description">
+                    Best for families
+                </p>
+
+
+                <div class="price">
+
+                    <span class="currency">
+                        Rs.
+                    </span>
+
+                    <span>
+                        3,000
+                    </span>
+
+                    <span class="per-month">
+                        /mon
+                    </span>
+
+                </div>
+
+
+                <p class="billing">
+                    Billed monthly
+                </p>
+
+
+                <ul class="features">
+
+                    <li>Up to 5 patient profiles</li>
+
+                    <li>Centralized family health management</li>
+
+                    <li>5% discount on consultation fees</li>
+
+                    <li>Priority customer support</li>
+
+                    <li>Medication reminders</li>
+
+                    <li>Family health reports</li>
+
+                </ul>
+
+
+                <button
+                    class="subscribe-button filled-button"
+                    data-plan="family"
+                >
+                    Subscribe Now
+                </button>
+
+            </div>
+
+        </article>
+
+
+
+        <!-- SENIOR CARE -->
+
+        <article class="plan-card senior-plan">
+
+            <div class="plan-icon senior-icon">
+                ♢
+            </div>
+
+
+            <h2>
+                Senior Care
+            </h2>
+
+            <p class="plan-description">
+                Elderly care focused
+            </p>
+
+
+            <div class="price">
+
+                <span class="currency">
+                    Rs.
+                </span>
+
+                <span>
+                    2,500
+                </span>
+
+                <span class="per-month">
+                    /mon
+                </span>
+
+            </div>
+
+
+            <p class="billing">
+                Billed monthly
+            </p>
+
+
+            <ul class="features">
+
+                <li>Up to 3 patient profiles</li>
+
+                <li>Regular health monitoring visits</li>
+
+                <li>Medication schedule management</li>
+
+                <li>Monthly wellness check-ups</li>
+
+                <li>Priority booking</li>
+
+                <li>24/7 nurse helpline</li>
+
+                <li>Emergency response support</li>
+
+            </ul>
+
+
+            <button
+                class="subscribe-button"
+                data-plan="senior"
+            >
+                Subscribe Now
+            </button>
+
+        </article>
+
+
+
+        <!-- OVERSEAS PARENT CARE -->
+
+        <article class="plan-card overseas-plan">
+
+            <div class="expat-label">
+                For Expats
+            </div>
+
+
+            <div class="plan-inner">
+
+                <div class="plan-icon overseas-icon">
+                    ◎
+                </div>
+
+
+                <h2>
+                    Overseas Parent Care
+                </h2>
+
+                <p class="plan-description">
+                    For expat families
+                </p>
+
+
+                <div class="price">
+
+                    <span class="currency">
+                        Rs.
+                    </span>
+
+                    <span>
+                        3,500
+                    </span>
+
+                    <span class="per-month">
+                        /mon
+                    </span>
+
+                </div>
+
+
+                <p class="billing">
+                    Billed monthly
+                </p>
+
+
+                <ul class="features">
+
+                    <li>Everything in Senior Care</li>
+
+                    <li>Real-time family health updates</li>
+
+                    <li>Emergency alerts to overseas family</li>
+
+                    <li>Monthly health summary reports</li>
+
+                    <li>Video consultation access</li>
+
+                    <li>Remote prescription management</li>
+
+                    <li>Multi-language support</li>
+
+                </ul>
+
+
+                <button
+                    class="subscribe-button"
+                    data-plan="overseas"
+                >
+                    Subscribe Now
+                </button>
+
+            </div>
+
+        </article>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         COMPARE FEATURES
+    ====================================== -->
+
+    <section class="comparison-section">
+
+        <div class="comparison-heading">
+
+            <h2>
+                Compare All Features
+            </h2>
+
+            <p>
+                See exactly what each plan includes
+            </p>
+
+        </div>
+
+
+        <div class="comparison-table-wrapper">
+
+            <table class="comparison-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Feature</th>
+
+                        <th>Free</th>
+
+                        <th class="family-column">
+                            Family
+                        </th>
+
+                        <th>Senior Care</th>
+
+                        <th>Overseas Parent Care</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+                        <td>Patient Profiles</td>
+                        <td>1</td>
+                        <td class="family-column">Up to 5</td>
+                        <td>Up to 3</td>
+                        <td>Up to 3</td>
+                    </tr>
+
+                    <tr>
+                        <td>Health Passport</td>
+                        <td>✓</td>
+                        <td class="family-column">✓</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Appointment Booking</td>
+                        <td>Basic</td>
+                        <td class="family-column">Priority</td>
+                        <td>Priority</td>
+                        <td>Priority</td>
+                    </tr>
+
+                    <tr>
+                        <td>Consultation Discount</td>
+                        <td>—</td>
+                        <td class="family-column">5%</td>
+                        <td>10%</td>
+                        <td>15%</td>
+                    </tr>
+
+                    <tr>
+                        <td>Family Health Reports</td>
+                        <td>—</td>
+                        <td class="family-column">✓</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Medication Reminders</td>
+                        <td>—</td>
+                        <td class="family-column">✓</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Overseas Parent Monitoring</td>
+                        <td>—</td>
+                        <td class="family-column">✓</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Monthly Wellness Check-ups</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>24/7 Nurse Helpline</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Emergency Response</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>✓</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Video Consultations</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>—</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Video Consultations Mgmt</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>—</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Multi-language Support</td>
+                        <td>—</td>
+                        <td class="family-column">—</td>
+                        <td>—</td>
+                        <td>✓</td>
+                    </tr>
+
+                    <tr>
+                        <td>Customer Support</td>
+                        <td>Email</td>
+                        <td class="family-column">Priority</td>
+                        <td>Priority</td>
+                        <td>24/7 Dedicated</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         CORPORATE SECTION
+    ====================================== -->
+
+    <section class="corporate-section">
+
+        <div class="corporate-icon">
+            ✧
+        </div>
+
+        <h2>
+            Corporate Healthcare Packages
+        </h2>
+
+        <p>
+            Need healthcare solutions for your organization?
+            We offer customized corporate packages for companies,
+            schools, and institutions across Sri Lanka.
+        </p>
+
+
+        <div class="corporate-buttons">
+
+            <button class="corporate-primary">
+                ☎ &nbsp; Contact Sales
+            </button>
+
+            <button class="corporate-secondary">
+                View Services &nbsp; →
+            </button>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =====================================
+         FINAL CTA
+    ====================================== -->
+
+    <section class="final-cta">
+
+        <h2>
+            Ready to get started?
+        </h2>
+
+        <p>
+            Join thousands of families already using CareNest
+            for their healthcare needs.
+        </p>
+
+        <button class="create-account-button">
+            Create Free Account &nbsp; →
+        </button>
+
+    </section>
+
+
+</main>
+
+
+
+<script src="{% static 'js/subscription.js' %}"></script>
+
+</body>
+
+</html>
