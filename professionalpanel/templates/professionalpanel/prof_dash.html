@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareNest Professional Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #FFFCE6; }
+        .btn-confirm { color: #10b981; cursor: pointer; transition: all 0.2s; }
+        .btn-confirm:hover { color: #047857; transform: scale(1.1); }
+        .btn-cancel { color: #ef4444; cursor: pointer; transition: all 0.2s; }
+        .btn-cancel:hover { color: #b91c1c; transform: scale(1.1); }
+        .card-shadow { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03); }
+        .badge-green { background: #d1fae5; color: #059669; }
+        .badge-yellow { background: #fef3c7; color: #d97706; }
+        .badge-red { background: #fee2e2; color: #dc2626; }
+        .modal-scroll::-webkit-scrollbar { width: 6px; }
+        .modal-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    </style>
+</head>
+<body class="p-4 md:p-6 max-w-[450px] mx-auto md:max-w-7xl">
+
+    <!-- Main Dashboard Header -->
+    <div id="main-dashboard" class="block">
+        <div class="flex flex-col md:flex-row justify-between items-start mb-6">
+            <div>
+                <h1 class="text-4xl font-bold text-teal-800">Professional Dashboard</h1>
+                <p class="text-gray-500 text-sm mt-1">
+                    {% if pro %}
+                        {{ pro.user.full_name }} • 
+                        {% with first_spec=pro.specialization_set.first %}
+                            {{ first_spec.description|default:"General Practitioner" }}
+                        {% endwith %}
+                    {% else %}
+                        Login to view profile
+                    {% endif %}
+                </p>
+            </div>
+            <div class="flex gap-4 mt-4 md:mt-0">
+                <button onclick="toggleSettings()" class="border border-teal-600 text-teal-600 px-4 py-2 rounded-lg bg-white hover:bg-teal-50 flex items-center gap-2">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+                <button onclick="location.href='/professionalpanel/availability-settings/'" class="bg-teal-700 text-white px-6 py-2 rounded-lg hover:bg-teal-800 shadow-sm flex items-center gap-2">
+                    <i class="fas fa-calendar-alt"></i> Update Availability
+                </button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div id="stats-container" class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <!-- JS will load data here -->
+        </div>
+
+        <!-- Main Body Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Column (Appointments, Patients, Earnings) -->
+            <div class="col-span-2 bg-white border-b-2 border-r-2 rounded-xl shadow-sm p-4 card-shadow">
+                <!-- Tab Switcher -->
+                <div class="flex gap-4 mb-6 bg-gray-50 p-1 rounded-lg w-fit">
+                    <button class="tab-btn px-6 py-2 rounded-md bg-teal-200 text-teal-700 font-medium" data-tab="tab-appointments">Appointments</button>
+                    <button class="tab-btn px-6 py-2 rounded-md hover:bg-gray-200 text-gray-500 font-medium" data-tab="tab-patients">Patients</button>
+                    <button class="tab-btn px-6 py-2 rounded-md hover:bg-gray-200 text-gray-500 font-medium" data-tab="tab-earnings">Earnings</button>
+                </div>
+
+                <!-- Tabs Content -->
+                <div id="tab-appointments" class="tab-content block">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg">Upcoming Appointments</h3></div>
+                    <div id="appointments-list" class="space-y-3"></div>
+                </div>
+                <div id="tab-patients" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-4"><h3 class="font-bold text-lg">Recent Patients</h3></div>
+                    <div id="patients-list" class="space-y-3"></div>
+                </div>
+                <div id="tab-earnings" class="tab-content hidden">
+                    <h3 class="font-bold text-lg mb-4">Earnings Overview</h3>
+                    <div id="earning-stats" class="grid grid-cols-3 gap-4 mb-6"></div>
+                    <div id="earnings-list" class="space-y-3"></div>
+                </div>
+            </div>
+
+            
+            <div class="col-span-1 flex flex-col gap-6">
+                
+                <div class="bg-white rounded-xl shadow-sm p-6 border-b-2 border-r-2 card-shadow flex flex-col items-center text-center">
+                    <div class="w-16 h-16 bg-teal-600 text-white text-2xl rounded-lg flex items-center justify-center mb-3">
+                        {% if pro and pro.user.full_name %}
+                            {{ pro.user.full_name|slice:":1" }}
+                        {% else %}
+                            ?
+                        {% endif %}
+                    </div>
+                    <h3 class="font-bold text-lg text-gray-800">
+                        {% if pro %}
+                            {{ pro.user.full_name }}
+                        {% else %}
+                            Professional
+                        {% endif %}
+                    </h3>
+                    <p class="text-sm text-gray-500">
+                        {% if pro %}
+                            {% with first_spec=pro.specialization_set.first %}
+                                {{ first_spec.description|default:"General Practitioner" }}
+                            {% endwith %}
+                        {% else %}
+                            Specialist
+                        {% endif %}
+                    </p>
+                    <div class="flex items-center gap-1 mt-2 text-orange-400 text-sm">
+                        <i class="fas fa-star"></i> 
+                        <span id="dashboard-rating">0.0</span> 
+                        <span class="text-gray-400 text-xs" id="dashboard-reviews">(0 reviews)</span>
+                    </div> 
+                </div>
+
+                <!-- Weekly Availability -->
+                <div class="bg-white rounded-xl border-b-2 border-r-2 shadow-sm p-6 card-shadow">
+                    <h3 class="font-bold text-lg mb-4">Weekly Availability</h3>
+                    <div id="preview-schedule" class="space-y-2 text-sm"></div>
+                </div>
+
+                <!-- Actions Card -->
+                <div class="bg-white rounded-xl border-b-2 border-r-2 shadow-sm p-6 card-shadow flex flex-col gap-4">
+                    <button onclick="openPrescriptionModal()" class="bg-[#e0fdf9] hover:bg-[#ccf9f2] text-teal-700 p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-colors w-full">
+                        <i class="fas fa-file-prescription text-teal-700"></i>
+                        <span class="font-medium text-sm">Upload Prescription</span>
+                    </button>
+
+                    <a href="/professionalpanel/prescriptions/" class="text-center text-teal-700 font-medium text-sm hover:text-teal-900 transition-colors py-2 border-t border-gray-100 mt-0 block">
+                        View Recent Uploads <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
+                    </a>
+
+                    <a href="/professionalpanel/analytics/" class="flex items-center gap-3 text-gray-700 hover:text-teal-700 transition-colors text-sm font-medium">
+                        <i class="fas fa-chart-line w-5"></i> <span>View Analytics</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-3 text-gray-700 hover:text-teal-700 transition-colors text-sm font-medium">
+                        <i class="fas fa-bell w-5"></i> <span>Notifications</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS MODAL -->
+    <div id="settings-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 w-full max-w-lg shadow-2xl">
+            <div class="flex justify-between items-center mb-4"><h2 class="text-2xl font-bold">Settings</h2><button onclick="toggleSettings()" class="text-gray-400 hover:text-gray-800"><i class="fas fa-times"></i></button></div>
+            
+            <!-- Scrollable content area -->
+            <div class="space-y-6 max-h-[65vh] overflow-y-auto pr-2 modal-scroll">
+
+                <!-- 2. Appearance & Display Theme (New) -->
+                <div>
+                    <h4 class="font-semibold text-teal-800 border-b pb-2 mb-2">Appearance & Display</h4>
+                    <p class="text-xs text-gray-500 mb-2">Theme</p>
+                    <div class="flex gap-4 text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="theme" value="light" checked> Light</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="theme" value="dark"> Dark</label>
+                        <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="theme" value="system"> System Default</label>
+                    </div>
+                </div>
+
+                <!-- 3. Text Size (New) -->
+                <div>
+                    <h4 class="font-semibold text-teal-800 border-b pb-2 mb-2">Text Size</h4>
+                    <select id="text-size" class="w-full border rounded p-2 bg-white cursor-pointer">
+                        <option value="small">Small</option>
+                        <option value="medium" selected>Medium (Default)</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+
+                <!-- 4. Language (Newly separated) -->
+                <div>
+                    <h4 class="font-semibold text-teal-800 border-b pb-2 mb-2">Language</h4>
+                    <select id="lang-select" class="w-full border rounded p-2 bg-white cursor-pointer">
+                        <option value="en">English</option>
+                        <option value="si">Sinhala</option>
+                        <option value="ta">Tamil</option>
+                    </select>
+                </div>
+
+                <button onclick="saveSettings()" class="w-full bg-teal-700 text-white font-semibold p-2.5 rounded-lg mt-2 hover:bg-teal-800 transition-colors shadow-sm">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- UPLOAD PRESCRIPTION MODAL -->
+    <div id="prescription-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50 backdrop-blur-sm">
+        <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-xl font-bold text-teal-800">Upload Prescription</h2>
+                <button onclick="closePrescriptionModal()" class="text-gray-400 hover:text-gray-800"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="prescription-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Select Patient <span class="text-red-500">*</span></label>
+                    <select id="patient-select" class="w-full border rounded-lg p-2 mt-1 bg-gray-50 focus:ring-2 focus:ring-teal-500" required>
+                        <option value="">Choose a patient...</option>
+                        {% for p in patients %}
+                        <option value="{{ p.id }}">{{ p.patient_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Upload File (PNG, JPG) <span class="text-red-500">*</span></label>
+                    <input type="file" id="file-input" accept=".png,.jpg,.jpeg" class="w-full border rounded-lg p-2 mt-1 bg-gray-50 focus:ring-2 focus:ring-teal-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Rename Document (Optional)</label>
+                    <input type="text" id="doc-name" class="w-full border rounded-lg p-2 mt-1 bg-gray-50 focus:ring-2 focus:ring-teal-500" placeholder="e.g. Amara's Lab Report">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Special Note</label>
+                    <textarea id="note-input" rows="3" class="w-full border rounded-lg p-2 mt-1 bg-gray-50 focus:ring-2 focus:ring-teal-500" placeholder="Enter any special instructions or notes..."></textarea>
+                </div>
+                <div class="flex justify-end gap-3 pt-4 border-t mt-2">
+                    <button type="button" onclick="closePrescriptionModal()" class="bg-gray-100 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-200 transition-colors">Cancel</button>
+                    <button type="submit" id="submit-prescription-btn" class="bg-teal-700 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fas fa-upload mr-2"></i> Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function loadDashboard() {
+            fetch('/professionalpanel/get-data/')
+            .then(res => res.json())
+            .then(data => {
+                // Stats Cards
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="bg-white p-4 rounded-xl border-b-2 border-r-2"><i class="fas fa-calendar-day text-teal-500 bg-teal-100 p-2 rounded mb-2"></i><div class="text-2xl font-bold">${data.stats.this_month_appts}</div><div class="text-xs text-gray-500">This Month Appointments</div></div>
+                    <div class="bg-white p-4 rounded-xl border-b-2 border-r-2"><i class="fas fa-dollar-sign text-green-500 bg-green-100 p-2 rounded mb-2"></i><div class="text-2xl font-bold text-green-700">Rs. ${(data.stats.this_month_rev/1000).toFixed(1)}K</div><div class="text-xs text-gray-500">This Month Revenue</div></div>
+                    <div class="bg-white p-4 rounded-xl border-b-2 border-r-2"><i class="fas fa-star text-orange-500 bg-orange-100 p-2 rounded mb-2"></i><div class="text-2xl font-bold">${data.stats.avg_rating}</div><div class="text-xs text-gray-500">Rating</div></div>
+                    <div class="bg-white p-4 rounded-xl border-b-2 border-r-2"><i class="fas fa-users text-purple-500 bg-purple-100 p-2 rounded mb-2"></i><div class="text-2xl font-bold">${data.stats.total_patients}</div><div class="text-xs text-gray-500">Total Served</div></div>
+                `;
+                
+                // Profile Rating & Reviews
+                document.getElementById('dashboard-rating').innerText = data.stats.avg_rating || 0;
+                const revCount = data.stats.total_reviews || 0;
+                document.getElementById('dashboard-reviews').innerText = `(${revCount} ${revCount === 1 ? 'review' : 'reviews'})`;
+
+                // Appointments
+                const apptList = document.getElementById('appointments-list');
+                apptList.innerHTML = '';
+                data.appointments.forEach(a => {
+                    let actions = '';
+                    let badge = `<span class="badge-yellow px-3 py-1 rounded-full text-xs font-medium">${a.status.toUpperCase()}</span>`;
+                    
+                    if(a.status === 'pending') {
+                        actions = `
+                            <div class="flex gap-2 ml-auto">
+                                <i class="fas fa-check-circle btn-confirm text-xl" onclick="updateStatus(${a.id}, 'confirmed')"></i>
+                                <i class="fas fa-times-circle btn-cancel text-xl" onclick="updateStatus(${a.id}, 'cancelled')"></i>
+                            </div>`;
+                    } else if (a.status === 'confirmed') {
+                        badge = ''; // Hide default badge
+                        actions = `
+                            <div class="ml-auto">
+                                <span class="badge-green px-3 py-1 rounded-full text-xs font-medium cursor-pointer hover:bg-green-200 transition-colors" onclick="confirmComplete(${a.id})">
+                                    Confirmed
+                                </span>
+                            </div>`;
+                    } else if (a.status === 'cancelled') {
+                        badge = `<span class="badge-red px-3 py-1 rounded-full text-xs font-medium">CANCELLED</span>`;
+                        actions = ''; // No actions for cancelled
+                    }
+                    
+                    apptList.innerHTML += `
+                        <div id="appt-${a.id}" class="flex items-center justify-between bg-gray-50 p-4 rounded-xl border border-gray-100 relative">
+                            <div class="flex gap-4 items-center">
+                                <div class="w-10 h-10 bg-teal-600 text-white rounded-lg flex items-center justify-center font-bold">${a.patient.charAt(0)}</div>
+                                <div>
+                                    <div class="font-medium">${a.patient}</div>
+                                    <div class="text-xs text-gray-500">${a.datetime} • ${a.note || 'General Visit'}</div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">${badge} ${actions}</div>
+                        </div>
+                    `;
+                });
+
+                // Patients
+                document.getElementById('patients-list').innerHTML = data.patients.map(p => `
+                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-xl">
+                        <div class="flex gap-3 items-center"><div class="w-10 h-10 bg-teal-600 text-white rounded-lg flex items-center justify-center font-bold">${p.name.charAt(0)}</div><div><div class="font-medium">${p.name}</div><div class="text-xs text-gray-500">Last visit: ${p.last_visit}</div></div></div>
+                        <i class="fas fa-chevron-right text-gray-300"></i>
+                    </div>
+                `).join('');
+
+                // Earnings
+                document.getElementById('earning-stats').innerHTML = `
+                    <div class="bg-teal-50 p-3 rounded-lg text-center"><div class="text-xs text-gray-500">This Month</div><div class="font-bold text-teal-700 text-lg">Rs. ${(data.stats.this_month_rev/1000).toFixed(1)}K</div></div>
+                    <div class="bg-green-50 p-3 rounded-lg text-center"><div class="text-xs text-gray-500">Last Month</div><div class="font-bold text-green-700 text-lg">Rs. ${(data.stats.last_month_rev/1000).toFixed(1)}K</div></div>
+                    <div class="bg-orange-50 p-3 rounded-lg text-center"><div class="text-xs text-gray-500">Total Earned</div><div class="font-bold text-orange-600 text-lg">Rs. ${(data.stats.total_revenue/1000).toFixed(1)}K</div></div>
+                `;
+                document.getElementById('earnings-list').innerHTML = data.earnings.map(e => `
+                    <div class="flex justify-between items-center p-3 bg-white border rounded-lg"><div><div class="font-medium text-sm">${e.patient}</div><div class="text-xs text-gray-400">${e.date}</div></div><div class="font-bold text-teal-700 text-sm">+Rs. ${(e.amount).toLocaleString()}</div></div>
+                `).join('');
+
+                // Availability Preview
+                const preview = document.getElementById('preview-schedule');
+                preview.innerHTML = '';
+                const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+                days.forEach((day, i) => {
+                    let rowHtml = `<div class="flex justify-between text-sm border-b border-gray-100 pb-2 mb-2 last:border-0">`;
+                    rowHtml += `<span class="text-gray-600 font-medium w-20">${day}</span>`;
+                    if(data.availability[i] && data.availability[i].length > 0) {
+                        let timesHtml = `<div class="flex flex-wrap gap-1 justify-end">`;
+                        data.availability[i].forEach(slot => { timesHtml += `<span class="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs">${slot.start} - ${slot.end}</span>`; });
+                        timesHtml += `</div>`;
+                        rowHtml += timesHtml;
+                    } else {
+                        rowHtml += `<span class="text-gray-300 text-xs">Off</span>`;
+                    }
+                    rowHtml += `</div>`;
+                    preview.innerHTML += rowHtml;
+                });
+            });
+            loadRecentPrescriptions();
+        }
+
+        // Helper Functions for Appointment Actions (Checkmark, Cross, Popup)
+        function updateStatus(id, status) {
+            fetch('/professionalpanel/update-appointment-status/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+                body: JSON.stringify({id: id, status: status})
+            }).then(() => loadDashboard());
+        }
+
+        function confirmComplete(id) {
+            if(confirm("Are you sure you want to mark this appointment as Completed?")) {
+                fetch('/professionalpanel/update-appointment-status/', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+                    body: JSON.stringify({id: id, status: 'completed'})
+                }).then(() => {
+                    document.getElementById(`appt-${id}`).classList.add('hidden');
+                    setTimeout(() => { const el = document.getElementById(`appt-${id}`); if(el) el.remove(); }, 600000); // 10 minutes
+                });
+            }
+        }
+
+        // Prescription Logic
+        function openPrescriptionModal() {
+            document.getElementById('prescription-modal').classList.remove('hidden');
+            document.getElementById('prescription-form').reset();
+        }
+        function closePrescriptionModal() {
+            document.getElementById('prescription-modal').classList.add('hidden');
+        }
+        document.getElementById('prescription-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-prescription-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
+            const formData = new FormData();
+            formData.append('patient_id', document.getElementById('patient-select').value);
+            formData.append('doc_name', document.getElementById('doc-name').value);
+            formData.append('special_note', document.getElementById('note-input').value);
+            formData.append('file', document.getElementById('file-input').files[0]);
+            fetch('/professionalpanel/upload-prescription/', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === 'success') {
+                    closePrescriptionModal();
+                    alert(data.message);
+                    loadRecentPrescriptions();
+                } else {
+                    alert("Error: " + data.message);
+                }
+            })
+            .catch(err => alert("Network error. Please try again."))
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload';
+            });
+        });
+
+        function loadRecentPrescriptions() {
+            const container = document.getElementById('recent-uploads-list');
+            if(!container) return; // Safety check
+            fetch('/professionalpanel/get-recent-prescriptions/')
+            .then(res => res.json())
+            .then(data => {
+                if(data.length === 0) {
+                    container.innerHTML = '<p class="text-gray-400 text-[10px] italic">No recent uploads.</p>';
+                    return;
+                }
+                container.innerHTML = data.map(r => `
+                    <div class="flex items-center justify-between bg-gray-50 p-2 rounded-lg border border-gray-100">
+                        <div class="truncate max-w-[100px]">
+                            <div class="font-medium text-gray-700 truncate" title="${r.doc_name}">${r.doc_name}</div>
+                            <div class="text-[9px] text-gray-400">${r.patient}</div>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="text-[9px] text-gray-400">${r.uploaded}</span>
+                            <a href="${r.file_url}" target="_blank" class="text-teal-600 text-[10px] hover:underline" title="View prescription (Read-only)">View <i class="fas fa-external-link-alt ml-0.5"></i></a>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+
+        // Tab Switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('bg-teal-200', 'text-teal-700'); b.classList.add('text-gray-500'); });
+                this.classList.add('bg-teal-200', 'text-teal-700');
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                document.getElementById(this.dataset.tab).classList.remove('hidden');
+            });
+        });
+
+        // Settings
+        function toggleSettings() {
+            document.getElementById('settings-modal').classList.toggle('hidden');
+        }
+        function saveSettings() {
+            fetch('/professionalpanel/save-settings/', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
+                body: JSON.stringify({name: document.getElementById('prof-name').value, email: document.getElementById('prof-email').value})
+            }).then(() => { toggleSettings(); location.reload(); });
+        }
+
+        // INIT
+        loadDashboard();
+    </script>
+</body>
+</html>

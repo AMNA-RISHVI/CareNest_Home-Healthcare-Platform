@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Availability - CareNest</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #FFFCE6; padding: 2rem; }
+        .time-select { border: 1px solid #d1d5db; border-radius: 6px; padding: 0.3rem; width: 100%; background: white; }
+        .day-row { background: white; border-radius: 12px; padding: 1rem; margin-bottom: 0.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+        .card-stat { background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .toggle-switch { width: 36px; height: 20px; border-radius: 20px; background: #ccc; position: relative; cursor: pointer; transition: 0.3s;}
+        .toggle-switch.on { background: #14b8a6; }
+        .toggle-switch::after { content: ''; position: absolute; width: 16px; height: 16px; background: white; border-radius: 50%; top: 2px; left: 2px; transition: 0.3s; }
+        .toggle-switch.on::after { left: 18px; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+        <!-- Header -->
+    <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col">
+            <div class="flex items-center">
+                <button onclick="location.href='/professionalpanel/dashboard/'" class="text-teal-700 text-xl"><i class="fas fa-arrow-left"></i></button>
+                <h1 class="text-3xl font-bold text-teal-800 ml-4">Update Availability</h1>
+            </div>
+            <p class="text-sm text-gray-500 ml-9 mt-1">Manage your weekly schedule and appointment settings</p>
+        </div>
+        <div class="flex gap-4">
+            <button onclick="resetAvailability()" class="bg-white border text-teal-700 px-6 py-2 rounded-lg hover:bg-gray-50"><i class="fas fa-redo-alt mr-2"></i> Reset</button>
+            <button type="button" onclick="saveAvailability(event)" class="bg-teal-700 text-white px-6 py-2 rounded-lg hover:bg-teal-800"><i class="fas fa-save mr-2"></i> Save Changes</button>
+        </div>
+    </div>
+
+    <!-- MAIN 2-COLUMN LAYOUT -->
+    <div class="flex flex-col lg:flex-row gap-6">
+        
+        <!-- LEFT COLUMN (Stats, Appt Settings, Weekly Schedule) -->
+        <div class="flex-1 flex flex-col gap-6">
+            
+            <!-- Top Stats Grid (3 Cards) - Centered Icons & Stethoscope added -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="card-stat flex flex-col items-center justify-center p-4 text-center border-b-2 border-r-2">
+                    <i class="fas fa-calendar-day text-teal-600 bg-teal-100 p-3 rounded-lg text-xl mb-1"></i>
+                    <div>
+                        <div class="text-2xl font-bold" id="active-days">0</div>
+                        <div class="text-xs text-gray-500">Active Days</div>
+                    </div>
+                </div>
+                <div class="card-stat flex flex-col items-center justify-center p-4 text-center border-b-2 border-r-2">
+                    <i class="fas fa-clock text-green-600 bg-green-100 p-3 rounded-lg text-xl mb-1"></i>
+                    <div>
+                        <div class="text-2xl font-bold" id="total-hours">0.0</div>
+                        <div class="text-xs text-gray-500">Hours / Week</div>
+                    </div>
+                </div>
+                <div class="card-stat flex flex-col items-center justify-center p-4 text-center border-b-2 border-r-2">
+                    <i class="fas fa-stethoscope text-orange-600 bg-orange-100 p-3 rounded-lg text-xl mb-1"></i>
+                    <div>
+                        <div class="text-2xl font-bold" id="total-slots">0</div>
+                        <div class="text-xs text-gray-500">Slots / Week</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointment Settings -->
+            <div class="bg-white rounded-xl border-b-2 border-r-2 p-6 shadow-sm w-full">
+                <h2 class="font-bold text-lg mb-4">Appointment Settings</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div><label class="text-sm text-gray-500">Duration per Appointment</label>
+                        <select id="duration" class="time-select mt-1">
+                            <script>for(let i=5; i<=60; i+=5) document.write(`<option value="${i}" ${i==30?'selected':''}>${i} min</option>`);</script>
+                            <option value="60">1 hour</option>
+                        </select>
+                    </div>
+                    <div><label class="text-sm text-gray-500">Max Patients per Slot</label>
+                        <select id="max-patients" class="time-select mt-1">
+                            <script>for(let i=1; i<=5; i++) document.write(`<option value="${i}" ${i==1?'selected':''}>${i} Patient${i>1?'s':''}</option>`);</script>
+                        </select>
+                    </div>
+                    <div><label class="text-sm text-gray-500">Buffer Between Slots</label>
+                        <select id="buffer" class="time-select mt-1">
+                            <option value="0">0 min</option>
+                            <script>for(let i=5; i<=30; i+=5) document.write(`<option value="${i}" ${i==10?'selected':''}>${i} min</option>`);</script>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Schedule -->
+            <div class="w-full">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-bold text-lg">Weekly Schedule</h2>
+                    <span class="text-xs text-gray-400"><i class="fas fa-info-circle mr-1"></i> Click a day to expand details</span>
+                </div>
+                <div id="schedule-container" class="space-y-2">
+                    <!-- JS will generate 7 days here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN (Schedule Preview, Notifications) -->
+        <div class="w-full lg:w-[32%] flex flex-col gap-6">
+            
+            <!-- Schedule Preview -->
+            <div class="bg-white p-6 border-b-4 border-r-4 rounded-xl shadow-sm h-fit">
+                <h3 class="font-bold text-lg mb-4">Schedule Preview</h3>
+                <div id="preview-schedule-container" class="space-y-3 text-sm">
+                    <!-- JS will load data here -->
+                </div>
+            </div>
+
+            <!-- Notifications Sidebar -->
+            <div class="bg-white p-6 border-b-2 border-r-2 rounded-xl shadow-sm h-fit">
+                <h3 class="font-bold text-lg mb-4">Notifications</h3>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center"><div class="flex gap-2 items-center text-sm"><i class="fas fa-bell text-teal-600"></i> New booking alerts</div><div class="toggle-switch on" onclick="toggleSwitch(this)"></div></div>
+                    <div class="flex justify-between items-center"><div class="flex gap-2 items-center text-sm"><i class="fas fa-times-circle text-orange-500"></i> Cancellation alerts</div><div class="toggle-switch on" onclick="toggleSwitch(this)"></div></div>
+                    <div class="flex justify-between items-center"><div class="flex gap-2 items-center text-sm"><i class="fas fa-clock text-gray-400"></i> Reminder 24h before</div><div class="toggle-switch" onclick="toggleSwitch(this)"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+    // Helper to generate option strings
+    function generateTimeOptions(hStart, hEnd, step=30) {
+        let html = '<option value="">None</option>';
+        let totalMin = hStart * 60;
+        let endMin = hEnd * 60;
+        while(totalMin <= endMin) {
+            let h = Math.floor(totalMin / 60);
+            let m = totalMin % 60;
+            let str = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+            html += `<option value="${str}">${str}</option>`;
+            totalMin += step;
+        }
+        return html;
+    }
+
+    // Helper to parse time string to minutes
+    function parseTimeToMinutes(timeStr) {
+        if (!timeStr) return 0;
+        const [h, m] = timeStr.split(':').map(Number);
+        return h * 60 + m;
+    }
+
+    function initSchedule() {
+        const container = document.getElementById('schedule-container');
+        let html = '';
+        days.forEach((day, i) => {
+            html += `
+            <div class="day-row border-l-4 border-gray-200 relative" data-index="${i}">
+                <div class="flex justify-between items-center cursor-pointer" onclick="toggleDayExpand(${i})">
+                    <div class="flex items-center gap-4">
+                        <div class="toggle-switch on" onclick="event.stopPropagation(); toggleSwitch(this, ${i})"></div>
+                        <span class="font-medium">${day}</span>
+                        <span class="morning-badge bg-teal-100 text-teal-700 text-xs px-2 py-0.5 rounded">09:00 - 12:00</span>
+                        <span class="afternoon-badge bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded">14:00 - 17:00</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-gray-400">
+                        <span class="hours-text text-sm">6h</span>
+                        <i class="fas fa-chevron-down text-sm"></i>
+                    </div>
+                </div>
+                <div class="details mt-4 hidden pt-4 border-t border-gray-100">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-teal-50 border-b-4 p-3 rounded-lg">
+                            <div class="text-sm font-medium mb-2"><i class="fas fa-sun text-teal-600"></i> Morning Session <span class="text-red-500 text-xs cursor-pointer float-right" onclick="removeSession(${i}, 'morning')">Remove</span></div>
+                            <div class="flex gap-2 text-sm"><div><label class="text-xs text-gray-500">Start time</label><select class="time-select morning-start-${i}">${generateTimeOptions(0, 12)}</select></div><div><label class="text-xs text-gray-500">End time</label><select class="time-select morning-end-${i}">${generateTimeOptions(0, 12)}</select></div></div>
+                        </div>
+                        <div class="bg-orange-50 border-b-4 p-3 rounded-lg">
+                            <div class="text-sm font-medium mb-2"><i class="fas fa-moon text-orange-600"></i> Afternoon Session <span class="text-red-500 text-xs cursor-pointer float-right" onclick="removeSession(${i}, 'afternoon')">Remove</span></div>
+                            <div class="flex gap-2 text-sm"><div><label class="text-xs text-gray-500">Start time</label><select class="time-select afternoon-start-${i}">${generateTimeOptions(12, 24)}</select></div><div><label class="text-xs text-gray-500">End time</label><select class="time-select afternoon-end-${i}">${generateTimeOptions(12, 24)}</select></div></div>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-yellow-50 border-b-4 p-3 rounded-lg flex gap-4">
+                        <i class="fas fa-coffee text-yellow-600"></i>
+                        <div><div class="text-sm font-medium">Break Time</div>
+                            <div class="flex gap-4 mt-1 text-sm"><div><label class="text-xs text-gray-500">Break Start</label><select class="time-select break-start-${i}">${generateTimeOptions(11, 15)}</select></div><div><label class="text-xs text-gray-500">Break End</label><select class="time-select break-end-${i}">${generateTimeOptions(11, 15)}</select></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        });
+        html += `<div class="text-teal-700 text-sm mt-2 cursor-pointer hover:underline" onclick="copySchedule()"><i class="fas fa-copy mr-1"></i> Copy this schedule to all weekdays</div>`;
+        container.innerHTML = html;
+        updateStats();
+    }
+
+    function toggleDayExpand(idx) {
+        const el = document.querySelector(`[data-index="${idx}"] .details`);
+        const icon = document.querySelector(`[data-index="${idx}"] .fa-chevron-down`);
+        el.classList.toggle('hidden');
+        icon.classList.toggle('fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+    }
+
+    function removeSession(idx, type) {
+        const parent = document.querySelector(`[data-index="${idx}"]`);
+        if(type === 'morning') {
+            parent.querySelector(`.morning-start-${idx}`).value = '';
+            parent.querySelector(`.morning-end-${idx}`).value = '';
+        } else {
+            parent.querySelector(`.afternoon-start-${idx}`).value = '';
+            parent.querySelector(`.afternoon-end-${idx}`).value = '';
+        }
+        updateStats();
+    }
+
+    function toggleSwitch(el, idx=null) {
+        el.classList.toggle('on');
+        if(idx !== null) updateStats();
+    }
+
+    // Calculates the difference in minutes and returns decimal hours
+    function getHoursDiff(startTimeStr, endTimeStr) {
+        if (!startTimeStr || !endTimeStr) return 0;
+        const [sh, sm] = startTimeStr.split(':').map(Number);
+        const [eh, em] = endTimeStr.split(':').map(Number);
+        const diffMins = (eh * 60 + em) - (sh * 60 + sm);
+        return diffMins > 0 ? diffMins / 60 : 0;
+    }
+
+    function updateStats() {
+        let activeDays = 0, totalHours = 0, totalSlots = 0;
+        let previewHtml = '';
+        
+        const duration = parseInt(document.getElementById('duration').value) || 30; // minutes
+        const buffer = parseInt(document.getElementById('buffer').value) || 0; // minutes
+
+        // Calculate top stats and update details for each row
+        for(let i=0; i<7; i++) {
+            const row = document.querySelector(`[data-index="${i}"]`);
+            if(!row) continue;
+            const toggle = row.querySelector('.toggle-switch');
+            const hrsSpan = row.querySelector('.hours-text');
+            const mornBadge = row.querySelector('.morning-badge');
+            const aftBadge = row.querySelector('.afternoon-badge');
+
+            // 1. Get Dropdown Values
+            const ms = row.querySelector(`.morning-start-${i}`).value;
+            const me = row.querySelector(`.morning-end-${i}`).value;
+            const as = row.querySelector(`.afternoon-start-${i}`).value;
+            const ae = row.querySelector(`.afternoon-end-${i}`).value;
+
+            // 2. Update Daily Badges & Total Hours
+            let dailyHours = 0;
+            let dailySlots = 0;
+            
+            if (toggle.classList.contains('on')) {
+                activeDays++;
+
+                // Morning session
+                if (ms && me) {
+                    const mHrs = getHoursDiff(ms, me);
+                    dailyHours += mHrs;
+                    mornBadge.textContent = `${ms} - ${me}`;
+                    mornBadge.classList.remove('hidden');
+                    
+                    // Calculate morning slots
+                    let mMin = parseTimeToMinutes(me) - parseTimeToMinutes(ms) - buffer;
+                    if (mMin > 0) dailySlots += mMin / duration;
+                } else {
+                    mornBadge.textContent = 'Off';
+                    mornBadge.classList.add('hidden');
+                }
+
+                // Afternoon session
+                if (as && ae) {
+                    const aHrs = getHoursDiff(as, ae);
+                    dailyHours += aHrs;
+                    aftBadge.textContent = `${as} - ${ae}`;
+                    aftBadge.classList.remove('hidden');
+
+                    // Calculate afternoon slots
+                    let aMin = parseTimeToMinutes(ae) - parseTimeToMinutes(as) - buffer;
+                    if (aMin > 0) dailySlots += aMin / duration;
+                } else {
+                    aftBadge.textContent = 'Off';
+                    aftBadge.classList.add('hidden');
+                }
+                
+                totalHours += dailyHours;
+                hrsSpan.textContent = dailyHours > 0 ? `${dailyHours.toFixed(1)}h` : '0h';
+                totalSlots += dailySlots;
+
+            } else {
+                // Toggle off
+                hrsSpan.textContent = 'Off';
+                mornBadge.textContent = 'Off';
+                aftBadge.textContent = 'Off';
+                mornBadge.classList.add('hidden');
+                aftBadge.classList.add('hidden');
+            }
+
+            // 4. Build Schedule Preview HTML
+            const dayName = days[i];
+            if (toggle.classList.contains('on') && dailyHours > 0) {
+                previewHtml += `
+                    <div class="flex justify-between items-center text-sm border-b border-gray-100 pb-1">
+                        <span class="text-gray-600 font-medium w-20">${dayName}</span>
+                        <div class="flex gap-2">
+                            ${ms && me ? `<span class="bg-teal-100 text-teal-700 px-2 py-0.5 rounded text-xs">${ms} - ${me}</span>` : ''}
+                            ${as && ae ? `<span class="bg-orange-100 text-orange-700 px-2 py-0.5 rounded text-xs">${as} - ${ae}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            } else {
+                previewHtml += `
+                    <div class="flex justify-between items-center text-sm border-b border-gray-100 pb-1">
+                        <span class="text-gray-400 font-medium w-20">${dayName}</span>
+                        <span class="text-gray-300 text-xs">Off</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Update Top Stats (Round slots down to nearest integer)
+        document.getElementById('active-days').innerText = activeDays;
+        document.getElementById('total-hours').innerText = totalHours.toFixed(1);
+        document.getElementById('total-slots').innerText = Math.floor(totalSlots);
+
+        // Update Schedule Preview
+        document.getElementById('preview-schedule-container').innerHTML = previewHtml;
+    }
+
+    // Copy Schedule - Also copies the ON/OFF Switch status
+    function copySchedule() {
+        const firstRow = document.querySelector(`[data-index="0"]`);
+        if (!firstRow) return;
+
+        const firstToggle = firstRow.querySelector('.toggle-switch');
+        const isOn = firstToggle.classList.contains('on');
+
+        const msStart = firstRow.querySelector(`.morning-start-0`).value;
+        const msEnd = firstRow.querySelector(`.morning-end-0`).value;
+        const asStart = firstRow.querySelector(`.afternoon-start-0`).value;
+        const asEnd = firstRow.querySelector(`.afternoon-end-0`).value;
+        const bsStart = firstRow.querySelector(`.break-start-0`).value;
+        const bsEnd = firstRow.querySelector(`.break-end-0`).value;
+
+        for(let i=1; i<7; i++) {
+            const row = document.querySelector(`[data-index="${i}"]`);
+            if(row) {
+                const t = row.querySelector('.toggle-switch');
+                if (isOn) t.classList.add('on');
+                else t.classList.remove('on');
+                
+                row.querySelector(`.morning-start-${i}`).value = msStart;
+                row.querySelector(`.morning-end-${i}`).value = msEnd;
+                row.querySelector(`.afternoon-start-${i}`).value = asStart;
+                row.querySelector(`.afternoon-end-${i}`).value = asEnd;
+                row.querySelector(`.break-start-${i}`).value = bsStart;
+                row.querySelector(`.break-end-${i}`).value = bsEnd;
+            }
+        }
+        updateStats();
+    }
+
+    // CSRF Helper
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+        function saveAvailability(event) {
+        if (event) event.preventDefault(); 
+        let schedule = {};
+        
+        for(let i=0; i<7; i++) {
+            const row = document.querySelector(`[data-index="${i}"]`);
+            if (!row) continue; 
+            const toggle = row.querySelector('.toggle-switch');
+            
+            let sessions = []; // <--- NEW: Array to store multiple slots
+            if(toggle.classList.contains('on')) {
+                // 1. Read Morning Session
+                const ms = row.querySelector(`.morning-start-${i}`).value;
+                const me = row.querySelector(`.morning-end-${i}`).value;
+                if (ms && me) {
+                    sessions.push({ start: ms, end: me });
+                }
+                
+                // 2. Read Afternoon Session (This was missing before!)
+                const as = row.querySelector(`.afternoon-start-${i}`).value;
+                const ae = row.querySelector(`.afternoon-end-${i}`).value;
+                if (as && ae) {
+                    sessions.push({ start: as, end: ae });
+                }
+            }
+            schedule[i] = sessions; // <--- NEW: Save the array (or empty array if off)
+        }
+
+        // 3. The fetch code remains exactly the same
+        fetch('/professionalpanel/api/update-availability/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({schedule: schedule})
+        })
+        .then(res => {
+            if(res.ok) return res.json();
+            else throw new Error(`Server responded with status ${res.status}`);
+        })
+        .then(data => {
+            if(data.status === 'success'){
+                alert(data.message || "Availability saved successfully!");
+                window.location.href = '/professionalpanel/dashboard/';
+            } else {
+                alert("Backend Error: " + (data.message || "Unknown error"));
+            }
+        })
+        .catch(err => {
+            alert("Network or Server Error: " + err.message + "\nCheck your console for details.");
+            console.error(err);
+        });
+    }
+
+    function resetAvailability() {
+        if(confirm("Reset all availability settings?")) {
+            location.reload();
+        }
+    }
+
+    // Auto-trigger updateStats whenever any select input changes
+    document.addEventListener('change', updateStats);
+    initSchedule();
+    </script>
+</body>
+</html>

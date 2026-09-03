@@ -1,0 +1,67 @@
+{% extends 'adminpanel/base.html' %}
+{% block content %}
+<div class="flex justify-between items-center mb-4 p-4">
+    <h1 class="text-2xl font-bold text-gray-800">Professionals</h1>
+    <div class="flex gap-3">
+        <button class="border border-teal-600 text-teal-600 px-4 py-2 rounded-lg hover:bg-teal-50">Filter</button>
+        <button onclick="exportData('{% url 'professionals' %}')" class="bg-teal-700 text-white px-4 py-2 rounded-lg hover:bg-teal-800">Export</button>
+    </div>
+</div>
+
+<div class="bg-white shadow-sm rounded-xl p-4 overflow-x-auto">
+    <table class="w-full text-left min-w-[600px]">
+        <thead>
+            <tr class="text-gray-400 text-sm border-b">
+                <th class="py-3">PROFESSIONAL</th>
+                <th>SPECIALIZATION</th>
+                <th>DISTRICT</th>
+                <th>RATINGS</th>
+                <th>STATUS</th>
+                <th>ACTIONS</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pro in professionals %}
+            <tr class="border-b text-sm hover:bg-gray-50">
+                <td class="py-4 flex items-center gap-3">
+                    <div class="w-10 h-10 bg-teal-500 text-white rounded-full flex items-center justify-center font-bold">{{ pro.user.full_name|slice:":1" }}</div>
+                    <div>
+                        <div class="font-semibold">{{ pro.user.full_name }}</div>
+                        <div class="text-xs text-gray-400">Joined {{ pro.user.created_at|date:"Y-m-d" }}</div>
+                    </div>
+                </td>
+                <td>{{ pro.specialization_set.first.description|default:"General" }}</td>
+                <td>
+                    <i class="fas fa-map-marker-alt text-gray-400 mr-1"></i> {{ pro.user.district }}
+                </td>
+                <td>
+                    {% if pro.avg_rating %}
+                        <span class="flex items-center gap-1 text-orange-500">
+                            <i class="fas fa-star"></i> {{ pro.avg_rating|floatformat:1 }}
+                        </span>
+                    {% else %}
+                        <span class="text-gray-400">No ratings</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="px-3 py-1 text-xs rounded-full 
+                        {% if pro.verify_status == 'approved' %}bg-green-100 text-green-600
+                        {% elif pro.verify_status == 'pending' %}bg-yellow-100 text-yellow-600
+                        {% else %}bg-red-100 text-red-600{% endif %}">
+                        {{ pro.get_verify_status_display }}
+                    </span>
+                </td>
+                <td>
+                    <i class="fas fa-eye text-gray-400 hover:text-teal-600 cursor-pointer"></i>
+                    <i class="fas fa-pen text-gray-400 hover:text-teal-600 ml-2 cursor-pointer"></i>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center text-gray-400 py-8">No professionals found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

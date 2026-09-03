@@ -1,0 +1,191 @@
+{% extends 'adminpanel/base.html' %}
+{% block content %}
+<div class="max-w-2xl mx-auto bg-white rounded-xl shadow-sm p-8">
+    <h1 class="text-2xl font-bold text-gray-800 mb-6">Settings</h1>
+    
+    <div class="space-y-8">
+
+        <!-- Section 1: Appearance -->
+        <div>
+            <h3 class="font-semibold text-gray-700 border-b pb-2 mb-4">Appearance</h3>
+            
+            <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg border border-gray-100">
+                <div>
+                    <div class="font-medium text-gray-700">Dark Mode</div>
+                    <div class="text-xs text-gray-500" id="dark-mode-status">System is currently in Light mode</div>
+                </div>
+                <!-- Modern Toggle Switch -->
+                <button id="dark-mode-toggle" onclick="toggleDarkMode()" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none bg-gray-200">
+                    <span id="toggle-knob" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 2: Font Size & Display -->
+        <div>
+            <h3 class="font-semibold text-gray-700 border-b pb-2 mb-4">Font Size & Display</h3>
+            
+            <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                    <label class="text-sm text-gray-600">Text Scaling</label>
+                    <select id="font-size-select" onchange="changeFontSize(this.value)" class="border rounded-lg px-3 py-1.5 bg-white text-sm focus:ring-2 focus:ring-teal-500 outline-none">
+                        <option value="base">Default</option>
+                        <option value="lg">Large</option>
+                        <option value="xl">Extra Large</option>
+                    </select>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <label class="text-sm text-gray-600">High Contrast Viewing</label>
+                    <button onclick="toggleHighContrast()" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none bg-gray-200">
+                        <span id="hc-knob" class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform translate-x-1"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Language -->
+        <div>
+            <h3 class="font-semibold text-gray-700 border-b pb-2 mb-4">Language</h3>
+            
+            <div class="space-y-2 mt-2">
+                <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="lang" value="en" class="text-teal-600 focus:ring-teal-500" checked> 
+                    <span class="text-sm">English</span>
+                </label>
+                <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="lang" value="si" class="text-teal-600 focus:ring-teal-500"> 
+                    <span class="text-sm">සිංහල (Sinhala)</span>
+                </label>
+                <label class="flex items-center gap-3 p-2 rounded hover:bg-gray-50 cursor-pointer">
+                    <input type="radio" name="lang" value="ta" class="text-teal-600 focus:ring-teal-500"> 
+                    <span class="text-sm">தமிழ் (Tamil)</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Save Changes Button (Optional for user to trigger a simulated update) -->
+        <div class="pt-6 border-t text-right">
+            <button onclick="saveAllSettings()" class="bg-teal-700 text-white px-6 py-2 rounded-lg hover:bg-teal-800 transition-colors shadow-sm">
+                Save Changes
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- JAVASCRIPT LOGIC FOR SETTINGS -->
+<script>
+    // 1. Dark Mode Toggle with LocalStorage persistence
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        const toggleBtn = document.getElementById('dark-mode-toggle');
+        const knob = document.getElementById('toggle-knob');
+        const statusText = document.getElementById('dark-mode-status');
+
+        html.classList.toggle('dark');
+        
+        if (html.classList.contains('dark')) {
+            // Switch to Dark Mode
+            toggleBtn.classList.remove('bg-gray-200');
+            toggleBtn.classList.add('bg-teal-600');
+            knob.classList.remove('translate-x-1');
+            knob.classList.add('translate-x-6');
+            statusText.textContent = "System is currently in Dark mode";
+            localStorage.setItem('theme', 'dark');
+        } else {
+            // Switch to Light Mode
+            toggleBtn.classList.add('bg-gray-200');
+            toggleBtn.classList.remove('bg-teal-600');
+            knob.classList.add('translate-x-1');
+            knob.classList.remove('translate-x-6');
+            statusText.textContent = "System is currently in Light mode";
+            localStorage.setItem('theme', 'light');
+        }
+    }
+
+    // Load saved theme on page load
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            // Force dark mode without animation/transition quirks
+            document.documentElement.classList.add('dark');
+            document.getElementById('dark-mode-toggle').classList.remove('bg-gray-200');
+            document.getElementById('dark-mode-toggle').classList.add('bg-teal-600');
+            document.getElementById('toggle-knob').classList.remove('translate-x-1');
+            document.getElementById('toggle-knob').classList.add('translate-x-6');
+            document.getElementById('dark-mode-status').textContent = "System is currently in Dark mode";
+        }
+    }
+
+    // 2. Font Size Toggle (Simulated)
+    function changeFontSize(val) {
+        const html = document.documentElement;
+        if(val === 'lg') {
+            html.style.fontSize = '110%';
+        } else if(val === 'xl') {
+            html.style.fontSize = '125%';
+        } else {
+            html.style.fontSize = '100%';
+        }
+        localStorage.setItem('font_size', val);
+    }
+
+    // Load saved font size on page load
+    function loadFontSize() {
+        const savedSize = localStorage.getItem('font_size');
+        if(savedSize) {
+            document.getElementById('font-size-select').value = savedSize;
+            changeFontSize(savedSize);
+        }
+    }
+
+    // 3. High Contrast Toggle (Simulated)
+    function toggleHighContrast() {
+        const html = document.documentElement;
+        const knob = document.getElementById('hc-knob');
+        html.classList.toggle('high-contrast');
+        
+        if (html.classList.contains('high-contrast')) {
+            knob.classList.remove('translate-x-1');
+            knob.classList.add('translate-x-6');
+            // Inject high contrast CSS safely
+            if(!document.getElementById('hc-styles')) {
+                const style = document.createElement('style');
+                style.id = 'hc-styles';
+                style.innerHTML = `
+                    .high-contrast { filter: contrast(1.5) brightness(1.1); }
+                    .high-contrast a, .high-contrast button { border: 2px solid currentColor !important; }
+                `;
+                document.head.appendChild(style);
+            }
+        } else {
+            knob.classList.add('translate-x-1');
+            knob.classList.remove('translate-x-6');
+            const hcStyles = document.getElementById('hc-styles');
+            if(hcStyles) hcStyles.remove();
+        }
+    }
+
+    // 4. Save All Settings (Just a thank you popup for the demo)
+    function saveAllSettings() {
+        const selectedLang = document.querySelector('input[name="lang"]:checked').value;
+        let langName = "English";
+        if(selectedLang === 'si') langName = "Sinhala";
+        if(selectedLang === 'ta') langName = "Tamil";
+        
+        // In a real app, you would POST this to Django backend here.
+        alert(`Preferences saved!\n\nLanguage: ${langName}\nFont Size: ${localStorage.getItem('font_size') || 'Default'}\nTheme: ${localStorage.getItem('theme') || 'Light'}`);
+    }
+
+    // Initialize settings
+    document.addEventListener('DOMContentLoaded', () => {
+        loadTheme();
+        loadFontSize();
+    });
+</script>
+
+<!-- Tailwind Dark Mode Configuration -->
+<!-- Note: To make Dark Mode fully work in your other pages, you must add dark: variants to your CSS.
+     Example: <div class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100"> -->
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'adminpanel/base.html' %}
+{% block content %}
+<div class="flex justify-between items-center mb-4 p-4">
+    <h1 class="text-2xl font-bold text-gray-800">Overview</h1>
+    <div class="flex gap-4">
+        <input type="text" placeholder="Search..." class="border px-4 py-2 rounded-lg shadow-sm focus:outline-none">
+        <div class="bg-teal-700 text-white rounded-full h-10 w-10 flex items-center justify-center">A</div>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="stat-card bg-white p-6 border-l-4 border-teal-400">
+        <div class="flex justify-between"><span class="text-3xl font-bold text-teal-700">{{ total_users }}</span><i class="fas fa-users text-teal-300 text-2xl"></i></div>
+        <div class="text-sm text-gray-500 mt-2">Total Users</div>
+    </div>
+    <div class="stat-card bg-white p-6 border-l-4 border-green-300">
+        <div class="flex justify-between"><span class="text-3xl font-bold text-green-600">{{ active_pros }}</span><i class="fas fa-user-check text-green-300 text-2xl"></i></div>
+        <div class="text-sm text-gray-500 mt-2">Active Professionals</div>
+    </div>
+    <div class="stat-card bg-white p-6 border-l-4 border-orange-300">
+        <div class="flex justify-between"><span class="text-3xl font-bold text-orange-500">{{ monthly_appts }}</span><i class="fas fa-calendar-week text-orange-300 text-2xl"></i></div>
+        <div class="text-sm text-gray-500 mt-2">Monthly Appointments</div>
+    </div>
+    <div class="stat-card bg-white p-6 border-l-4 border-purple-300">
+        <div class="flex justify-between"><span class="text-3xl font-bold text-purple-600">{{ total_revenue }}</span><i class="fas fa-money-bill-wave text-purple-300 text-2xl"></i></div>
+        <div class="text-sm text-gray-500 mt-2">Platform Revenue</div>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Revenue Trend -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-lg mb-6">Revenue Trend <span class="text-xs text-gray-400 font-normal ml-2">Last 6 months</span></h3>
+        <div class="flex items-end space-x-4 h-40">
+            {% for month, amount in revenue_trend.items %}
+            <div class="flex-1 flex flex-col items-center gap-2">
+                <div class="w-full bg-teal-500 rounded-t-md" style="height: {% widthratio amount 100000 50 %}px;"></div>
+                <span class="text-xs text-gray-500">{{ month }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Top Services -->
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-lg mb-6">Top Services</h3>
+        <div class="space-y-4">
+            {% for service in top_services %}
+            <div>
+                <div class="flex justify-between text-sm mb-1"><span>{{ service.description|default:"General" }}</span><span>{{ service.count }}</span></div>
+                <div class="w-full bg-gray-200 rounded-full h-2"><div class="bg-teal-500 h-2 rounded-full" style="width: {% widthratio service.count 1000 100 %}%"></div></div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Recent Appointments & Platform Health -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-lg">Recent Appointments</h3><a href="{% url 'appointments' %}" class="text-teal-600 text-sm">View All</a></div>
+        <div class="space-y-3">
+            {% for apt in recent_appts %}
+            <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div><span class="font-medium text-teal-700">{{ apt.patient.patient_name }}</span><br><span class="text-xs text-gray-500">{{ apt.professional.user.full_name }}</span></div>
+                <span class="px-3 py-1 text-xs rounded-full {% if apt.appointment_status == 'completed' %}bg-green-100 text-green-600{% else %}bg-yellow-100 text-yellow-600{% endif %}">{{ apt.get_appointment_status_display }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="bg-white rounded-xl shadow-sm p-6">
+        <h3 class="font-semibold text-lg mb-4">Platform Health</h3>
+        <div class="space-y-3">
+            <div class="flex gap-3 items-center bg-green-100 p-3 rounded-lg"><div class="bg-green-200 p-2 rounded-full"><i class="fas fa-check-circle text-green-600"></i></div><div><div class="text-sm font-bold">{{ platform_health.uptime }}%</div><div class="text-xs text-gray-500">System Uptime</div></div></div>
+            <div class="flex gap-3 items-center bg-cyan-100 p-3 rounded-lg"><div class="bg-cyan-200 p-2 rounded-full"><i class="fas fa-users text-cyan-600"></i></div><div><div class="text-sm font-bold">{{ platform_health.active_sessions }}</div><div class="text-xs text-gray-500">Active Sessions</div></div></div>
+            <div class="flex gap-3 items-center bg-orange-100 p-3 rounded-lg"><div class="bg-orange-200 p-2 rounded-full"><i class="fas fa-clock text-orange-600"></i></div><div><div class="text-sm font-bold">{{ platform_health.pending_verifications }}</div><div class="text-xs text-gray-500">Pending Verifications</div></div></div>
+            <div class="flex gap-3 items-center bg-purple-100 p-3 rounded-lg"><div class="bg-purple-200 p-2 rounded-full"><i class="fas fa-exclamation-circle text-purple-600"></i></div><div><div class="text-sm font-bold">{{ platform_health.reported_issues }}</div><div class="text-xs text-gray-500">Reported Issues</div></div></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
