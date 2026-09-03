@@ -1,0 +1,26 @@
+ /* Exact print size matching the screen view */
+        @media print {
+            @page {
+                size: auto;
+                margin: 20mm;
+            }
+            body {
+                background-color: #ffffff !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: flex-start !important;
+            }
+            .no-print {
+                display: none !important; /* Hides print button */
+            }
+            /* Fixed exact width for print (keeps same compact look as on screen) */
+            .receipt-card {
+                box-shadow: none !important;
+                border: 1px solid #e5e7eb !important;
+                width: 100% !important;
+                max-width: 28rem !important; /* 448px - same max-w-md width */
+                margin: 0 auto !important;
+            }
+        }

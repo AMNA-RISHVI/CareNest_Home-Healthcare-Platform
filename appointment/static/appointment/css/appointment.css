@@ -1,0 +1,373 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  background-color: #f2f2eb;
+  color: #333333;
+  padding: 40px 20px;
+}
+
+/* Overall Grid Layout */
+.page-container {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Card Styling */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.left-content {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Profile Card Styling */
+.profile-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.avatar-box {
+  width: 64px;
+  height: 64px;
+  background-color: #219688;
+  color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.title-row h2 {
+  font-size: 20px;
+  color: #1e3a3a;
+  font-weight: 700;
+}
+
+.badge-verified {
+  background-color: #e0f2f1;
+  color: #00897b;
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.qualification-subtitle {
+  color: #757575;
+  font-size: 14px;
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+
+.meta-row {
+  display: flex;
+  gap: 16px;
+  color: #616161;
+  font-size: 13px;
+}
+
+.meta-row i {
+  color: #00897b;
+  margin-right: 4px;
+}
+
+.bio-text {
+  color: #424242;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.languages-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #00897b;
+}
+
+.lang-label {
+  color: #616161;
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.pill {
+  background-color: #f0f0f0;
+  color: #616161;
+  padding: 6px 16px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+/* Qualifications Styling */
+.qualifications-card h3,
+.reviews-card h3 {
+  font-size: 17px;
+  color: #111111;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qualifications-card h3 i {
+  color: #00897b;
+}
+
+.qualifications-list {
+  list-style: none;
+}
+
+.qualifications-list li {
+  font-size: 14px;
+  color: #424242;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qualifications-list li i {
+  color: #00897b;
+  font-size: 16px;
+}
+
+/* Reviews Card Styling */
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.overall-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+}
+
+.overall-rating i {
+  color: #ff9800;
+}
+
+.overall-rating .count {
+  color: #757575;
+  font-size: 13px;
+}
+
+.review-box {
+  background-color: #f7f7f7;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.reviewer-avatar {
+  width: 36px;
+  height: 36px;
+  background-color: #b2dfdb;
+  color: #004d40;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.reviewer-avatar.teal {
+  background-color: #80cbc4;
+}
+
+.review-details {
+  flex: 1;
+}
+
+.reviewer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.reviewer-header strong {
+  font-size: 14px;
+  color: #212121;
+}
+
+.star-rating i {
+  color: #ff9800;
+  font-size: 13px;
+}
+
+.star-rating .fa-regular {
+  color: #e0e0e0;
+}
+
+.review-text {
+  font-size: 13px;
+  color: #424242;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.review-date {
+  font-size: 11px;
+  color: #9e9e9e;
+}
+
+.see-all-link {
+  display: inline-block;
+  color: #111111;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  margin-top: 4px;
+}
+
+/* Right Content Box (Sticky Booking Form) */
+.right-content {
+  position: sticky;
+  top: 24px;
+}
+
+.booking-card {
+  text-align: center;
+}
+
+.fee-title {
+  color: #757575;
+  font-size: 14px;
+}
+
+.fee-amount {
+  color: #1e88e5;
+  color: #00897b;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 4px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 8px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.btn-slot {
+  background-color: #f5f5f5;
+  border: 1px solid transparent;
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #616161;
+  cursor: pointer;
+}
+
+.btn-slot span {
+  font-size: 11px;
+}
+
+.btn-slot.active {
+  background-color: #00897b;
+  color: #ffffff;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background-color: #ffffff;
+}
+
+.form-control:focus {
+  border-color: #00897b;
+}
+
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.textarea::placeholder {
+  color: #bdbdbd;
+  font-size: 12px;
+}
+
+.btn-submit {
+  width: 100%;
+  background-color: #4db6ac;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.btn-submit:hover {
+  background-color: #00897b;
+}
+
+.cancellation-policy {
+  font-size: 11px;
+  color: #9e9e9e;
+  margin-top: 12px;
+}
+
+/* Responsive breakpoint */
+@media (max-width: 768px) {
+  .page-container {
+    grid-template-columns: 1fr;
+  }
+}

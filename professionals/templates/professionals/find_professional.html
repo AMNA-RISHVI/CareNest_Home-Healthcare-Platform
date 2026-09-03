@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Healthcare Professionals</title>
+    <link rel="stylesheet" href="{% static 'professional/css/find_professional.css' %}">  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script>
+    function selectService(button) {
+        document.querySelectorAll('.service-btn').forEach(function(btn) {
+            btn.classList.remove('active');
+        });
+
+        button.classList.add('active');
+    }
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="header-section">
+            <h1>Find Healthcare Professionals</h1>
+            <p class="subtitle">Search from thousands of verified professionals across Sri Lanka</p>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-row">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search by name, specialization, or location...">
+            </div>
+            <button class="btn-filter"><i class="fa-solid fa-sliders"></i> Filters</button>
+        </div>
+
+        <!-- Service Category Buttons -->
+        <div class="service-row">
+
+            <button type="button" class="service-btn active" onclick="selectService(this)">All Services
+
+            </button>
+
+            <button type="button" class="service-btn" onclick="selectService(this)">
+                <i class="fa-solid fa-user-doctor" ></i> Doctor Home Visit
+            </button>
+
+            <button type="button" class="service-btn" onclick="selectService(this)">
+                <i class="fa-solid fa-heart-pulse">
+                </i> Nursing Care
+            </button>
+
+            <button type="button" class="service-btn" onclick="selectService(this)">
+                <i class="fa-solid fa-flask"></i> 
+                Lab Test Collection</button>
+        </div>
+
+        <!-- Advanced Filters -->
+        <section class="advance-filters">
+            <h3>Advanced Filters</h3>
+            <div class="filter-row">
+                <div class="filter-group">
+                    <label>District</label>
+                    <select>
+                        <option>All Districts</option>
+                        <option>Colombo</option>
+                        <option>Gampaha</option>
+                        <option>Kandy</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Fee Range</label>
+                    <select>
+                        <option>Any Fee</option>
+                        <option>Rs. 2000 - 3500</option>
+                        <option>Rs. 3500 - 5000</option>
+                        <option>Rs. 5000+</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Language</label>
+                    <select>
+                        <option>Any Language</option>
+                        <option>Sinhala</option>
+                        <option>Tamil</option>
+                        <option>English</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Gender</label>
+                    <select>
+                        <option>Any Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Header -->
+        <div class="results-header">
+            <p><span>{{ professionals|length }}</span> Professionals Found</p>
+            <div class="sort-option">
+                <label>Sort by:</label>
+                <select>
+                    <option>Relevance</option>
+                    <option>Fee: Low to High</option>
+                    <option>Fee: High to Low</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Professionals Grid -->
+        <div class="professionals-list">
+            {% for professional in professionals %}
+            <div class="professional-card">
+                <div class="card-top">
+                    <div class="avatar-icon">
+                        {{ professional.User.full_name|default:"L"|slice:":1"|upper }}
+                    </div>
+                    <div class="card-title">
+                        <h3>Dr. {{ professional.User.full_name|default:"Lakshmi Fernando" }}</h3>
+                        <div class="badge">
+                            {% if professional.verify_status == 'approved' %}
+                            <i class="fa-regular fa-circle-check"></i> Verified
+                            {% endif %}
+                        </div>
+
+                         <p class="qualification">
+                            {{ professional.qualifications|truncatechars:35 }}
+                         </p>
+                
+                           
+                    </div>       
+
+                #===========specialization===============
+                <p class="specialization">
+                    <i class="fa-solid fa-stethoscope"></i> 
+                    {% for specialization in professional.specializations_set.all %}
+                         {{specialization.description}}
+                    {% empty %}
+                        Not specified
+                    {% endfor %}
+
+                </p>
+
+                #====================location===========================
+                <p class="location">
+                    <i class="fa-solid fa-location-dot"></i> 
+                    {% for location in professional.professionalslocation_set.all %}
+                        {{ location.city }}, {{ location.district }}
+                        {% if not forloop.last %} | {% endif %}
+                    {% empty %}
+                        Location not specified
+                    {% endfor %}
+                </p>
+
+
+                #============lanuage=============================
+                <p class="languages">
+                    <i class="fa-solid fa-language"></i> 
+                    {{ professional.language|default:"Not specified" }}
+                </p>
+
+                <div class="card-footer"> 
+                    <div class="rating-box">
+                        <span class="stars"><i class="fa-solid fa-star"></i>
+                                {% if professional.average_rating %}
+                                    {{ professional.average_rating }}
+                                {% else %}
+                                    No ratings
+                                {% endif %}
+                            </span>
+                        <span class="reviews">
+                             ({{ professional.total_reviews }})
+
+                        </span>
+                    </div>
+
+                    <div class="fee-box">
+                        <span class="fee-amount">Rs. {{ professional.consultation_fee|default:"Not specified" }}</span>
+                        <span class="experience">{{ professional.experience|default:"Not specified" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
