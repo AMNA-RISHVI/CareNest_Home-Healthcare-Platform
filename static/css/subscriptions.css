@@ -13,7 +13,6 @@ html {
 }
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
     color: #263D3B;
 
     background: linear-gradient(
@@ -23,146 +22,10 @@ body {
         #FFFFEF 80%,
         #FFFCE6 100%
     );
+    padding: 100px;
 
     min-height: 100vh;
     overflow-x: hidden;
-}
-
-
-/* =========================================
-   NAVBAR
-========================================= */
-
-.navbar {
-    height: 88px;
-    width: 100%;
-
-    background: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 55px;
-
-    border-bottom: 1px solid #eeeeee;
-
-    position: relative;
-    z-index: 10;
-}
-
-
-/* Logo + CareNest */
-
-.navbar-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-
-    min-width: 220px;
-}
-
-.navbar-logo {
-    width: 62px;
-    height: 62px;
-
-    object-fit: contain;
-}
-
-.brand-text {
-    font-family: Arial, sans-serif;
-    font-size: 27px;
-    font-weight: 700;
-    letter-spacing: -1px;
-}
-
-.brand-care {
-    color: #178982;
-}
-
-.brand-nest {
-    color: #E05906;
-}
-
-
-/* Navigation */
-
-.navigation {
-    display: flex;
-    align-items: center;
-    gap: 45px;
-
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.navigation a {
-    text-decoration: none;
-    color: #555;
-
-    font-size: 15px;
-
-    padding: 8px 25px;
-    border-radius: 8px;
-
-    white-space: nowrap;
-
-    transition: 0.2s ease;
-}
-
-.navigation a:hover {
-    color: #178982;
-}
-
-.navigation a.active {
-    background: #B7F5EA;
-    color: #168D87;
-    border: 1px solid #7DDED1;
-}
-
-
-/* User */
-
-.user-area {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-
-    font-family: Arial, sans-serif;
-    font-size: 15px;
-}
-
-.notification {
-    font-size: 19px;
-    color: #777;
-}
-
-.profile {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-}
-
-.profile-avatar {
-    width: 34px;
-    height: 34px;
-
-    border-radius: 7px;
-
-    background: #24A59A;
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-weight: bold;
-}
-
-.dropdown-arrow {
-    color: #777;
-    font-size: 16px;
 }
 
 
@@ -951,8 +814,8 @@ body {
 
 @media (max-width: 1000px) {
 
-    .navbar {
-        padding: 0 25px;
+    body {
+        padding: 20px;
     }
 
     .navigation {
@@ -973,22 +836,8 @@ body {
 
 @media (max-width: 650px) {
 
-    .navbar {
-        height: 75px;
-        padding: 0 15px;
-    }
-
-    .navbar-brand {
-        min-width: auto;
-    }
-
-    .navbar-logo {
-        width: 48px;
-        height: 48px;
-    }
-
-    .brand-text {
-        font-size: 21px;
+    body {
+        padding: 15px;
     }
 
     .navigation {
