@@ -1,5 +1,8 @@
-from .models import UserSubscription
-
+from subscriptions.services import (
+    get_current_subscription,
+    get_user_profile_limit,
+    can_create_patient_profile,
+)
 
 def get_active_subscription(user):
     """
@@ -8,9 +11,8 @@ def get_active_subscription(user):
 
     return (
         UserSubscription.objects
-        .select_related('plan')
         .filter(
-            user=user,
+            user_id=user.id,
             status='activated'
         )
         .order_by('-start_date')
@@ -19,17 +21,7 @@ def get_active_subscription(user):
 
 
 def get_family_member_limit(user):
-    """
-    Return the maximum number of patient profiles
-    allowed by the user's active subscription.
-    """
-
-    subscription = get_active_subscription(user)
-
-    if not subscription:
-        return 0
-
-    return subscription.plan.max_profile
+    return get_user_profile_limit(user)
 
 
 def get_family_member_count(user):
@@ -50,3 +42,4 @@ def can_add_family_member(user):
     current_count = get_family_member_count(user)
 
     return current_count < limit
+

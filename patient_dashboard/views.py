@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Patient, UserSubscription
+from .models import Patient
 from .forms import PatientForm
 from .services import (
     can_add_family_member,
