@@ -22,12 +22,6 @@ urlpatterns = [
     ),
 
     path(
-        "professional-dashboard/",
-        views.professional_dashboard,
-        name="professional_dashboard"
-    ),
-
-    path(
         "admin-dashboard/",
         views.admin_dashboard,
         name="admin_dashboard"

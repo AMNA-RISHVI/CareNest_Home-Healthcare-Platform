@@ -33,6 +33,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import update_session_auth_hash
 
 from .decorators import role_required
+from professionals.models import Professionals
 
 def register(request):
 
@@ -196,24 +197,18 @@ def redirect_user_dashboard(user):
     if user.role == "ADMIN":
         return redirect("/admin-dashboard/")
 
-    elif user.role == "PROFESSIONAL":
-        return redirect("/professional-dashboard/")
-
-    else:
+    elif user.role =="PATIENT":
         return redirect("patient_dashboard:dashboard")
 
-    
+    elif user.role == "PROFESSIONAL":
+        if Professionals.objects.filter(User=user).exists():
+            return redirect("professional_dashboard")
+
+        else:
+            return redirect("professional_register")
 
 
 
-@login_required
-@role_required("PROFESSIONAL")
-def professional_dashboard(request):
-
-    return render(
-        request,
-        "professional_dashboard.html"
-    )
 
 
 @login_required
