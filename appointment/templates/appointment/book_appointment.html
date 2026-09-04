@@ -196,7 +196,7 @@
                     <div class="form-group">
                         <label>Book for</label>
                         <div class="select-wrapper">
-                            <select class="form-control">
+                            <select class="form-control"
                                 id="book_for"
                                 name="book_for"
                                 class="form-control"
@@ -234,12 +234,14 @@
                     <div class="form-group">
                         <label>Additional Notes (Optional)</label>
                         <textarea
+                        id="patient_note"
+                        name="patient_note"
                         class="form-control textarea" 
                         placeholder="Describe symptoms or medical concerns..."></textarea>
                     </div>
 
                     <!-- Action Button & Note -->
-                    <button type="button" 
+                    <button type="submit" 
                     class="btn-submit">Book for {}</button>
                     <p class="cancellation-policy">Free cancellation up to 2 hours before the appointment</p>
             

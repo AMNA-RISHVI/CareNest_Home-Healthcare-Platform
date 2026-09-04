@@ -1,8 +1,15 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+
 from professionals.models import Professionals
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Avg, Count
+from patient_dashboard.models import Patient
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
+from datetime import datetime
+from appointment.models import appointment, review_rating
+
 
 from professionals.models import (
     Professionals,
@@ -14,23 +21,33 @@ from professionals.models import (
 from appointment.models import review_rating
 
 # Create your views here
+#appointment professional list
 def appointment(request):
         
-    professionals = Professionals.objects.all()
+    professionals = Professionals.objects.filter(verify_status="approved")
     return render(
         request,
-        'appointment/appointment.html',
+        'appointment/book_appointment.html',
         {'professionals':professionals}
         )
+
+#review rating page
 def review_rate(request):
     return render(request,'appointment/review_rate.html')
+
+#appointment status
 def appointment_status(request):
     return render(request,'appointment/appointment_status.html')
+
 
 def book_appointment(request,professional_id):
     professional = get_object_or_404(
         Professionals,
         professional_id=professional_id
+    )
+    patient = get_object_or_404(
+        Patient,
+        user=request.user
     )
 
     location = ProfessionalsLocation.objects.filter(
@@ -57,6 +74,8 @@ def book_appointment(request,professional_id):
 
     average_rating = rating_summary['average_rating']
     total_reviews = rating_summary['total_reviews']
+
+    #=======================handle book form
 
     if request.method == 'POST':
 
@@ -98,8 +117,10 @@ def book_appointment(request,professional_id):
             'average_rating': average_rating,
             'total_reviews': total_reviews,
             'availabilities': availabilities,
+           
         }
     )
+
 
 
     

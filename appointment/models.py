@@ -4,9 +4,10 @@ from professionals.models import Availability
 
 class appointment(models.Model):
     appointment_id =models.AutoField(primary_key=True)
-    #patient=models.ForeignKey('patient.Patient' ,
-                               # on_delete=models.CASCADE,
-                               #)
+    patient=models.ForeignKey('patient_dashboard.Patient' ,
+                               on_delete=models.CASCADE,
+                          
+                               )
     professional=models.ForeignKey('professionals.Professionals',
                                       on_delete=models.CASCADE,
                                    )
@@ -65,5 +66,5 @@ class review_rating(models.Model):
 
 
     
-#def __str__(self):
-  #  return f"{self.appointment.patient} - {self.appointment.professional} ({self.rating} stars)"
+def __str__(self):
+   return f"{self.appointment.patient_dashboard} - {self.appointment.professional} ({self.rating} stars)"
