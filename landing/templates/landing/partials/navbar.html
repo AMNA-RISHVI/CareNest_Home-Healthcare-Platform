@@ -66,8 +66,8 @@
 
                 <li class="nav-item">
                     <a
-                        class="nav-link"
-                        href="#">
+                        class="nav-link {% if request.resolver_match.url_name == 'find_professional' %}active-nav{% endif %}"
+                        href="{% url 'find_professional' %}">
                         Find Professionals
                     </a>
                 </li>
@@ -76,8 +76,8 @@
 
                 <li class="nav-item">
                     <a
-                        class="nav-link"
-                        href="#">
+                        class="nav-link {% if request.resolver_match.url_name == 'subscription-page' %}active-nav{% endif %}"
+                        href="{% url 'subscription-page' %}">
                         Plans
                     </a>
                 </li>
