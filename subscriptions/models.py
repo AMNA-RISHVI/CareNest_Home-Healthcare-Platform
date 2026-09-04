@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 
 class SubscriptionPlan(models.Model):
     PLAN_CHOICES = [
@@ -22,7 +22,7 @@ class SubscriptionPlan(models.Model):
         blank=True
     )
     duration_days = models.IntegerField(default=30)
-    max_profile = models.IntegerField(default=1)
+    max_profile = models.PositiveIntegerField(default=1)
     description = models.TextField(null=True, blank=True)
 
     class Meta:
@@ -42,7 +42,11 @@ class UserSubscription(models.Model):
 
     usersub_id = models.AutoField(primary_key=True)
 
-    user_id = models.IntegerField()
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='subscriptions'
+    )
 
     start_date = models.DateField(
         null=True,

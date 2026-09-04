@@ -35,6 +35,31 @@ def purchase_subscription(user_id, plan_id):
     return subscription
 
 
+def get_user_profile_limit(user):
+    subscription = get_current_subscription(user.id)
+
+    if not subscription:
+        return 1
+
+    latest_history = (
+        subscription.history
+        .select_related('plan')
+        .order_by('-sub_date')
+        .first()
+    )
+
+    if not latest_history or not latest_history.plan:
+        return 1
+
+    return latest_history.plan.max_profile
+
+
+def can_create_patient_profile(user, current_profile_count):
+    max_profiles = get_user_profile_limit(user)
+
+    return current_profile_count < max_profiles
+
+
 def get_current_subscription(user_id):
     """
     Get the user's current active subscription.
