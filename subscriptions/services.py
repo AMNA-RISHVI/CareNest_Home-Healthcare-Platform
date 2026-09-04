@@ -110,12 +110,31 @@ def renew_subscription(subscription):
 
 def upgrade_subscription(subscription, new_plan_id):
     """
-    Upgrade a user's subscription to a new plan.
+    Upgrade a user's subscription to a higher-priced plan.
     """
 
     new_plan = SubscriptionPlan.objects.get(
         plan_id=new_plan_id
     )
+
+    latest_history = (
+        SubscriptionHistory.objects
+        .filter(usersub=subscription)
+        .order_by('-sub_date')
+        .first()
+    )
+
+    if latest_history is None or latest_history.plan is None:
+        raise ValueError(
+            'Current subscription plan not found.'
+        )
+
+    current_plan = latest_history.plan
+
+    if new_plan.price <= current_plan.price:
+        raise ValueError(
+            'Selected plan is not an upgrade.'
+        )
 
     # Deactivate the current subscription
     subscription.status = 'deactivated'
@@ -140,5 +159,75 @@ def upgrade_subscription(subscription, new_plan_id):
         usersub=new_subscription,
         plan=new_plan,
     )
+
+def downgrade_subscription(subscription, new_plan_id):
+    """
+    Downgrade a user's subscription to a lower-priced plan.
+    """
+
+    new_plan = SubscriptionPlan.objects.get(
+        plan_id=new_plan_id
+    )
+
+    latest_history = (
+        SubscriptionHistory.objects
+        .filter(usersub=subscription)
+        .order_by('-sub_date')
+        .first()
+    )
+
+    if latest_history is None or latest_history.plan is None:
+        raise ValueError(
+            'Current subscription plan not found.'
+        )
+
+    current_plan = latest_history.plan
+
+    if new_plan.price >= current_plan.price:
+        raise ValueError(
+            'Selected plan is not a downgrade.'
+        )
+
+    # Deactivate the current subscription
+    subscription.status = 'deactivated'
+    subscription.save()
+
+    # Create the new subscription
+    start_date = timezone.now().date()
+    due_date = start_date + timedelta(
+        days=new_plan.duration_days
+    )
+
+    new_subscription = UserSubscription.objects.create(
+        user_id=subscription.user_id,
+        start_date=start_date,
+        due_date=due_date,
+        auto_renew=False,
+        status='activated',
+    )
+
+    # Record the new plan in history
+    SubscriptionHistory.objects.create(
+        usersub=new_subscription,
+        plan=new_plan,
+    )
+
+def expire_subscriptions():
+    """
+    Mark active subscriptions as expired when their due date has passed.
+    """
+
+    today = timezone.now().date()
+
+    expired_subscriptions = UserSubscription.objects.filter(
+        status='activated',
+        due_date__lt=today
+    )
+
+    count = expired_subscriptions.update(
+        status='expired'
+    )
+
+    return count
 
     return new_subscription
