@@ -18,6 +18,7 @@ from health_wallet.models import (
     VaccinationRecord,
     MedicalHistory,
 )
+from subscriptions.services import get_user_profile_limit
 
 
 
@@ -406,20 +407,5 @@ def delete_patient(request, patient_id):
     )
 
 
-def get_active_subscription(user):
-
-    return UserSubscription.objects.filter(
-        user=user,
-        status='activated'
-    ).select_related(
-        'plan'
-    ).first()
-
 def get_family_member_limit(user):
-
-    subscription = get_active_subscription(user)
-
-    if not subscription:
-        return 1
-
-    return subscription.plan.max_profile
+    return get_user_profile_limit(user)

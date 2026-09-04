@@ -3,6 +3,7 @@ from subscriptions.services import (
     get_user_profile_limit,
     can_create_patient_profile,
 )
+from subscriptions.models import UserSubscription
 
 def get_active_subscription(user):
     """
