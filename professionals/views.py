@@ -3,6 +3,12 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Avg, Count
 from appointment.models import review_rating
+from django.shortcuts import get_object_or_404
+from .forms import ProfessionalRegistrationForm
+from django.contrib import messages
+import uuid
+
+
 
 from .models import (
     Professionals,
@@ -14,75 +20,85 @@ from appointment.models import review_rating
 
 
 # Create your views here.
+##================regiser===================
 @login_required
-def professionals(request):
-    if request.method =='POST':
-    
+def professional_register(request):
+    # only professionals can access this page
+    if request.user.role != "PROFESSIONAL":
+        return redirect("login")
 
-        #professional information
-        qualifications=request.POST.get('qualifications')
-        experience=request.POST.get('experience')
-        consultation_fee = request.POST.get('consultation_fee')
-        language = request.POST.get('language')
-        bio = request.POST.get('bio')
-        nic_number = request.POST.get('nic_number')
-        professional_code = request.POST.get('professional_code')
-        service_type = request.POST.get('service_type')
-        qualifications_file = request.FILES.get(
-            'qualifications_file'
+    #Check whether professional profile already exists
+    if Professionals.objects.filter(User=request.user).exists():
+        return redirect("professionals:professional_dashboard")
+
+
+    if request.method == "POST":
+
+        form = ProfessionalRegistrationForm(
+            request.POST,
+            request.FILES
+        )
+        qualification_list = request.POST.getlist("qualification")
+
+        qualification_text = "\n".join(
+            q.strip()
+            for q in qualification_list
+            if q.strip()
         )
 
-       
+        if form.is_valid():
 
-        # LOCATION DATA
-        # -------------------------
-        district = request.POST.get('district')
-        city = request.POST.get('city')
+            professional = form.save(commit=False)
 
-           # SPECIALIZATION DATA
-        # -------------------------
-        specialization = request.POST.get('description')
+            professional.User = request.user
+            professional.verify_status = "pending"
+            professional.professional_code = f"PRO-{uuid.uuid4().hex[:8].upper()}"
 
-        
-
-        # 2. Create Professional profile
-        Professionals.objects.create(
-            User=request.user,
-            service_type=service_type,
-            qualifications=qualifications,
-            qualifications_file=qualifications_file,
-            experience=experience,
-            consultation_fee=consultation_fee,
-            language=language,
-            bio=bio,
-            nic_number=nic_number,
-
-            professional_code=professional_code
-        )
-
-         # 3. CREATE LOCATION
-        # -------------------------
-        ProfessionalsLocation.objects.create(
-            professional=professionals,
-            district=district,
-            city=city
-        )
-
-         # 4. CREATE SPECIALIZATION
-        # -------------------------
-        Specializations.objects.create(
-            professional=professionals,
-            description=specialization
-        )
+            professional.save()
 
 
+            #2. save location
+            ProfessionalsLocation.objects.create(
+                professional=professional,
+                district=form.cleaned_data["district"],
+                city=form.cleaned_data["city"]
+            )
 
-        return redirect('professional_dashboard')
-     # Show registration page
+            #3. save speacialization
+            
+            specializations = request.POST.getlist("description")
+
+            for specialization in specializations:
+
+                specialization = specialization.strip()
+
+                if specialization:
+                    Specializations.objects.create(
+                        professional=professional,
+                        description=specialization
+                    )
+
+
+            messages.success(
+                request,
+                "Professional registration completed successfully."
+            )
+
+            return redirect("professional_dashboard")
+
+    else:
+
+        form = ProfessionalRegistrationForm()
+
     return render(
-            request,
-            'professionals/professional_regi.html'
+        request,
+        "professionals/professional_register.html",
+        {
+            "form": form
+        }
     )
+
+   
 
 #=========================================
     # Professional Profile
@@ -90,7 +106,8 @@ def professionals(request):
 @login_required
 def professional_profile(request):
 
-    professional = Professionals.objects.get(
+    professional = get_object_or_404(
+        Professionals,
         User=request.user
     )
 
@@ -112,17 +129,17 @@ def professional_profile(request):
                      }
               )
 
-        
 
 
-
+#=================================================================
+# find professionals
+# ========================================        
 
 
 
 def find_professional(request):
          # Get approved professionals
-    professionals = Professionals.objects.filter(
-        verify_status='approved'
+    professionals = Professionals.objects.all(
     )
 
     # Get all reviews and calculate rating
@@ -155,6 +172,28 @@ def find_professional(request):
                       'professionals': professionals 
                   }
                   )
+
+
+
+#==========================================================
+#professional dashboard
+#========================================
+@login_required
+def professional_dashboard(request):
+
+    professional = get_object_or_404(
+        Professionals,
+        User=request.user
+    )
+
+    return render(
+        request,
+        "professionals/professional_dashboard.html",
+        {
+            "professional": professional
+        }
+    )
+
 
 
 

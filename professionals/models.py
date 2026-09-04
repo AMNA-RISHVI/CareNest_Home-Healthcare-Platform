@@ -3,8 +3,9 @@ from django.db import models
 # Create your models here.
 class Professionals(models.Model):
     professional_id= models.AutoField(primary_key=True)
-    #User= models.OneToOneField('authentication.User', 
-                            #on_delete=models.CASCADE)
+    User= models.OneToOneField('authentication.User', 
+                            on_delete=models.CASCADE,
+                           )
     service_type = models.CharField(
         max_length=20,
         choices=[
@@ -30,18 +31,18 @@ class Professionals(models.Model):
     language = models.CharField(max_length=20, null=True, blank=True)
     bio = models.TextField( null=True)
     nic_number = models.CharField(unique=True, max_length=20)
-    professional_code = models.CharField(unique=True, max_length=10)
+    professional_code = models.CharField(unique=True, max_length=12)
     verify_status=[('pending','pending'),
 	           ( 'approved','approved'),
 	            ('rejected','rejected')]
     verify_status = models.CharField(
                              max_length=20,
                              choices=verify_status,
-                             default='pending'
+                             default='pending',
 
-    )  # This field type is a guess.
-     #verify_by = models.ForeignKey(Admins,
-                                 # on_delete=models.SET_NULL)
+    )   
+    #verify_by = models.ForeignKey(Admins,
+                                 #on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.professional_code

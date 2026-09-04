@@ -11,7 +11,9 @@
         <link rel="stylesheet" href="{% static 'professional/css/register.css' %}" >  
     </head>
     <body>
-        <form method="post" action= "{% url 'professionals' %}" enctype=multipart/form-data>
+        <form method="post" 
+        action= "{% url 'professional_register' %}"
+        enctype=multipart/form-data>
         {% csrf_token %}
             <div class="from-box">
 
@@ -31,24 +33,29 @@
         
             <div class="from-group">
             <label>NIC number:</label><br>
-            <input type ="text" id="NIC" name="NIC">
+            <input type ="text" id="NIC" name="nic_number" required>
             </div> 
 
 
 
             <div class="from-group">  
-            <label>Qualifications</label><br>
-            <textarea name="qualifications" required></textarea><br>
-            </div>
-                
+                <label>Qualifications</label><br>
+                 <textarea name="qualifications"
+                 placeholder="Enter your qualifications"
+                  required> </textarea>
+               
+            </div
+                                        
             <div class="from-group">
-            <label>Experiance</label><br>
-            <textarea name="experience" required> </textarea>
+                <label>Experiance</label>
+                <textarea name="experience" 
+                placeholder="Enter your experience"
+                required> </textarea>
             </div>
 
             <div class="from-group">
             <label>Consultation Fee</label><br>
-            <input type ="text" id="fee" name="consultation_fee" step="0.01">
+            <input type ="number" id="fee" name="consultation_fee" step="0.01"  min="0">
             </div>
 
             <div class="from-group">
@@ -59,22 +66,26 @@
             
             <div class="from-group">
             <label>Bio</label><br>
-            <input type ="text" id="bio" name="bio">
+            <input type ="text" id="bio" name="bio"
+            placeholder="Tell us about yourself">
             </div>
 
             <div class="from-group">
-            <label>Specialization</label><br>
-            <textarea name="description" required></textarea> 
+                <label>Specialization</label><br>
+                 <textarea name="description"
+                 placeholder="Enter your specialization"required> </textarea>
+                </div>
+
             </div>
 
             <div class="from-group">
             <label>District</label><br>
-            <input type ="text" id="district" name="district">
+            <input type ="text" id="district" name="district" required>
             </div>
 
             <div class="from-group">
             <label>city</label><br>
-            <input type ="text" id="city" name="city">
+            <input type ="text" id="city" name="city" required>
             </div>
 
             <div>
@@ -85,16 +96,24 @@
                     id="qualifications_file"
                     name="qualifications_file"
                     hidden
+                    accept=".pdf,.jpg,.jpeg,.png"
                 >
                 <button
-                    type="submit"
+                    type="button"
                     onclick="document.getElementById('qualifications_file').click()">
                     Add qualification here
                 </button>
+                
             </div>
             <div class = "button-box">
             <button type="submit" >Submit</button>
             </div>
+            {% if form.errors %}
+                <div class="error-box">
+                    {{ form.errors }}
+                </div>
+            {% endif %}
+            
         </form>
 
     </body>

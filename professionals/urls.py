@@ -3,8 +3,8 @@ from .import views
 
 urlpatterns=[
         path('register/',
-              views.professionals,
-                name='professionals'),  
+              views.professional_register,
+                name='professional_register'),  
 
         path(
             'profile/', 
@@ -17,5 +17,9 @@ urlpatterns=[
             views.find_professional, 
             name='find_professional'),
 
+
+        path('board/',
+                    views.professional_dashboard, 
+                    name='professional_dashboard'),
         
 ]

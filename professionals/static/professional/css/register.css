@@ -65,7 +65,7 @@
 
             .from-box {
                 display: grid;
-                grid-template-columns: 50% 50%;
+                grid-template-columns: 1fr 1fr;
                 gap: 20px;
             }
 
@@ -138,5 +138,16 @@
             .form-group select:focus {
                 border-color: #dadfdb;
                 background-color: #b7bdb8;
+            }
+          
+          
+            
+            .file-added {
+                font-weight: bold;
+            }
+           
+            .from-group {
+                display: flex;
+                flex-direction: column;
             }
            

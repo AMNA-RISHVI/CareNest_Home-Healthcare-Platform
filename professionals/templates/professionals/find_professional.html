@@ -117,7 +117,7 @@
         <!-- Professionals Grid -->
         <div class="professionals-list">
             {% for professional in professionals %}
-            <div class="professional-card">
+           <a href="{% url 'book_appointment' professional.professional_id %}" class="professional-card">
                 <div class="card-top">
                     <div class="avatar-icon">
                         {{ professional.User.full_name|default:"L"|slice:":1"|upper }}
@@ -137,7 +137,8 @@
                            
                     </div>       
 
-                #===========specialization===============
+                </div>
+                <!--===========specialization===============-->
                 <p class="specialization">
                     <i class="fa-solid fa-stethoscope"></i> 
                     {% for specialization in professional.specializations_set.all %}
@@ -148,7 +149,7 @@
 
                 </p>
 
-                #====================location===========================
+                <!--====================location===========================-->
                 <p class="location">
                     <i class="fa-solid fa-location-dot"></i> 
                     {% for location in professional.professionalslocation_set.all %}
@@ -160,7 +161,7 @@
                 </p>
 
 
-                #============lanuage=============================
+                <!--============lanuage=============================-->
                 <p class="languages">
                     <i class="fa-solid fa-language"></i> 
                     {{ professional.language|default:"Not specified" }}
@@ -186,7 +187,8 @@
                         <span class="experience">{{ professional.experience|default:"Not specified" }}</span>
                     </div>
                 </div>
-            </div>
+        
+            </a>
             {% endfor %}
         </div>
     </div>
