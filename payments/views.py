@@ -3,6 +3,7 @@ import json
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from subscriptions.models import SubscriptionPlan
 
@@ -10,11 +11,35 @@ from .services import process_fake_payment
 
 
 def payment_page(request):
-    return render(request, 'payments/payment.html')
+    plan_key = request.GET.get('plan')
+
+    plan = None
+
+    if plan_key:
+        plan_names = {
+            'family': 'family plan',
+            'senior': 'senior care plan',
+            'overseas': 'overseas parent care plan',
+        }
+
+        plan_name = plan_names.get(plan_key)
+
+        if plan_name:
+            plan = SubscriptionPlan.objects.filter(
+                plan_name=plan_name
+            ).first()
+
+    return render(
+        request,
+        'payments/payment.html',
+        {
+            'plan': plan,
+            'plan_key': plan_key,
+        }
+    )
+
+@login_required
 @require_POST
-
-
-
 def fake_payment(request):
     """
     Process a fake payment for a subscription.
@@ -23,15 +48,11 @@ def fake_payment(request):
     try:
         body = json.loads(request.body)
 
-        user_id = body.get('user_id')
+        user_id = request.user.id
         plan_id = body.get('plan_id')
         payment_method = body.get('payment_method')
 
         # Check required information
-        if user_id is None:
-            return JsonResponse({
-                'error': 'user_id is required.'
-            }, status=400)
 
         if plan_id is None:
             return JsonResponse({

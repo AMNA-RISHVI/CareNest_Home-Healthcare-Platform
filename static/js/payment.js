@@ -21,32 +21,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // Subscription plan information
-    const plans = {
+    
 
-        family: {
-            name: "Family Plan",
-            monthlyPrice: 3000,
-            planId: 2
-        },
 
-        senior: {
-            name: "Senior Care Plan",
-            monthlyPrice: 2500,
-            planId: 3
-        },
+    // Get the selected plan from the database
+    const planElement = document.getElementById("selected-plan");
 
-        overseas: {
-            name: "Overseas Parent Care Plan",
-            monthlyPrice: 3500,
-            planId: 4
-        }
-
+    const plan = {
+        id: Number(planElement.dataset.planId),
+        name: planElement.dataset.planName,
+        monthlyPrice: Number(planElement.dataset.planPrice)
     };
-
-
-    // Find the selected plan
-    const plan = plans[selectedPlan];
-
 
     // Display selected plan
     if (plan) {
@@ -98,9 +83,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 "<span>Processing...</span>";
 
 
-            // Temporary user ID
-            const userId = 1;
-
 
             try {
 
@@ -116,13 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         body: JSON.stringify({
 
-                            user_id: userId,
-
-                            plan_id: plan.planId,
+                            plan_id: plan.id,
 
                             payment_method: "card"
 
-                        })
+                            })
                     }
                 );
 

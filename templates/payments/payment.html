@@ -208,6 +208,13 @@
 
     </main>
 
+    <div
+    id="selected-plan"
+    data-plan-id="{% if plan %}{{ plan.plan_id }}{% endif %}"
+    data-plan-name="{% if plan %}{{ plan.get_plan_name_display }}{% endif %}"
+    data-plan-price="{% if plan %}{{ plan.price }}{% endif %}"
+    ></div>
+
 
     <script src="{% static 'js/payment.js' %}"></script>
 
