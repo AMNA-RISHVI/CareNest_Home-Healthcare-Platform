@@ -234,6 +234,7 @@ body {
   font-size: 11px;
   color: #9e9e9e;
 }
+/* Right Content Box (Sticky Booking Form) */
 
 .right-content {
   position: sticky;
@@ -421,7 +422,7 @@ body {
   font-size: 12px;
 }
 
-btn-submit {
+.btn-submit {
   width: 100%;
   background-color: #00897b;
   color: white;
@@ -495,11 +496,4 @@ btn-submit {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .title-row h2 {
-    font-size: 17px;
-  }
-  
-  .fee-amount {
-    font-size: 20px;
-  }
 }

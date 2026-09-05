@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const selectedDateInput = document.getElementById("selected_date");
     const selectedTimeInput = document.getElementById("selected_time");
 
-    
     // ==========================================
     // HELPER FUNCTIONS  !!!
     // ==========================================

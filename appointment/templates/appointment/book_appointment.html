@@ -9,22 +9,7 @@
     <link rel="stylesheet" href="{% static 'appointment/css/appointment.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    const availabilityData = [
-        {% for availability in availabilities %}
-        {
-            day: {{ availability.day }},
-            session: "{{ availability.session_type|escapejs }}",
-            start: "{{ availability.start_time|time:"H:i" }}",
-            end: "{{ availability.end_time|time:'H:i' }}",
-            slot: {{ availability.slot|default:30 }}
-        }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-    ];
-    console.log("Professional availability:", availabilityData);
-</script>
-
-<script src="{% static 'appointment/js/book_appointment.js' %}"></script>
+   
 </head>
 <body>
     
@@ -262,6 +247,22 @@
 
         </aside>
     </div>
-    
+    <script>
+    const availabilityData = [
+        {% for availability in availabilities %}
+        {
+            day: {{ availability.day }},
+            session: "{{ availability.session_type|escapejs }}",
+            start: "{{ availability.start_time|time:'H:i' }}",
+            end: "{{ availability.end_time|time:'H:i' }}",
+            slot: {{ availability.slot }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    console.log("Professional availability:", availabilityData);
+</script>
+
+<script src="{% static 'appointment/js/book_appointment.js' %}"></script>
 </body>
 </html>
