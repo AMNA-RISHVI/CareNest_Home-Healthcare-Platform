@@ -22,7 +22,12 @@
     <div class="flex justify-between items-center mb-6">
         <div class="flex flex-col">
             <div class="flex items-center">
-                <button onclick="location.href='/professionals/available'" class="text-teal-700 text-xl"><i class="fas fa-arrow-left"></i></button>
+                <button
+                    onclick="location.href='/professionals/available/'"
+                    class="text-teal-700 text-xl"
+                >
+                    <i class="fas fa-arrow-left"></i>
+                </button>
                 <h1 class="text-3xl font-bold text-teal-800 ml-4">Update Availability</h1>
             </div>
             <p class="text-sm text-gray-500 ml-9 mt-1">Manage your weekly schedule and appointment settings</p>
@@ -123,10 +128,27 @@
         </div>
     </div>
 
-    <script>
-        
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-            const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+    {{ saved_schedule|json_script:"saved-schedule-data" }}
+
+    <script>
+
+        const savedSchedule = JSON.parse(
+            document.getElementById('saved-schedule-data').textContent
+        );
+
+        const days = [
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday'
+        ];
+
+    
 
     // Helper to generate option strings
     function generateTimeOptions(hStart, hEnd, step=30) {
@@ -151,45 +173,274 @@
     }
 
     function initSchedule() {
+
         const container = document.getElementById('schedule-container');
+
         let html = '';
+
         days.forEach((day, i) => {
+
+            const savedSessions = savedSchedule[String(i)] || [];
+
+            const morningSession = savedSessions.find(
+                session => session.session_type === 'morning'
+            );
+
+            const afternoonSession = savedSessions.find(
+                session => session.session_type === 'afternoon'
+            );
+
+            const isActive = savedSessions.length > 0;
+
+            const morningStart = morningSession
+                ? morningSession.start
+                : '';
+
+            const morningEnd = morningSession
+                ? morningSession.end
+                : '';
+
+            const afternoonStart = afternoonSession
+                ? afternoonSession.start
+                : '';
+
+            const afternoonEnd = afternoonSession
+                ? afternoonSession.end
+                : '';
+
             html += `
-            <div class="day-row border-l-4 border-gray-200 relative" data-index="${i}">
-                <div class="flex justify-between items-center cursor-pointer" onclick="toggleDayExpand(${i})">
-                    <div class="flex items-center gap-4">
-                        <div class="toggle-switch on" onclick="event.stopPropagation(); toggleSwitch(this, ${i})"></div>
-                        <span class="font-medium">${day}</span>
-                        <span class="morning-badge bg-teal-100 text-teal-700 text-xs px-2 py-0.5 rounded">09:00 - 12:00</span>
-                        <span class="afternoon-badge bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded">14:00 - 17:00</span>
+                <div
+                    class="day-row border-l-4 border-gray-200 relative"
+                    data-index="${i}"
+                >
+
+                    <div
+                        class="flex justify-between items-center cursor-pointer"
+                        onclick="toggleDayExpand(${i})"
+                    >
+
+                        <div class="flex items-center gap-4">
+
+                            <div
+                                class="toggle-switch ${isActive ? 'on' : ''}"
+                                onclick="event.stopPropagation(); toggleSwitch(this, ${i})"
+                            ></div>
+
+                            <span class="font-medium">
+                                ${day}
+                            </span>
+
+                            <span
+                                class="morning-badge bg-teal-100 text-teal-700 text-xs px-2 py-0.5 rounded ${morningSession ? '' : 'hidden'}"
+                            >
+                                ${morningSession
+                                    ? `${morningStart} - ${morningEnd}`
+                                    : 'Off'}
+                            </span>
+
+                            <span
+                                class="afternoon-badge bg-orange-100 text-orange-700 text-xs px-2 py-0.5 rounded ${afternoonSession ? '' : 'hidden'}"
+                            >
+                                ${afternoonSession
+                                    ? `${afternoonStart} - ${afternoonEnd}`
+                                    : 'Off'}
+                            </span>
+
+                        </div>
+
+                        <div class="flex items-center gap-4 text-gray-400">
+
+                            <span class="hours-text text-sm">
+                                0h
+                            </span>
+
+                            <i class="fas fa-chevron-down text-sm"></i>
+
+                        </div>
+
                     </div>
-                    <div class="flex items-center gap-4 text-gray-400">
-                        <span class="hours-text text-sm">6h</span>
-                        <i class="fas fa-chevron-down text-sm"></i>
+
+
+                    <div class="details mt-4 ${isActive ? '' : 'hidden'} pt-4 border-t border-gray-100">
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                            <!-- MORNING -->
+
+                            <div class="bg-teal-50 border-b-4 p-3 rounded-lg">
+
+                                <div class="text-sm font-medium mb-2">
+
+                                    <i class="fas fa-sun text-teal-600"></i>
+
+                                    Morning Session
+
+                                    <span
+                                        class="text-red-500 text-xs cursor-pointer float-right"
+                                        onclick="removeSession(${i}, 'morning')"
+                                    >
+                                        Remove
+                                    </span>
+
+                                </div>
+
+
+                                <div class="flex gap-2 text-sm">
+
+                                    <div>
+
+                                        <label class="text-xs text-gray-500">
+                                            Start time
+                                        </label>
+
+                                        <select
+                                            class="time-select morning-start-${i}"
+                                        >
+                                            ${generateTimeOptions(0, 12)}
+                                        </select>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <label class="text-xs text-gray-500">
+                                            End time
+                                        </label>
+
+                                        <select
+                                            class="time-select morning-end-${i}"
+                                        >
+                                            ${generateTimeOptions(0, 12)}
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- AFTERNOON -->
+
+                            <div class="bg-orange-50 border-b-4 p-3 rounded-lg">
+
+                                <div class="text-sm font-medium mb-2">
+
+                                    <i class="fas fa-moon text-orange-600"></i>
+
+                                    Afternoon Session
+
+                                    <span
+                                        class="text-red-500 text-xs cursor-pointer float-right"
+                                        onclick="removeSession(${i}, 'afternoon')"
+                                    >
+                                        Remove
+                                    </span>
+
+                                </div>
+
+
+                                <div class="flex gap-2 text-sm">
+
+                                    <div>
+
+                                        <label class="text-xs text-gray-500">
+                                            Start time
+                                        </label>
+
+                                        <select
+                                            class="time-select afternoon-start-${i}"
+                                        >
+                                            ${generateTimeOptions(12, 24)}
+                                        </select>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <label class="text-xs text-gray-500">
+                                            End time
+                                        </label>
+
+                                        <select
+                                            class="time-select afternoon-end-${i}"
+                                        >
+                                            ${generateTimeOptions(12, 24)}
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </div>
-                <div class="details mt-4 hidden pt-4 border-t border-gray-100">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-teal-50 border-b-4 p-3 rounded-lg">
-                            <div class="text-sm font-medium mb-2"><i class="fas fa-sun text-teal-600"></i> Morning Session <span class="text-red-500 text-xs cursor-pointer float-right" onclick="removeSession(${i}, 'morning')">Remove</span></div>
-                            <div class="flex gap-2 text-sm"><div><label class="text-xs text-gray-500">Start time</label><select class="time-select morning-start-${i}">${generateTimeOptions(0, 12)}</select></div><div><label class="text-xs text-gray-500">End time</label><select class="time-select morning-end-${i}">${generateTimeOptions(0, 12)}</select></div></div>
-                        </div>
-                        <div class="bg-orange-50 border-b-4 p-3 rounded-lg">
-                            <div class="text-sm font-medium mb-2"><i class="fas fa-moon text-orange-600"></i> Afternoon Session <span class="text-red-500 text-xs cursor-pointer float-right" onclick="removeSession(${i}, 'afternoon')">Remove</span></div>
-                            <div class="flex gap-2 text-sm"><div><label class="text-xs text-gray-500">Start time</label><select class="time-select afternoon-start-${i}">${generateTimeOptions(12, 24)}</select></div><div><label class="text-xs text-gray-500">End time</label><select class="time-select afternoon-end-${i}">${generateTimeOptions(12, 24)}</select></div></div>
-                        </div>
-                    </div>
-                    <div class="mt-4 bg-yellow-50 border-b-4 p-3 rounded-lg flex gap-4">
-                        <i class="fas fa-coffee text-yellow-600"></i>
-                        <div><div class="text-sm font-medium">Break Time</div>
-                            <div class="flex gap-4 mt-1 text-sm"><div><label class="text-xs text-gray-500">Break Start</label><select class="time-select break-start-${i}">${generateTimeOptions(11, 15)}</select></div><div><label class="text-xs text-gray-500">Break End</label><select class="time-select break-end-${i}">${generateTimeOptions(11, 15)}</select></div></div>
-                        </div>
-                    </div>
-                </div>
-            </div>`;
+            `;
         });
-        html += `<div class="text-teal-700 text-sm mt-2 cursor-pointer hover:underline" onclick="copySchedule()"><i class="fas fa-copy mr-1"></i> Copy this schedule to all weekdays</div>`;
+
+
+        html += `
+            <div
+                class="text-teal-700 text-sm mt-2 cursor-pointer hover:underline"
+                onclick="copySchedule()"
+            >
+                <i class="fas fa-copy mr-1"></i>
+                Copy this schedule to all weekdays
+            </div>
+        `;
+
+
         container.innerHTML = html;
+
+
+        // ============================
+        // SET SAVED DROPDOWN VALUES
+        // ============================
+
+        for (let i = 0; i < 7; i++) {
+
+            const savedSessions = savedSchedule[String(i)] || [];
+
+            const morning = savedSessions.find(
+                session => session.session_type === 'morning'
+            );
+
+            const afternoon = savedSessions.find(
+                session => session.session_type === 'afternoon'
+            );
+
+
+            if (morning) {
+
+                document.querySelector(
+                    `.morning-start-${i}`
+                ).value = morning.start;
+
+                document.querySelector(
+                    `.morning-end-${i}`
+                ).value = morning.end;
+            }
+
+
+            if (afternoon) {
+
+                document.querySelector(
+                    `.afternoon-start-${i}`
+                ).value = afternoon.start;
+
+                document.querySelector(
+                    `.afternoon-end-${i}`
+                ).value = afternoon.end;
+            }
+        }
+
+
         updateStats();
     }
 
@@ -366,71 +617,165 @@
     // CSRF Helper
     function getCookie(name) {
         let cookieValue = null;
+
         if (document.cookie && document.cookie !== '') {
             const cookies = document.cookie.split(';');
+
             for (let i = 0; i < cookies.length; i++) {
                 const cookie = cookies[i].trim();
+
                 if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    cookieValue = decodeURIComponent(
+                        cookie.substring(name.length + 1)
+                    );
                     break;
                 }
             }
         }
+
         return cookieValue;
     }
 
-        function saveAvailability(event) {
-        if (event) event.preventDefault(); 
-        let schedule = {};
-        
-        for(let i=0; i<7; i++) {
-            const row = document.querySelector(`[data-index="${i}"]`);
-            if (!row) continue; 
-            const toggle = row.querySelector('.toggle-switch');
-            
-            let sessions = []; // <--- NEW: Array to store multiple slots
-            if(toggle.classList.contains('on')) {
-                // 1. Read Morning Session
-                const ms = row.querySelector(`.morning-start-${i}`).value;
-                const me = row.querySelector(`.morning-end-${i}`).value;
-                if (ms && me) {
-                    sessions.push({ start: ms, end: me });
-                }
-                
-                // 2. Read Afternoon Session (This was missing before!)
-                const as = row.querySelector(`.afternoon-start-${i}`).value;
-                const ae = row.querySelector(`.afternoon-end-${i}`).value;
-                if (as && ae) {
-                    sessions.push({ start: as, end: ae });
-                }
-            }
-            schedule[i] = sessions; // <--- NEW: Save the array (or empty array if off)
+    function saveAvailability(event) {
+        if (event) {
+            event.preventDefault();
         }
 
-        // 3. The fetch code remains exactly the same
+        let schedule = {};
+
+        for (let i = 0; i < 7; i++) {
+            const row = document.querySelector(`[data-index="${i}"]`);
+
+            if (!row) continue;
+
+            const toggle = row.querySelector('.toggle-switch');
+            let sessions = [];
+
+            if (toggle && toggle.classList.contains('on')) {
+
+                const morningStart =
+                    row.querySelector(`.morning-start-${i}`);
+
+                const morningEnd =
+                    row.querySelector(`.morning-end-${i}`);
+
+                if (morningStart && morningEnd) {
+                    if (morningStart.value && morningEnd.value) {
+                        sessions.push({
+                            start: morningStart.value,
+                            end: morningEnd.value
+                        });
+                    }
+                }
+
+                const afternoonStart =
+                   row.querySelector(`.afternoon-start-${i}`);
+
+                const afternoonEnd =
+                   row.querySelector(`.afternoon-end-${i}`);
+
+                if (afternoonStart && afternoonEnd) {
+                    if (afternoonStart.value && afternoonEnd.value) {
+                        sessions.push({
+                            start: afternoonStart.value,
+                            end: afternoonEnd.value
+                        });
+                    }
+                }
+            }
+
+            schedule[i] = sessions;
+        }
+
+        console.log("SENDING SCHEDULE:");
+        console.log(schedule);
+
         fetch('/professionals/available/', {
             method: 'POST',
+
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
+                'X-CSRFToken': document.querySelector(
+                    '[name=csrfmiddlewaretoken]'
+                ).value
             },
-            body: JSON.stringify({schedule: schedule})
+
+            body: JSON.stringify({
+                schedule: schedule
+            })
         })
-        .then(res => {
-            if(res.ok) return res.json();
-            else throw new Error(`Server responded with status ${res.status}`);
+
+        .then(response => {
+
+            console.log("========== SERVER RESPONSE ==========");
+            console.log("STATUS:", response.status);
+            console.log("STATUS TEXT:", response.statusText);
+            console.log(
+                "CONTENT TYPE:",
+                response.headers.get('content-type')
+            );
+            console.log("URL:", response.url);
+
+            return response.text();
         })
-        .then(data => {
-            if(data.success){
-                alert(data.message || "Availability saved successfully!");
-                window.location.href = '/professionalpanel/dashboard/';
-            } else {
-                alert("Backend Error: " + (data.message || "Unknown error"));
+
+        .then(text => {
+
+            console.log("========== RESPONSE BODY ==========");
+            console.log(text);
+
+            try {
+                const data = JSON.parse(text);
+
+                console.log("JSON DATA:", data);
+
+                if (data.success) {
+
+                    alert(
+                        data.message ||
+                        "Availability saved successfully!"
+                    );
+
+                    window.location.href =
+                        '/professionals/available/';
+
+                } else {
+
+                    alert(
+                        "Backend Error: " +
+                        (data.message || "Unknown error")
+                    );
+                }
+
+            } catch (error) {
+
+                 console.error(
+                    "SERVER DID NOT RETURN JSON!"
+                );
+
+                console.error(
+                    "Response was:",
+                    text
+                );
+
+                alert(
+                    "Django returned HTML instead of JSON. " +
+                    "Check the browser Console and Django terminal."
+                );
             }
         })
-        .catch(err => {
-            alert("Network or Server Error: " + err.message + "\nCheck your console for details.");
-            console.error(err);
+
+        .catch(error => {
+
+            console.error(
+                "FETCH ERROR:",
+                error
+            );
+
+            alert(
+                "Network Error: " +
+                error.message
+            );
         });
     }
 

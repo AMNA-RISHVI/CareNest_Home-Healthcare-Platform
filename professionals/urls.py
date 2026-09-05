@@ -24,7 +24,7 @@ urlpatterns=[
 
         path('available/',
                             views.availability, 
-                            name='availability.html'),
+                            name='availability'),
 
         
 ]

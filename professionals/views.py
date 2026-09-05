@@ -14,13 +14,16 @@ from patient_dashboard.models import Patient
 import json
 from datetime import datetime
 
-
+from django.views.decorators.http import require_http_methods
+from django.db import transaction
 
 from .models import (
     Professionals,
     ProfessionalsLocation,
     Specializations,
  )
+
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from appointment.models import review_rating
 
@@ -229,29 +232,52 @@ def professional_dashboard(request):
 # professional availability update
 #===================================================================================
 @login_required
-
-#get page
+@ensure_csrf_cookie
 def availability(request):
-    if request.method =="GET":
+    professional = get_object_or_404(
+        Professionals,
+        User=request.user
+    )
+
+    if request.method == "GET":
+        saved_availability = Availability.objects.filter(
+            professional=professional
+        ).order_by('day', 'start_time')
+
+        saved_schedule = {}
+
+        for item in saved_availability:
+            day = str(item.day)
+
+            if day not in saved_schedule:
+                saved_schedule[day] = []
+
+            saved_schedule[day].append({
+                "start": item.start_time.strftime("%H:%M"),
+                "end": item.end_time.strftime("%H:%M"),
+                "session_type": item.session_type,
+                "slot": item.slot,
+                "is_available": item.is_available,
+            })
+
         return render(
-                request,
-                "professionals/availability.html"
-            )
-    #save availability
+            request,
+            "professionals/availability.html",
+            {
+                "saved_schedule": saved_schedule
+            }
+        )
+
     if request.method == "POST":
         try:
             data = json.loads(request.body)
+
             schedule = data.get("schedule", {})
-
-
-            professional = get_object_or_404(
-                Professionals,
-                User=request.user
-            )
 
             Availability.objects.filter(
                 professional=professional
             ).delete()
+
             for day, sessions in schedule.items():
 
                 day_number = int(day)
@@ -268,8 +294,6 @@ def availability(request):
                         "%H:%M"
                     ).time()
 
-                    duration = 30
-
                     start_minutes = (
                         start_time.hour * 60 +
                         start_time.minute
@@ -280,9 +304,18 @@ def availability(request):
                         end_time.minute
                     )
 
-                    slot_count = (
+                    if end_minutes <= start_minutes:
+                        continue
+
+                    duration = 30
+
+                    total_minutes = (
                         end_minutes - start_minutes
-                    ) // duration
+                    )
+
+                    slot_count = (
+                        total_minutes // duration
+                    )
 
                     if slot_count <= 0:
                         continue
@@ -303,22 +336,22 @@ def availability(request):
                         is_available=True
                     )
 
-                return JsonResponse({
+            return JsonResponse({
                 "success": True,
                 "message": "Availability saved successfully."
-                 })
+            })
 
         except Exception as e:
 
             return JsonResponse({
-                    "success": False,
-                    "message": str(e)
-                }, status=400)
-    return JsonResponse({
-         "success": False,
-         "message": "Invalid request method."
-    }, status=400)
+                "success": False,
+                "message": str(e)
+            }, status=400)
 
+    return JsonResponse({
+        "success": False,
+        "message": "Invalid request method."
+    }, status=400)
     
 
 
