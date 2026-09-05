@@ -1,17 +1,13 @@
-from django.shortcuts import render
-
-from professionals.models import Professionals
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404,redirect
 from django.db.models import Avg, Count
 from patient_dashboard.models import Patient
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from datetime import datetime,timedelta
-from appointment.models import appointment, review_rating
-from appointment.models import appointment
-from patient_dashboard.models import Patient
-from professionals.models import Availability
+from datetime import datetime, timedelta
+
+from appointment.models import appointment as Appointment
+from appointment.models import review_rating
 
 from professionals.models import (
     Professionals,
@@ -19,20 +15,23 @@ from professionals.models import (
     Specializations,
     Availability,
 )
-#from patients.models import Patient
-from appointment.models import review_rating
+
 
 # Create your views here
-#appointment professional list
+
+# appointment professional list
 def appointment(request):
     patients = Patient.objects.filter(
         user=request.user
     ).order_by('patient_id')
-        
-    professionals = Professionals.objects.filter(verify_status="approved")
-    
+
+    professionals = Professionals.objects.filter(
+        verify_status="approved"
+    )
+
     selected_patient_id = request.GET.get('patient_id')
     selected_patient = None
+
     if selected_patient_id:
         selected_patient = get_object_or_404(
             Patient,
@@ -52,48 +51,59 @@ def appointment(request):
         }
     )
 
-#review rating page
+
+# review rating page
 def review_rate(request):
-    return render(request,'appointment/review_rate.html')
+    return render(
+        request,
+        'appointment/review_rate.html'
+    )
 
-#appointment status
+
+# appointment status
 def appointment_status(request):
-    return render(request,'appointment/appointment_status.html')
+    return render(
+        request,
+        'appointment/appointment_status.html'
+    )
 
 
-def book_appointment(request,professional_id):
+def book_appointment(request, professional_id):
     professional = get_object_or_404(
         Professionals,
         professional_id=professional_id
     )
-   
 
     location = ProfessionalsLocation.objects.filter(
-            professional=professional).first()
+        professional=professional
+    ).first()
 
     specialization = Specializations.objects.filter(
-            professional=professional).first()
+        professional=professional
+    ).first()
 
-        # Get reviews for this professional
+    patients = Patient.objects.filter(user=request.user).order_by('patient_id')
+
+    # Get reviews for this professional
     reviews = review_rating.objects.filter(
-            appointment__professional=professional
-        ).order_by('-review_id')
+        appointment__professional=professional
+    ).order_by('-review_id')
 
-        # Calculate average rating
+    # Calculate average rating
     rating_summary = reviews.aggregate(
-            average_rating=Avg('rating'),
-            total_reviews=Count('review_id')
-        )
+        average_rating=Avg('rating'),
+        total_reviews=Count('review_id')
+    )
+
     availabilities = Availability.objects.filter(
-            professional=professional,
-            is_available=True
-        ).order_by('day', 'start_time')
-    
+        professional=professional,
+        is_available=True
+    ).order_by('day', 'start_time')
 
     average_rating = rating_summary['average_rating']
     total_reviews = rating_summary['total_reviews']
 
-    #=======================handle book form
+    # ======================= handle book form
 
     if request.method == 'POST':
 
@@ -101,6 +111,7 @@ def book_appointment(request,professional_id):
         selected_time = request.POST.get('selected_time')
         address = request.POST.get('address')
         patient_note = request.POST.get('patient_note')
+        selected_patient_id = request.POST.get('patient_id')
 
         if not selected_date or not selected_time:
             messages.error(
@@ -123,7 +134,8 @@ def book_appointment(request,professional_id):
                 'book_appointment',
                 professional_id=professional_id
             )
-           # -----------------------------
+
+        # -----------------------------
         # Convert date and time
         # -----------------------------
 
@@ -138,6 +150,7 @@ def book_appointment(request,professional_id):
                 request,
                 "Invalid date or time."
             )
+
             return redirect(
                 "book_appointment",
                 professional_id=professional_id
@@ -147,7 +160,9 @@ def book_appointment(request,professional_id):
         selected_datetime = timezone.make_aware(
             selected_datetime
         )
-          # Check date is not in the past
+
+        # -----------------------------
+        # Check date is not in the past
         # -----------------------------
 
         if selected_datetime <= timezone.now():
@@ -157,14 +172,13 @@ def book_appointment(request,professional_id):
                 "Please select a future date and time."
             )
 
-
-
             return redirect(
                 "book_appointment",
                 professional_id=professional_id
             )
 
-          # Check weekly availability
+        # -----------------------------
+        # Check weekly availability
         # -----------------------------
 
         selected_day = selected_datetime.weekday()
@@ -187,14 +201,13 @@ def book_appointment(request,professional_id):
             return redirect(
                 "book_appointment",
                 professional_id=professional_id
-
             )
 
-        
+        # -----------------------------
         # Check whether slot is already booked
         # -----------------------------
 
-        already_booked = appointment.objects.filter(
+        already_booked = Appointment.objects.filter(
             professional=professional,
             scheduled_at=selected_datetime
         ).exclude(
@@ -215,11 +228,19 @@ def book_appointment(request,professional_id):
                 "book_appointment",
                 professional_id=professional_id
             )
-        
-           # CREATE APPOINTMENT
+
+
+        patient = get_object_or_404(
+            Patient,
+            patient_id=selected_patient_id,
+            user=request.user
+        )
+
+        # -----------------------------
+        # CREATE APPOINTMENT
         # -----------------------------
 
-        new_appointment = appointment.objects.create(
+        new_appointment = Appointment.objects.create(
             patient=patient,
             professional=professional,
             scheduled_at=selected_datetime,
@@ -233,13 +254,11 @@ def book_appointment(request,professional_id):
             "Appointment booked successfully."
         )
 
-        return redirect(
-            "appointment_status"
-        )
-    
+        return redirect("patient_dashboard:dashboard")
+
     return render(
-         request,
-            'appointment/book_appointment.html',
+        request,
+        'appointment/book_appointment.html',
         {
             'professional': professional,
             'location': location,
@@ -248,16 +267,13 @@ def book_appointment(request,professional_id):
             'average_rating': average_rating,
             'total_reviews': total_reviews,
             'availabilities': availabilities,
-            
+            'patients': patients,
         }
     )
 
 
-
-    
 def appointment_history(request):
-    return render (request,'appointment/appointment_history.html')
-
-
-
-
+    return render(
+        request,
+        'appointment/appointment_history.html'
+    )

@@ -111,3 +111,30 @@ def fake_payment(request):
         return JsonResponse({
             'error': str(e)
         }, status=400)
+
+
+@login_required
+def appointment_payment(request, appointment_id):
+    from appointment.models import appointment as Appointment
+
+    appointment = Appointment.objects.get(
+        appointment_id=appointment_id,
+        patient__user=request.user
+    )
+
+    if request.method == 'POST':
+        appointment.appointment_fee_paid = True
+        appointment.save(update_fields=['appointment_fee_paid'])
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Appointment payment successful.'
+        })
+
+    return render(
+        request,
+        'payments/appointment_payment.html',
+        {
+            'appointment': appointment,
+        }
+    )

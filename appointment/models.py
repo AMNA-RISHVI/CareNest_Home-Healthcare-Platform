@@ -31,6 +31,7 @@ class appointment(models.Model):
                                 default='pending')
     patient_note=models.TextField(
         null=True,blank=True)
+    appointment_fee_paid = models.BooleanField(default=False)
 
     def __str__(self):
         return (
