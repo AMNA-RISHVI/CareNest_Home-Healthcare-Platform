@@ -115,15 +115,16 @@
 
                 <!-- Actions Card -->
                 <div class="bg-white rounded-xl border-b-2 border-r-2 shadow-sm p-6 card-shadow flex flex-col gap-4">
-                    <button onclick="openPrescriptionModal()" class="bg-[#e0fdf9] hover:bg-[#ccf9f2] text-teal-700 p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-colors w-full">
-                        <i class="fas fa-file-prescription text-teal-700"></i>
-                        <span class="font-medium text-sm">Upload Prescription</span>
-                    </button>
+                    <a href="{% url 'health_wallet:professional_request_access' %}"
+                        class="bg-[#e0fdf9] hover:bg-[#ccf9f2] text-teal-700 p-3 rounded-lg flex items-center gap-3 cursor-pointer transition-colors w-full">
 
-                    <a href="/professionalpanel/prescriptions/" class="text-center text-teal-700 font-medium text-sm hover:text-teal-900 transition-colors py-2 border-t border-gray-100 mt-0 block">
-                        View Recent Uploads <i class="fas fa-arrow-right ml-1 text-[10px]"></i>
-                    </a>
+                            <i class="fas fa-file-prescription text-teal-700"></i>
+                            <span class="font-medium text-sm">Upload Prescription</span>
 
+                     </a>
+                                    
+
+                    
                     <a href="/professionalpanel/analytics/" class="flex items-center gap-3 text-gray-700 hover:text-teal-700 transition-colors text-sm font-medium">
                         <i class="fas fa-chart-line w-5"></i> <span>View Analytics</span>
                     </a>
@@ -183,8 +184,15 @@
     <div id="prescription-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center z-50 backdrop-blur-sm">
         <div class="bg-white rounded-xl p-6 w-full max-w-lg shadow-2xl relative">
             <div class="flex justify-between items-center mb-4 border-b pb-2">
-                <h2 class="text-xl font-bold text-teal-800">Upload Prescription</h2>
-                <button onclick="closePrescriptionModal()" class="text-gray-400 hover:text-gray-800"><i class="fas fa-times"></i></button>
+                
+                <h2 class="text-xl font-bold text-teal-800">
+                    <a href="{% url 'health_wallet:professional_request_access' %}">
+                        Upload Prescription
+                    </a>
+                </h2>
+                <button onclick="closePrescriptionModal()" 
+                class="text-gray-400 hover:text-gray-800">
+                <i class="fas fa-times"></i></button>
             </div>
             <form id="prescription-form" class="space-y-4">
                 <div>
@@ -236,7 +244,7 @@
         }
 
         function loadDashboard() {
-            fetch('/professionalpanel/get-data/')
+            fetch('/professional/get-data/')
             .then(res => res.json())
             .then(data => {
                 // Stats Cards
@@ -412,7 +420,12 @@
                         </div>
                         <div class="flex flex-col items-end">
                             <span class="text-[9px] text-gray-400">${r.uploaded}</span>
-                            <a href="${r.file_url}" target="_blank" class="text-teal-600 text-[10px] hover:underline" title="View prescription (Read-only)">View <i class="fas fa-external-link-alt ml-0.5"></i></a>
+                            <a href="{% url 'health_wallet:professional_request_access' %}"
+                                class="text-teal-600 text-[10px] hover:underline"
+                                title="Upload prescription">
+                                    Upload
+                                    <i class="fas fa-upload ml-0.5"></i>
+                            </a>
                         </div>
                     </div>
                 `).join('');
@@ -443,6 +456,7 @@
 
         // INIT
         loadDashboard();
+        
     </script>
 </body>
 </html>
