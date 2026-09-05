@@ -8,7 +8,7 @@
     <title>Book Appointment - {{professional.User.full_name}}</title>
     <link rel="stylesheet" href="{% static 'appointment/css/appointment.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     
@@ -129,8 +129,14 @@
                     </div>
                 </div>
                 {% empty %}
+                     <p class="no-reviews">
+                        No reviews yet.
+                    </p>
+
+                {% endfor %}
 
             </section>
+
 
         </main>
 
@@ -148,49 +154,38 @@
 
                     <!-- Select Date -->
                     <div class="form-group">
-                        <label>Select Date</label>
-                        <div class="grid-3">
-                            {% for availability in availabilities %}
-
-                                <button
-                                    type="button"
-                                    class="btn-slot time-btn"
-                                    data-date="{{ availability.available_date|date:'Y-m-d' }}"
-                                    data-time="{{ availability.start_time|time:'H:i' }}"
-                                >
-                                    {{ availability.start_time|time:"H:i" }}
-                                </button>
-
-                            {% empty %}
-
-                                <p>No available times.</p>
-
-                            {% endfor %}
+                        <label >Select Date</label>
+                        <div id="dateGrid" class="date-grid">
+                         <!-- JavaScript creates available dates here -->
                         </div>
+
+                        <input
+                            type="hidden"
+                            id="selected_date"
+                            name="selected_date"
+                            required
+                        >
                     </div>
+
 
                     <!-- Select Time -->
                     <div class="form-group">
                         <label>Select Time</label>
-                        <div class="grid-3">
-                            {% for availability in availabilities %}
-                                <button type="button"
-                                class="btn-slot"
-                                data-date="{{ availability.available_date|date:'Y-m-d' }}"
-                                data-time="{{ availability.start_time|time:'H:i' }}"
-                                >
-                                    {{ availability.start_time|time:"H:i" }}
-                                </button>
-                            {% empty %}
 
-                                <p>No available times.</p>
-
-                            {% endfor %}
-                            <button type="button" class="btn-slot">10:30</button>
-                            <button type="button" class="btn-slot active">14:00</button>
-                            <button type="button" class="btn-slot">15:30</button>
+                        <div id="timeGrid" class="time-grid">
+                            <p>Please select a date first.</p>
                         </div>
+
+                        <!-- Hidden input stores the selected time -->
+                        <input
+                            type="hidden"
+                            id="selected_time"
+                            name="selected_time"
+                            required
+                        >
                     </div>
+
+                 
 
                     <!-- Book for Dropdown -->
                     <div class="form-group">
@@ -251,7 +246,24 @@
 
         </aside>
     </div>
-    <script src="{% static 'appointment/js/appointment.js' %}"></script>
+     <script>
+        const availabilityData = [
+            {% for availability in availabilities %}
+            {
+                day: {{ availability.day }},
+                session: "{{ availability.session_type|escapejs }}",
+                start: "{{ availability.start_time|time:"H:i" }}",
+                end: "{{ availability.end_time|time:'H:i' }}",
+                slot: {{ availability.slot }}
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ];
+
+        console.log("Professional availability:", availabilityData);
+        </script>
+
+        <script src="{% static 'appointment/js/appointment.js' %}"></script>
+
 
 </body>
 </html>

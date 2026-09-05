@@ -21,5 +21,10 @@ urlpatterns=[
         path('board/',
                     views.professional_dashboard, 
                     name='professional_dashboard'),
+
+        path('available/',
+                            views.availability, 
+                            name='availability.html'),
+
         
 ]

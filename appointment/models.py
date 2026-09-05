@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from professionals.models import Availability
+
 
 class appointment(models.Model):
     appointment_id =models.AutoField(primary_key=True)
@@ -13,7 +13,7 @@ class appointment(models.Model):
                                    )
     #invoice=models.ForeignKey('invoice.invoice',
                                 # on_delete=models.CASCADE,
-                                # )
+                                 #)
 
     scheduled_at = models. DateTimeField()
     appointment_address = models.TextField()
@@ -32,7 +32,12 @@ class appointment(models.Model):
     patient_note=models.TextField(
         null=True,blank=True)
 
-
+    def __str__(self):
+        return (
+            f"{self.patient} - "
+            f"{self.professional} - "
+            f"{self.scheduled_at}"
+        )
 
     
 
@@ -66,5 +71,7 @@ class review_rating(models.Model):
 
 
     
-def __str__(self):
-   return f"{self.appointment.patient_dashboard} - {self.appointment.professional} ({self.rating} stars)"
+    def __str__(self):
+     return(
+    f"{self.appointment.patient} - {self.appointment.professional} ({self.rating} stars)"
+     )

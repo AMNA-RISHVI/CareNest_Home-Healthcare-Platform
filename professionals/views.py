@@ -6,7 +6,13 @@ from appointment.models import review_rating
 from django.shortcuts import get_object_or_404
 from .forms import ProfessionalRegistrationForm
 from django.contrib import messages
+from django.http import JsonResponse
+from professionals.models import Professionals, Availability
+from django.views.decorators.http import require_POST
 import uuid
+from patient_dashboard.models import Patient
+import json
+from datetime import datetime
 
 
 
@@ -136,11 +142,13 @@ def professional_profile(request):
 # ========================================        
 
 
-
+@login_required
 def find_professional(request):
          # Get approved professionals
     professionals = Professionals.objects.all(
     )
+   
+
 
     # Get all reviews and calculate rating
     rating_data = review_rating.objects.values(
@@ -167,9 +175,28 @@ def find_professional(request):
                 )
                 professional.total_reviews = data['review_count']
 
+        # Get patients belonging to logged-in user
+    patients = Patient.objects.filter(
+        user=request.user
+    ).order_by('patient_id')
+
+    # Get selected patient from URL
+    selected_patient_id = request.GET.get('patient_id')
+
+    if selected_patient_id:
+        selected_patient = get_object_or_404(
+            Patient,
+            patient_id=selected_patient_id,
+            user=request.user
+        )
+    else:
+        selected_patient = patients.first()
+
     return render(request,'professionals/find_professional.html',
                   {
-                      'professionals': professionals 
+                    'professionals': professionals,
+                    'patients': patients,
+                    'patient': selected_patient,
                   }
                   )
 
@@ -193,7 +220,106 @@ def professional_dashboard(request):
             "professional": professional
         }
     )
+# Appointments
+    appointments = Appointment.objects.filter(professional=pro).exclude(appointment_status='completed').order_by('scheduled_at')
+    appt_data = [{'id': a.appointment_id, 'patient': a.patient.patient_name, 'datetime': a.scheduled_at.strftime("%Y-%m-%d • %H:%M"), 'note': a.patient_note, 'status': a.appointment_status} for a in appointments]
 
+
+#====================================================================================
+# professional availability update
+#===================================================================================
+@login_required
+
+#get page
+def availability(request):
+    if request.method =="GET":
+        return render(
+                request,
+                "professionals/availability.html"
+            )
+    #save availability
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            schedule = data.get("schedule", {})
+
+
+            professional = get_object_or_404(
+                Professionals,
+                User=request.user
+            )
+
+            Availability.objects.filter(
+                professional=professional
+            ).delete()
+            for day, sessions in schedule.items():
+
+                day_number = int(day)
+
+                for session in sessions:
+
+                    start_time = datetime.strptime(
+                        session["start"],
+                        "%H:%M"
+                    ).time()
+
+                    end_time = datetime.strptime(
+                        session["end"],
+                        "%H:%M"
+                    ).time()
+
+                    duration = 30
+
+                    start_minutes = (
+                        start_time.hour * 60 +
+                        start_time.minute
+                    )
+
+                    end_minutes = (
+                        end_time.hour * 60 +
+                        end_time.minute
+                    )
+
+                    slot_count = (
+                        end_minutes - start_minutes
+                    ) // duration
+
+                    if slot_count <= 0:
+                        continue
+
+                    session_type = (
+                        "morning"
+                        if start_time.hour < 12
+                        else "afternoon"
+                    )
+
+                    Availability.objects.create(
+                        professional=professional,
+                        day=day_number,
+                        session_type=session_type,
+                        start_time=start_time,
+                        end_time=end_time,
+                        slot=slot_count,
+                        is_available=True
+                    )
+
+                return JsonResponse({
+                "success": True,
+                "message": "Availability saved successfully."
+                 })
+
+        except Exception as e:
+
+            return JsonResponse({
+                    "success": False,
+                    "message": str(e)
+                }, status=400)
+    return JsonResponse({
+         "success": False,
+         "message": "Invalid request method."
+    }, status=400)
+
+    
 
 
 

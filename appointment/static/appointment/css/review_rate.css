@@ -59,7 +59,7 @@
             color: var(--cn-text-main);
         }
 
-        .doctor-info {
+        .pro-info {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -69,7 +69,7 @@
             border-radius: 12px;
         }
 
-        .doctor-avatar {
+        .pro-avatar {
             width: 38px;
             height: 38px;
             border-radius: 50%;
@@ -81,7 +81,7 @@
             font-size: 15px;
         }
 
-        .doctor-details h7 {
+        .pro-details h7 {
             margin: 0;
             font-size: 13.5px;
             font-weight: 600;
@@ -89,7 +89,7 @@
             display: block;
         }
 
-        .doctor-details span {
+        .pro-details span {
             font-size: 11.5px;
             color: var(--cn-text-muted);
         }

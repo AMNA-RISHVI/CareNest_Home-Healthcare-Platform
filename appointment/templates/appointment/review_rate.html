@@ -21,13 +21,17 @@
         </div>
 
         <!-- Professional Summary -->
-        <div class="doctor-info">
-            <div class="doctor-avatar">
+        <div class="pro-info">
+            <div class="pro-avatar">
                 <i class="fas fa-user-nurse"></i>
             </div>
-            <div class="doctor-details">
-                <h7>{{professional.User.full_name}}</h7>
+            <div class="pro-details">
+                <h6>{{professional.User.full_name}}</h6>
                 <span>{{professional.service_type}}</span>
+               
+                
+                <p> {{ professional.User.full_name }}</p>
+                <p> {{ professional.service_type }}</p>
             </div>
         </div>
 
@@ -63,37 +67,7 @@
 
         <div id="statusMessage" class="status-msg"></div>
     </div>
+    <script src="{% static 'appointment/js/review.js' %}"></script>
 
-    <!-- Interactive JavaScript -->
-    <script>
-        function closeWidget() {
-            document.getElementById('ratingWidget').style.display = 'none';
-        }
-
-        document.getElementById('reviewForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const selectedRating = document.querySelector('input[name="rating"]:checked');
-            const statusMsg = document.getElementById('statusMessage');
-
-            if (!selectedRating) {
-                statusMsg.className = 'status-msg alert alert-danger';
-                statusMsg.innerText = 'Please select a star rating first!';
-                statusMsg.style.display = 'block';
-                return;
-            }
-
-            const ratingValue = selectedRating.value;
-
-            statusMsg.className = 'status-msg alert alert-success';
-            statusMsg.innerText = `Thank you! Rated ${ratingValue} Stars for professional`;
-            statusMsg.style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('reviewForm').reset();
-                statusMsg.style.display = 'none';
-            }, 3000);
-        });
-    </script>
 </body>
 </html>

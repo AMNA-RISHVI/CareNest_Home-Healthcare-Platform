@@ -22,7 +22,7 @@
     <div class="flex justify-between items-center mb-6">
         <div class="flex flex-col">
             <div class="flex items-center">
-                <button onclick="location.href='/professionalpanel/dashboard/'" class="text-teal-700 text-xl"><i class="fas fa-arrow-left"></i></button>
+                <button onclick="location.href='/professionals/available'" class="text-teal-700 text-xl"><i class="fas fa-arrow-left"></i></button>
                 <h1 class="text-3xl font-bold text-teal-800 ml-4">Update Availability</h1>
             </div>
             <p class="text-sm text-gray-500 ml-9 mt-1">Manage your weekly schedule and appointment settings</p>
@@ -124,7 +124,9 @@
     </div>
 
     <script>
-    const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+        
+
+            const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 
     // Helper to generate option strings
     function generateTimeOptions(hStart, hEnd, step=30) {
@@ -406,7 +408,7 @@
         }
 
         // 3. The fetch code remains exactly the same
-        fetch('/professionalpanel/api/update-availability/', {
+        fetch('/professionals/available/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -419,7 +421,7 @@
             else throw new Error(`Server responded with status ${res.status}`);
         })
         .then(data => {
-            if(data.status === 'success'){
+            if(data.success){
                 alert(data.message || "Availability saved successfully!");
                 window.location.href = '/professionalpanel/dashboard/';
             } else {

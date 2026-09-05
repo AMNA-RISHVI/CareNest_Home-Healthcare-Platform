@@ -146,7 +146,11 @@
         <!-- Professionals Grid -->
         <div class="professionals-list">
             {% for professional in professionals %}
-           <a href="{% url 'book_appointment' professional.professional_id %}" class="professional-card">
+                
+                <a href="{% url 'book_appointment' professional_id=professional.professional_id  %}" class="professional-card">
+                    
+            
+
                 <div class="card-top">
                     <div class="avatar-icon">
                         {{ professional.User.full_name|default:"L"|slice:":1"|upper }}
@@ -215,12 +219,13 @@
                         <span class="fee-amount">Rs. {{ professional.consultation_fee|default:"Not specified" }}</span>
                         <span class="experience">{{ professional.experience|default:"Not specified" }}</span>
                     </div>
-                </div>
-        
+            </div>
+            
             </a>
-            {% endfor %}
-        </div>
-    </div>
+            
+        {% endfor %}
+        
+</div>
 
 <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
