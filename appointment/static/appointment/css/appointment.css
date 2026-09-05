@@ -4,7 +4,6 @@
   padding: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-
 body {
   background-color: #f2f2eb;
   color: #333333;
@@ -20,7 +19,6 @@ body {
   gap: 24px;
   align-items: start;
 }
-
 /* Card Styling */
 .card {
   background: #ffffff;
@@ -29,12 +27,10 @@ body {
   margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
-
 .left-content {
   display: flex;
   flex-direction: column;
 }
-
 /* Profile Card Styling */
 .profile-header {
   display: flex;
@@ -55,13 +51,6 @@ body {
   font-weight: bold;
   flex-shrink: 0;
 }
-
-.title-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .title-row h2 {
   font-size: 20px;
   color: #1e3a3a;
@@ -71,7 +60,7 @@ body {
 .badge-verified {
   background-color: #e0f2f1;
   color: #00897b;
-  font-size: 13px;
+  font-size: 12px;
   padding: 4px 10px;
   border-radius: 20px;
   font-weight: 600;
@@ -89,6 +78,7 @@ body {
 
 .meta-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   color: #616161;
   font-size: 13px;
@@ -98,7 +88,6 @@ body {
   color: #00897b;
   margin-right: 4px;
 }
-
 .bio-text {
   color: #424242;
   font-size: 14px;
@@ -111,6 +100,7 @@ body {
   align-items: center;
   gap: 8px;
   color: #00897b;
+  flex-wrap: wrap;
 }
 
 .lang-label {
@@ -137,7 +127,6 @@ body {
   align-items: center;
   gap: 8px;
 }
-
 .qualifications-card h3 i {
   color: #00897b;
 }
@@ -166,6 +155,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 .overall-rating {
@@ -174,7 +164,6 @@ body {
   gap: 4px;
   font-size: 15px;
 }
-
 .overall-rating i {
   color: #ff9800;
 }
@@ -204,14 +193,12 @@ body {
   justify-content: center;
   font-weight: bold;
   font-size: 14px;
-}
-
-.reviewer-avatar.teal {
-  background-color: #80cbc4;
+  flex-shrink: 0;
 }
 
 .review-details {
   flex: 1;
+  min-width: 0;
 }
 
 .reviewer-header {
@@ -219,8 +206,9 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
-
 .reviewer-header strong {
   font-size: 14px;
   color: #212121;
@@ -234,12 +222,12 @@ body {
 .star-rating .fa-regular {
   color: #e0e0e0;
 }
-
 .review-text {
   font-size: 13px;
   color: #424242;
   line-height: 1.4;
   margin-bottom: 8px;
+  word-break: break-word;
 }
 
 .review-date {
@@ -247,16 +235,6 @@ body {
   color: #9e9e9e;
 }
 
-.see-all-link {
-  display: inline-block;
-  color: #111111;
-  font-weight: 600;
-  font-size: 13px;
-  text-decoration: none;
-  margin-top: 4px;
-}
-
-/* Right Content Box (Sticky Booking Form) */
 .right-content {
   position: sticky;
   top: 24px;
@@ -266,25 +244,26 @@ body {
   text-align: center;
 }
 
+.fee-header {
+  margin-bottom: 20px;
+}
 .fee-title {
   color: #757575;
   font-size: 14px;
+  display: block;
 }
 
 .fee-amount {
-  color: #1e88e5;
   color: #00897b;
   font-size: 24px;
   font-weight: 700;
   margin-top: 4px;
-  margin-bottom: 20px;
 }
 
 .form-group {
   text-align: left;
   margin-bottom: 20px;
 }
-
 .form-group label {
   display: block;
   font-size: 13px;
@@ -293,43 +272,143 @@ body {
   margin-bottom: 8px;
 }
 
-.grid-3 {
+
+
+
+/* Date Grid - 5 columns */
+.date-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 100%;
 }
 
-.btn-slot {
-  background-color: #f5f5f5;
-  border: 1px solid transparent;
+/* Date Button */
+.date-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 10px 4px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #333333;
   border-radius: 8px;
-  font-size: 13px;
-  color: #616161;
   cursor: pointer;
+  transition: all 0.2s ease;
+  min-height: 70px;
+  width: 100%;
 }
 
-.btn-slot span {
+.date-btn .day-name {
   font-size: 11px;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
 }
 
-.btn-slot.active {
+.date-btn .date-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 2px 0;
+}
+
+.date-btn .month-name {
+  font-size: 11px;
+  color: #6b7280;
+}
+
+/* Active Date Button - Green */
+.date-btn.active {
   background-color: #00897b;
+  border-color: #00897b;
   color: #ffffff;
 }
+
+.date-btn.active .day-name,
+.date-btn.active .month-name {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.date-btn.active .date-number {
+  color: #ffffff;
+}
+
+/* Time Grid - 3 columns */
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+/* Time Button */
+.time-btn {
+  width: 100%;
+  padding: 10px 5px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  color: #333333;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Active Time Button - Green */
+.time-btn.active {
+  background-color: #00897b;
+  color: #ffffff;
+  border-color: #00897b;
+}
+
+/* No available message */
+.no-times {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #757575;
+  font-size: 13px;
+  padding: 20px 0;
+  background: #f7f7f7;
+  border-radius: 8px;
+}
+
+/* ==========================================
+   FORM ELEMENTS
+   ========================================== */
 
 .form-control {
   width: 100%;
   padding: 10px 14px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #d1d5db;
   border-radius: 8px;
   font-size: 14px;
   outline: none;
   background-color: #ffffff;
+  transition: border-color 0.2s ease;
+  font-family: inherit;
 }
 
 .form-control:focus {
   border-color: #00897b;
+  box-shadow: 0 0 0 3px rgba(0, 137, 123, 0.1);
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23616%616' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
 }
 
 .textarea {
@@ -342,9 +421,9 @@ body {
   font-size: 12px;
 }
 
-.btn-submit {
+btn-submit {
   width: 100%;
-  background-color: #4db6ac;
+  background-color: #00897b;
   color: white;
   border: none;
   padding: 14px;
@@ -352,11 +431,11 @@ body {
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
   margin-top: 8px;
 }
-
 .btn-submit:hover {
-  background-color: #00897b;
+  background-color: #00695c;
 }
 
 .cancellation-policy {
@@ -364,38 +443,63 @@ body {
   color: #9e9e9e;
   margin-top: 12px;
 }
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
 
-/* Responsive breakpoint */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .page-container {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .right-content {
+    position: static;
   }
 }
-.date-btn,
-.btn-slot {
-    border: 1px solid #ccc;
-    background: white;
-    color: #333;
-    padding: 12px 16px;
-    border-radius: 8px;
-    cursor: pointer;
+
+
+@media (max-width: 768px) {
+  body {
+    padding: 16px;
+  }
+  
+  .card {
+    padding: 16px;
+  }
+  
+  .date-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .time-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+
+  .profile-header {
+    flex-wrap: wrap;
+  }
+  
+  .meta-row {
+    gap: 10px;
+  }
 }
 
-.date-btn.active,
-.btn-slot.active {
-    background-color: #28a745;
-    color: white;
-    border-color: #28a745;
-}
+@media (max-width: 480px) {
+  .date-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .time-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-.date-btn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.date-btn:hover,
-.btn-slot:hover {
-    border-color: #28a745;
+  .title-row h2 {
+    font-size: 17px;
+  }
+  
+  .fee-amount {
+    font-size: 20px;
+  }
 }

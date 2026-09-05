@@ -1,16 +1,25 @@
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
     const dateGrid = document.getElementById("dateGrid");
     const timeGrid = document.getElementById("timeGrid");
+    const selectedDateInput = document.getElementById("selected_date");
+    const selectedTimeInput = document.getElementById("selected_time");
 
-    const selectedDateInput =
-        document.getElementById("selected_date");
+    
+    // ==========================================
+    // HELPER FUNCTIONS  !!!
+    // ==========================================
 
-    const selectedTimeInput =
-        document.getElementById("selected_time");
+    function timeToMinutes(timeStr) {
+        const [hours, minutes] = timeStr.split(':').map(Number);
+        return hours * 60 + minutes;
+    }
 
+    function minutesToTime(minutes) {
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return String(hours).padStart(2, '0') + ':' + String(mins).padStart(2, '0');
+    }
 
     // ==========================================
     // CREATE AVAILABLE DATES
@@ -26,147 +35,65 @@ document.addEventListener("DOMContentLoaded", function () {
         for (let i = 0; i < 30; i++) {
 
             const date = new Date(today);
-
             date.setDate(today.getDate() + i);
 
-
-            // JavaScript:
-            // Sunday = 0
-            // Monday = 1
-            // Tuesday = 2
-            // ...
-            // Saturday = 6
-
             const javascriptDay = date.getDay();
-
-
-            // Convert JavaScript day
-            // to Django day
-
-            const djangoDay =
-                javascriptDay === 0
-                    ? 6
-                    : javascriptDay - 1;
-
+            const djangoDay = javascriptDay === 0 ? 6 : javascriptDay - 1;
 
             // Check professional availability
-            const isAvailable =
-                availabilityData.some(
-                    availability =>
-                        availability.day === djangoDay
-                );
+            const isAvailable = availabilityData.some(
+                availability => availability.day === djangoDay
+            );
 
-
-            // Professional does not work
-            // on this day
             if (!isAvailable) {
                 continue;
             }
 
-
             // Create date button
-            const button =
-                document.createElement("button");
-
+            const button = document.createElement("button");
             button.type = "button";
             button.className = "date-btn";
 
-
-            const dayName =
-                date.toLocaleDateString(
-                    "en-US",
-                    { weekday: "short" }
-                );
-
-
-            const monthName =
-                date.toLocaleDateString(
-                    "en-US",
-                    { month: "short" }
-                );
-
-
-            const dateNumber =
-                date.getDate();
-
+            const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
+            const monthName = date.toLocaleDateString("en-US", { month: "short" });
+            const dateNumber = date.getDate();
 
             button.innerHTML = `
-                <span class="day-name">
-                    ${dayName}
-                </span>
-
-                <span class="date-number">
-                    ${dateNumber}
-                </span>
-
-                <span class="month-name">
-                    ${monthName}
-                </span>
+                <span class="day-name">${dayName}</span>
+                <span class="date-number">${dateNumber}</span>
+                <span class="month-name">${monthName}</span>
             `;
 
+            const formattedDate = date.getFullYear() +
+                "-" + String(date.getMonth() + 1).padStart(2, "0") +
+                "-" + String(date.getDate()).padStart(2, "0");
 
-            // Create YYYY-MM-DD
-            const formattedDate =
-                date.getFullYear() +
-                "-" +
-                String(
-                    date.getMonth() + 1
-                ).padStart(2, "0") +
-                "-" +
-                String(
-                    date.getDate()
-                ).padStart(2, "0");
+            button.dataset.date = formattedDate;
 
-
-            button.dataset.date =
-                formattedDate;
-
-
-            // When date is clicked
-            button.addEventListener(
-                "click",
-                function () {
-
-                    // Remove old selection
-                    document
-                        .querySelectorAll(".date-btn")
-                        .forEach(btn => {
-                            btn.classList.remove("active");
-                        });
-
-
-                    // Select this date
-                    this.classList.add("active");
-
-
-                    // Save selected date
-                    selectedDateInput.value =
-                        this.dataset.date;
-
-
-                    // Generate times
-                    generateTimes(
-                        this.dataset.date
-                    );
-                }
-            );
-
+            button.addEventListener("click", function () {
+                document.querySelectorAll(".date-btn").forEach(btn => {
+                    btn.classList.remove("active");
+                });
+                this.classList.add("active");
+                selectedDateInput.value = this.dataset.date;
+                generateTimes(this.dataset.date);
+            });
 
             dateGrid.appendChild(button);
         }
 
-
-        // No dates
         if (dateGrid.children.length === 0) {
-
             dateGrid.innerHTML = `
-                <div class="no-times">
-                    No available dates
-                </div>
+                <div class="no-times">No available dates</div>
             `;
         }
-    }
 
+        // Auto-select first available date
+        const firstDateBtn = dateGrid.querySelector('.date-btn');
+        if (firstDateBtn) {
+            firstDateBtn.click();
+        }
+    }
 
     // ==========================================
     // CREATE AVAILABLE TIMES
@@ -175,175 +102,106 @@ document.addEventListener("DOMContentLoaded", function () {
     function generateTimes(dateString) {
 
         timeGrid.innerHTML = "";
-
         selectedTimeInput.value = "";
 
+        const date = new Date(dateString + "T00:00:00");
+        const javascriptDay = date.getDay();
+        const djangoDay = javascriptDay === 0 ? 6 : javascriptDay - 1;
 
-        const date =
-            new Date(
-                dateString + "T00:00:00"
-            );
+        const matchingAvailability = availabilityData.filter(
+            availability => availability.day === djangoDay
+        );
 
-
-        const javascriptDay =
-            date.getDay();
-
-
-        const djangoDay =
-            javascriptDay === 0
-                ? 6
-                : javascriptDay - 1;
-
-
-        // Find availability for selected day
-        const matchingAvailability =
-            availabilityData.filter(
-                availability =>
-                    availability.day === djangoDay
-            );
-
-
-        // No availability
         if (matchingAvailability.length === 0) {
-
             timeGrid.innerHTML = `
-                <div class="no-times">
-                    No available times
-                </div>
+                <div class="no-times">No available times</div>
             `;
-
             return;
         }
 
+        matchingAvailability.forEach(availability => {
 
-        // Create time slots
-        matchingAvailability.forEach(
-            availability => {
+            let startMinutes = timeToMinutes(availability.start);
+            const endMinutes = timeToMinutes(availability.end);
+            const slotDuration = availability.slot || 30;
 
-                let startMinutes =
-                    timeToMinutes(
-                        availability.start
-                    );
+            while (startMinutes < endMinutes) {
 
+                const time = minutesToTime(startMinutes);
 
-                const endMinutes =
-                    timeToMinutes(
-                        availability.end
-                    );
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "time-btn";
+                button.textContent = time;
+                button.dataset.time = time;
 
+                button.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    timeGrid.querySelectorAll(".time-btn").forEach(btn => {
+                        btn.classList.remove("active");
+                    });
+                    this.classList.add("active");
+                    selectedTimeInput.value = this.dataset.time;
+                    console.log("Selected time:", this.dataset.time);
+                });
 
-                while (
-                    startMinutes < endMinutes
-                ) {
-
-                    const time =
-                        minutesToTime(
-                            startMinutes
-                        );
-
-
-                    const button =
-                        document.createElement("button");
-
-
-                    button.type = "button";
-
-                    button.className =
-                        "time-btn";
-
-                    button.textContent =
-                        time;
-
-                    button.dataset.time =
-                        time;
-
-
-                    // Time click
-                    button.addEventListener(
-                        "click",
-                        function () {
-
-                            document
-                                .querySelectorAll(
-                                    ".time-btn"
-                                )
-                                .forEach(btn => {
-                                    btn.classList.remove(
-                                        "active"
-                                    );
-                                });
-
-
-                            this.classList.add(
-                                "active"
-                            );
-
-
-                            selectedTimeInput.value =
-                                this.dataset.time;
-                        }
-                    );
-
-
-                    timeGrid.appendChild(button);
-
-
-                    // Use professional's slot
-                    startMinutes +=
-                        availability.slot;
-                }
+                timeGrid.appendChild(button);
+                startMinutes += slotDuration;
             }
-        );
+        });
+
+        if (timeGrid.children.length === 0) {
+            timeGrid.innerHTML = `
+                <div class="no-times">No available times</div>
+            `;
+        }
     }
 
-
     // ==========================================
-    // TIME → MINUTES
+    // INITIALIZE
     // ==========================================
 
-    function timeToMinutes(time) {
-
-        const parts =
-            time.split(":");
-
-        const hours =
-            Number(parts[0]);
-
-        const minutes =
-            Number(parts[1]);
-
-        return (
-            hours * 60 +
-            minutes
-        );
+    if (typeof availabilityData !== 'undefined' && availabilityData.length > 0) {
+        generateDates();
+    } else {
+        dateGrid.innerHTML = `
+            <div class="no-times">No availability data found</div>
+        `;
+        console.warn("No availability data found");
     }
 
-
     // ==========================================
-    // MINUTES → TIME
+    // "Book for" 
     // ==========================================
 
-    function minutesToTime(minutes) {
+    const bookForSelect = document.getElementById('book_for');
+    const submitButton = document.querySelector('.btn-submit');
 
-        const hours =
-            Math.floor(minutes / 60);
-
-        const mins =
-            minutes % 60;
-
-
-        return (
-            String(hours).padStart(2, "0") +
-            ":" +
-            String(mins).padStart(2, "0")
-        );
+    if (bookForSelect && submitButton) {
+        bookForSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const text = selectedOption.text;
+            if (text && text !== 'Select Patient') {
+                submitButton.textContent = `Book for ${text}`;
+            } else {
+                submitButton.textContent = 'Book Appointment';
+            }
+        });
     }
 
-
     // ==========================================
-    // START
+    // FORM VALIDATION
     // ==========================================
 
-    generateDates();
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            const selectedDate = selectedDateInput.value;
+            const selectedTime = selectedTimeInput.value;
+            if (!selectedDate || !selectedTime) {
+                e.preventDefault();
+                alert('Please select both a date and time before booking.');
+            }
+        });
+    }
 
 });

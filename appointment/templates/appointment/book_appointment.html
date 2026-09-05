@@ -9,6 +9,22 @@
     <link rel="stylesheet" href="{% static 'appointment/css/appointment.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    const availabilityData = [
+        {% for availability in availabilities %}
+        {
+            day: {{ availability.day }},
+            session: "{{ availability.session_type|escapejs }}",
+            start: "{{ availability.start_time|time:"H:i" }}",
+            end: "{{ availability.end_time|time:'H:i' }}",
+            slot: {{ availability.slot|default:30 }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+    console.log("Professional availability:", availabilityData);
+</script>
+
+<script src="{% static 'appointment/js/book_appointment.js' %}"></script>
 </head>
 <body>
     
@@ -70,7 +86,7 @@
                 <ul class="qualifications-list">
                     {% if professional.qualifications %}
                         <li><i class="fa-regular fa-circle-check"></i> 
-                            {{Professionals.qualifications}}
+                            {{Professional.qualifications}}
                         </li>
                     {% else %}
                          <li>No qualifications provided</li>
@@ -246,24 +262,6 @@
 
         </aside>
     </div>
-     <script>
-        const availabilityData = [
-            {% for availability in availabilities %}
-            {
-                day: {{ availability.day }},
-                session: "{{ availability.session_type|escapejs }}",
-                start: "{{ availability.start_time|time:"H:i" }}",
-                end: "{{ availability.end_time|time:'H:i' }}",
-                slot: {{ availability.slot }}
-            }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-        ];
-
-        console.log("Professional availability:", availabilityData);
-        </script>
-
-        <script src="{% static 'appointment/js/appointment.js' %}"></script>
-
-
+    
 </body>
 </html>
