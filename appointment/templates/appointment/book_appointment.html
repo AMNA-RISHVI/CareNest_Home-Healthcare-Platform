@@ -193,23 +193,16 @@
                         <label>Book for</label>
                         <div class="select-wrapper">
                             <select class="form-control"
-                                id="book_for"
-                                name="book_for"
-                                class="form-control"
+                                id="patient_id"
+                                name="patient_id"
                                 required>
+                                <option value="">Select Patient</option>
 
-                                <option value="">
-                                    Select Patient
-                                </option>
-
-                                <option value="self">
-                                    My Self
-                                </option>
-
-                                <option value="family">
-                                    Family Member
-                                </option>
-                                
+                                {% for patient in patients %}
+                                    <option value="{{ patient.patient_id }}">
+                                        {{ patient.patient_name }} ({{ patient.relationship }})
+                                    </option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>

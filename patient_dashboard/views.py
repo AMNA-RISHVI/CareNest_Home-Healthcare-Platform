@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Patient
 from .forms import PatientForm
+from appointment.models import appointment as Appointment
 from .services import (
     can_add_family_member,
     get_active_subscription,
@@ -182,6 +183,12 @@ def dashboard(request):
 
             selected_patient = patients.first()
 
+    appointments = Appointment.objects.filter(
+            patient__user=request.user
+    ).order_by('scheduled_at')
+
+
+
     context = {
         'patients': patients,
         'selected_patient': selected_patient,
@@ -189,6 +196,7 @@ def dashboard(request):
         'max_profiles': max_profiles,
         'current_count': current_count,
         'can_add_family_member': can_add_family_member,
+        'appointments': appointments,
     }
 
     return render(
